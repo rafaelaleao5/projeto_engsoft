@@ -8,7 +8,7 @@ public class EntryRestServiceImpl {
 	
 	@GetMapping("/")
 	public String getTextoDefault() {
-		return "Texto! funcionou?";
+		return "Texto! funcionou? vamo ver o build!";
 	}
 
 }
