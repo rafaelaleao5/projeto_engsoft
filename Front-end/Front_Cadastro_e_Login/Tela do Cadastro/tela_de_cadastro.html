@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta charset="UTF-8">
+    <!-- Ajusta a visualização em dispositivos móveis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Cadastro</title>
+    <style>
+        /* Estilos globais para o corpo da página */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Estilo para o contêiner principal */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background-color: #1c0347;
+        }
+
+        /* Estilo para a seção de cadastro */
+        .secao-cadastro {
+            animation: drop-right 1.5s ease forwards;    
+            width: 50%; 
+            padding: 60px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Centraliza horizontalmente */
+            text-align: center; /* Centraliza o texto */
+        }
+        
+        /* Dando largura ao formulario para centralizar os itens */
+        .form{
+            animation: drop-top 2s ease  forwards ;    
+            width: 100%;
+            display: flex; /*centralizando o formulario e seus itens*/
+            flex-direction: column;  /*centralizando o formulario e seus itens*/
+            align-items: center; /*centralizando o formulario e seus itens*/
+        }
+
+        /* Estilo para o título da seção de cadastro */
+        .secao-cadastro h2 {
+            animation: drop-top 1s ease  forwards ; 
+            margin: 0;
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para os grupos de entrada de texto */
+        .grupo-input {
+            margin-bottom: 15px;
+            width: 100%; /* Mantém a largura dos inputs */
+            max-width: 350px;
+        }
+
+        /* Estilo para o rótulo dos campos de entrada */
+        .grupo-input label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            text-align: left; /* Mantém o alinhamento à esquerda */
+        }
+
+        /* Estilo para os campos de entrada de texto */
+        .grupo-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+            transition: all 300ms ease-in-out;
+        }
+        .grupo-input input:focus {
+            border: 1px solid #dddddd00;
+            box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.13);
+        }
+
+        .border2 input{
+            border-right: 5px solid #f6ae067a;;
+        }
+        .border2 input:focus{
+            border-right: 5px solid #f6b006;;
+        }
+        
+        .border1 input{
+            border-right: 5px solid #19044b68;
+        }
+        .border1 input:focus{
+            border-right: 5px solid #19044b;
+        }
+
+        /* Estilo para os botões */
+        .botao-cadastro {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Div Botões */
+        .btns{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        /* Estilos gerais para os btns */
+        .btn{
+            border-radius: 4px;
+            max-width: 150px;
+            margin-left: 20px;
+            color: #ffffffc5;
+            transition: all 300ms ease-in-out;
+            font-weight: bold;
+            background-color:#ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.147);
+            color: grey;
+        }
+        
+        /* Estilo específico para o botão de cadastro */
+        .botao-cadastro {
+            background-color:#ffffff;
+            border-right: 4px solid #f6b006;
+        }
+        
+        /* Estilo para o botão ao passar o mouse */
+        .botao-cadastro:hover {
+            background-color: #f6b006;
+            border: 1px solid #f6b006;
+            color: #ffffff;
+        }
+
+        /* Estilo para a seção de imagem */
+        .secao-imagem {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0px 0px 700px 10px #19044b;
+        }
+
+        /* Estilo para o placeholder da imagem */
+        .imagem-placeholder {
+            width: 80px;
+            height: 80px;
+        }
+
+        @keyframes drop-right{
+            0%{
+                transform: translateX(-1300px);
+                border-top-right-radius: 70%;
+                border-bottom-right-radius:70%;
+            }
+
+            100%{
+                transform: translateX(0);
+            }
+        }
+        @keyframes drop-top{
+            0%{
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+            50%{
+                opacity: 0.5;
+            }
+            100%{
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Seção de cadastro -->
+        <div class="secao-cadastro">
+            <h2>Cadastre-se</h2>
+            <form class="form">
+                <!-- Grupo de entrada para o nome -->
+                <div class="grupo-input border1">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" placeholder="Digite seu nome">
+                </div>
+                <!-- Grupo de entrada para o email -->
+                <div class="grupo-input border1">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="Digite seu e-mail">
+                </div>
+                <!-- Grupo de entrada para a senha -->
+                <div class="grupo-input border2">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Crie uma senha">
+                </div>
+                <!-- Grupo de entrada para a confirmação de senha -->
+                <div class="grupo-input border2">
+                    <label for="confirmar-senha">Confirmar Senha</label>
+                    <input type="password" id="confirmar-senha" placeholder="Confirme sua senha">
+                </div>
+                <div class="btns">
+                    <!-- Botão de cadastro -->
+                    <button type="button" class="botao-cadastro btn" onclick="cadastrar()">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+        <!-- Seção de imagem -->
+        <div class="secao-imagem">
+            <img src="LOGO TELA DE LOGIN.png" alt="Imagem de Cadastro" style="max-width: 100%; height: 100vh;">
+        </div>
+    </div>
+    <script>
+        // Função JavaScript que será executada ao clicar no botão "Cadastrar"
+        function cadastrar() {
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmar-senha').value;
+
+            // Verifica se todos os campos foram preenchidos
+            if (nome && email && senha && confirmarSenha) {
+                // Verifica se a senha e a confirmação de senha correspondem
+                if (senha === confirmarSenha) {
+                    alert('Cadastro bem-sucedido!'); // Exibe uma mensagem de sucesso
+                } else {
+                    alert('As senhas não coincidem. Por favor, tente novamente.'); // Exibe uma mensagem de erro
+                }
+            } else {
+                alert('Por favor, preencha todos os campos.'); // Exibe uma mensagem de erro
+            }
+        }
+    </script>
+</body>
+</html>
