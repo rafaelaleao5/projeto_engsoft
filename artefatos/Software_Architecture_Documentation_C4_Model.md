@@ -47,11 +47,11 @@ O diagrama de container mostra os principais containers de software que compõem
   - **Responsabilidade:** Interface para o usuário registrar entradas e saídas financeiras,visualizar gráficos e gerenciar suas finanças.
   - **Interações:** Aplicação Web <-> API Backend
 - **API Backend:** 
-  - **Tecnologias:** Java e Spring Boot
+  - **Tecnologias:** Java, Spring Boot e Docker
   - **Responsabilidade:** Gerencia as operações de entrada e saída de dados, aplica regras de negócio, e se comunica com o banco de dados.
   - **Interações:** Aplicação Web <-> API Backend <-> Banco de Dados
 - **Banco de Dados:** 
-  - **Tecnologias:** PostgreSQL
+  - **Tecnologias:** PostgreSQL e Docker
   - **Responsabilidade:** Armazenar informações de transações financeiras, tags, tipos de custo e forma de pagamento.
   - **Interações:** API Backend <-> Banco de Dados
 
