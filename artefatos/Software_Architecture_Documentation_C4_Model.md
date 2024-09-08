@@ -36,16 +36,24 @@ O diagrama de contexto fornece uma visão geral de alto nível do sistema e suas
 ### 2.1. Descrição do Diagrama de Container
 O diagrama de container mostra os principais containers de software que compõem o sistema e como eles interagem entre si.
 
-- **Containers Incluídos:** [Ex: Aplicação Web, Banco de Dados, API, etc.]
+- **Containers Incluídos:** Aplicação WEB, Banco de dados e API
 
 ### 2.2. Diagrama
-![Diagrama de Container](path/para/diagrama-container.png)
+![Diagrama de Container](images/diagrama-container.jpg)
 
 ### 2.3. Descrição dos Containers
-- **[Nome do Container]:** Descrição do container, sua responsabilidade e tecnologias utilizadas.
-  - **Tecnologias:** [Ex: Spring Boot, MySQL, etc.]
-  - **Responsabilidade:** [Função principal do container]
-  - **Interações:** [Containers com os quais interage]
+- **Aplicação Web:** 
+  - **Tecnologias:** React e Tailwind
+  - **Responsabilidade:** Interface para o usuário registrar entradas e saídas financeiras,visualizar gráficos e gerenciar suas finanças.
+  - **Interações:** Aplicação Web <-> API Backend
+- **API Backend:** 
+  - **Tecnologias:** Java e Spring Boot
+  - **Responsabilidade:** Gerencia as operações de entrada e saída de dados, aplica regras de negócio, e se comunica com o banco de dados.
+  - **Interações:** Aplicação Web <-> API Backend <-> Banco de Dados
+- **Banco de Dados:** 
+  - **Tecnologias:** PostgreSQL
+  - **Responsabilidade:** Armazenar informações de transações financeiras, tags, tipos de custo e forma de pagamento.
+  - **Interações:** API Backend <-> Banco de Dados
 
 ---
 
