@@ -95,10 +95,10 @@ Este nível detalha o design e a arquitetura do código dentro de um componente 
 ### 5.1. Decisões Importantes
 Documente aqui as decisões arquiteturais importantes que foram tomadas durante o desenvolvimento do projeto, incluindo justificativas e impactos.
 
-- **Decisão:** [Nome ou breve descrição da decisão]
-  - **Descrição:** [Detalhes sobre a decisão]
-  - **Justificativa:** [Motivo pelo qual a decisão foi tomada]
-  - **Impacto:** [Impacto da decisão no sistema]
+- **Decisão:** Banco de Dados Relacional
+  - **Descrição:** Optou-se por utilizar um banco de dados relacional (PostgreSQL) para armazenar os dados dos usuários, como entradas de receitas, despesas e histórico de transações.
+  - **Justificativa:** A escolha foi feita considerando a necessidade de transações seguras, integridade referencial e suporte a operações complexas de consulta, essenciais para a consistência dos dados financeiros. 
+  - **Impacto:**  O uso de um banco de dados relacional garante maior consistência e integridade dos dados, mas pode limitar a escalabilidade em comparação com um banco NoSQL, que seria mais flexível para grandes volumes de dados.
 
 ---
 
