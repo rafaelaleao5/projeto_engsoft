@@ -62,16 +62,51 @@ O diagrama de container mostra os principais containers de software que compõem
 ### 3.1. Descrição do Diagrama de Componente
 O diagrama de componente detalha a arquitetura interna de cada container, mostrando os componentes que o compõem e suas interações.
 
-- **Container Focado:** [Nome do Container]
-
-### 3.2. Diagrama
+### 3.2. Descrição dos Componentes
 ![Diagrama de Componente](path/para/diagrama-componente.png)
 
-### 3.3. Descrição dos Componentes
-- **[Nome do Componente]:** Descrição do componente, sua responsabilidade e interações.
-  - **Responsabilidade:** [Função principal do componente]
-  - **Interações:** [Componentes com os quais interage]
-  - **Tecnologias:** [Linguagens, frameworks, bibliotecas]
+### 3.2.1 Diagramas - Aplicação WEB
+- **React:** 
+  - **Responsabilidade:** Biblioteca do JS responsável otimizar o frontend através da componentização de features.
+  - **Interações:** O React interage com o Tailwind CSS de maneira bastante eficiente, pois o Tailwind é uma biblioteca de utilitários CSS que pode ser usada diretamente nos componentes React sem precisar de arquivos CSS adicionais. Isso se dá principalmente pela forma modular e baseada em classes do Tailwind, que permite estilizar componentes com classes utilitárias diretamente no JSX de cada componente React.
+  - **Tecnologias:** React
+
+- **Tailwind:** 
+  - **Responsabilidade:** Framework baseado em utilidades e tem como prioridade a facilidade de customização e estilização do fronted.
+  - **Interações:** O Tailwind CSS interage com React facilitando o uso de estilos utilitários diretamente nos componentes. Em vez de criar arquivos CSS separados, você aplica classes utilitárias do Tailwind diretamente nos elementos JSX. Isso torna o processo de estilização mais rápido e modular, pois os estilos são definidos inline com as classes do Tailwind.
+  - **Tecnologias:** Tailwind
+
+### 3.2.2 Diagrama - API Backend
+![Diagrama de Componente](path/para/diagrama-componente.png)
+
+### Descrição dos Componentes
+- **Java + Spring Boot:** 
+  - **Responsabilidade:** O Java usa o Spring Boot para simplificar o desenvolvimento de aplicações Java, especialmente no backend.
+  - **Interações:** O Spring Boot é um framework que configura automaticamente o ambiente e as dependências, permitindo que você crie aplicações com menos esforço.
+  - **Tecnologias:** Java + Spring Boot
+
+- **Docker:** 
+  - **Responsabilidade:** O Docker é uma plataforma de virtualização leve que permite empacotar aplicações e suas dependências em contêineres. Cada contêiner é isolado, garantindo que a aplicação rode da mesma forma em qualquer ambiente, seja no desenvolvimento ou produção. Assim, não sendo necessário que toda a equipe precise instalar as mesmas dependências do projeto.
+  - **Interações:** Com Docker, é fácil escalar e gerenciar múltiplas instâncias de aplicações Spring Boot, utilizando ferramentas como Docker Compose para orquestrar os contêineres para criar a imagem Docker, como basear a imagem em um JDK, copiar o arquivo .jar da aplicação e configurar o comando para executar o Spring Boot.
+  - **Tecnologias:** Docker
+
+
+### 3.2.3 Diagrama - Banco de Dados
+![Diagrama de Componente](path/para/diagrama-componente.png)
+
+### Descrição dos Componentes
+- **PostgreSQL:** 
+  - **Responsabilidade:** A responsabilidade do PostgreSQL é gerenciar, armazenar e recuperar dados de forma segura e eficiente. Ele é um banco de dados relacional que garante integridade, confiabilidade e suporte a consultas SQL complexas. O PostgreSQL também oferece suporte a transações, concorrência, e extensões como JSON e geolocalização.
+  - **Interações:** O PostgreSQL interage com o Docker através de um contêiner. O Docker cria um ambiente isolado que roda o PostgreSQL, permitindo fácil instalação e configuração. Você pode executar o PostgreSQL em um contêiner usando uma imagem oficial, e definir volumes para persistir os dados. Com isso, o banco de dados roda de forma independente e replicável em qualquer sistema.
+  - **Tecnologias:** PostgreSQL
+
+- **Docker:** 
+  - **Responsabilidade:** O Docker é uma plataforma de virtualização leve que permite empacotar aplicações e suas dependências em contêineres. Cada contêiner é isolado, garantindo que a aplicação rode da mesma forma em qualquer ambiente, seja no desenvolvimento ou produção. Assim, não sendo necessário que toda a equipe precise instalar as mesmas dependências do projeto.
+  - **Interações:** O Docker interage com o PostgreSQL criando contêineres que isolam e executam o banco de dados de forma independente. Com um contêiner Docker, você pode rodar uma instância do PostgreSQL em qualquer ambiente, sem precisar configurá-lo manualmente. Basta usar um Dockerfile ou docker-compose.yml para especificar a imagem do PostgreSQL, volumes para persistir os dados e portas para acesso externo. Isso facilita a replicação e o gerenciamento do banco em ambientes de desenvolvimento e produção.
+  - **Tecnologias:** Docker
+
+
+
 
 ---
 
@@ -97,7 +132,7 @@ Documente aqui as decisões arquiteturais importantes que foram tomadas durante 
 
 - **Decisão:** Banco de Dados Relacional
   - **Descrição:** Optou-se por utilizar um banco de dados relacional (PostgreSQL) para armazenar os dados dos usuários, como entradas de receitas, despesas e histórico de transações.
-  - **Justificativa:** A escolha foi feita considerando a necessidade de transações seguras, integridade referencial e suporte a operações complexas de consulta, essenciais para a consistência dos dados financeiros. 
+  - **Justificativa:** A escolha foi feita considerando a necessidade de transações seguras, integridade referencial e suporte a operações complexas de consulta, essenciais para a consistência dos dados financeiros além da equipe ter uma maior familiaridade com o PostgreSQL em conjunto com a peculiaridade de usarmos todas as funcionalidades sem a necessidade de comprar licenças de mercado.
   - **Impacto:**  O uso de um banco de dados relacional garante maior consistência e integridade dos dados, mas pode limitar a escalabilidade em comparação com um banco NoSQL, que seria mais flexível para grandes volumes de dados.
 
 ---
