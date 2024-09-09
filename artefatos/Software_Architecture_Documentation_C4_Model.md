@@ -63,7 +63,7 @@ O diagrama de container mostra os principais containers de software que compõem
 O diagrama de componente detalha a arquitetura interna de cada container, mostrando os componentes que o compõem e suas interações.
 
 ### 3.2. Descrição dos Componentes
-![Diagrama de Componente](path/para/diagrama-componente.png)
+![Diagrama de Componente1](images/diagrama-componente.jpg)
 
 ### 3.2.1 Diagramas - Aplicação WEB
 - **React:** 
@@ -77,7 +77,8 @@ O diagrama de componente detalha a arquitetura interna de cada container, mostra
   - **Tecnologias:** Tailwind
 
 ### 3.2.2 Diagrama - API Backend
-![Diagrama de Componente](path/para/diagrama-componente.png)
+![Diagrama de Componente1](images/diagrama-componente.jpg)
+
 
 ### Descrição dos Componentes
 - **Java + Spring Boot:** 
@@ -92,7 +93,8 @@ O diagrama de componente detalha a arquitetura interna de cada container, mostra
 
 
 ### 3.2.3 Diagrama - Banco de Dados
-![Diagrama de Componente](path/para/diagrama-componente.png)
+![Diagrama de Componente1](images/diagrama-componente.jpg)
+
 
 ### Descrição dos Componentes
 - **PostgreSQL:** 
@@ -104,9 +106,6 @@ O diagrama de componente detalha a arquitetura interna de cada container, mostra
   - **Responsabilidade:** O Docker é uma plataforma de virtualização leve que permite empacotar aplicações e suas dependências em contêineres. Cada contêiner é isolado, garantindo que a aplicação rode da mesma forma em qualquer ambiente, seja no desenvolvimento ou produção. Assim, não sendo necessário que toda a equipe precise instalar as mesmas dependências do projeto.
   - **Interações:** O Docker interage com o PostgreSQL criando contêineres que isolam e executam o banco de dados de forma independente. Com um contêiner Docker, você pode rodar uma instância do PostgreSQL em qualquer ambiente, sem precisar configurá-lo manualmente. Basta usar um Dockerfile ou docker-compose.yml para especificar a imagem do PostgreSQL, volumes para persistir os dados e portas para acesso externo. Isso facilita a replicação e o gerenciamento do banco em ambientes de desenvolvimento e produção.
   - **Tecnologias:** Docker
-
-
-
 
 ---
 
