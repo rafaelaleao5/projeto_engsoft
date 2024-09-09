@@ -142,13 +142,13 @@ Documente aqui as decisões arquiteturais importantes que foram tomadas durante 
 ### 6.1. Padrões e Práticas
 Liste os padrões arquiteturais e práticas recomendadas que foram seguidos durante o desenvolvimento da arquitetura.
 
-- **Padrões:** [Ex: MVC, CQRS, Event-Driven Architecture]
-- **Práticas:** [Ex: Continuous Integration, Code Review, etc.]
+- **Padrões:** MVC, BDD, TDD.
+- **Práticas:** CI/CD, Code Review, testes de integração, teste de exploração.
 
 ### 6.2. Próximos Passos
-Indique quaisquer melhorias futuras ou áreas a serem exploradas para a evolução da arquitetura.
+Explorar a integração de testes em novas features a serem adicionadas e continuar o desenvolvimento da aplicação.
 
 ---
 
-**Autores:** [Nome dos Integrantes da Equipe]  
-**Data:** [Data de Criação do Documento]
+**Autores:** Danilo Lapa, João Oliveira, Marcos Nascimento.
+**Data:** 09/09/2024
