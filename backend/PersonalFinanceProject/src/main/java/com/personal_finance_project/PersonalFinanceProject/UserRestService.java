@@ -1,8 +1,10 @@
 package com.personal_finance_project.PersonalFinanceProject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +36,17 @@ public class UserRestService {
 	}
 	
 	@GetMapping("/get-user/{userId}")
-	public ResponseEntity<Object> getUser(@PathVariable("userId") int userId) {
+	public ResponseEntity<Object> getUser(@PathVariable("userId") long userId) {
 		
-		
-		return new ResponseEntity<>("falta implementar", HttpStatus.OK);
+		return new ResponseEntity<>(userRepository.findById(userId), HttpStatus.OK);
 	    
 	}
 	
 	@PostMapping("/save-user")
-	public ResponseEntity<Object> saveUser(@RequestBody UserEntity user){
+	public ResponseEntity<Object> saveUser(@RequestBody HashMap<String, Object> userObject){
+		
+		
+		UserEntity user = UserSerializer.toUser(userObject);
 		
 		userRepository.save(user);
 		

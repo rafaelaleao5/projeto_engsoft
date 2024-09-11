@@ -1,5 +1,7 @@
 package com.personal_finance_project.PersonalFinanceProject.Entities;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -18,14 +20,14 @@ public class UserEntity {
 	private String name;
 	private String email;
 	private String password;
-	private Date birthdate;
-	private Date lastModified;
+	private LocalDate birthdate;
+	private LocalDateTime lastModified;
 	
 	public UserEntity() {
 		
 	}
 
-	public UserEntity(String name, String email, String password, Date birthdate, Date lastModified) {
+	public UserEntity(String name, String email, String password, LocalDate birthdate, LocalDateTime lastModified) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -35,16 +37,16 @@ public class UserEntity {
 	}
 
 
-	public Date getBirthday() {
+	public LocalDate getBirthday() {
 		return birthdate;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthdate = birthday;
 	}
-	public Date getLastModified() {
+	public LocalDateTime getLastModified() {
 		return lastModified;
 	}
-	public void setLastModified(Date lastModified) {
+	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
 	}
 	public long getId() {
