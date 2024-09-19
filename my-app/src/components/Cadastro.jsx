@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate} from 'react-router-dom';
+
 
 /**
  * Função que retorna o JSX da página de Cadastro
@@ -6,22 +8,26 @@ import React from "react";
  * @returns {JSX.Element} O JSX da página de Cadastro
  */
 function Cadastro() {
+    const navigate = useNavigate();
+
     // Função para o botão "Cadastrar"
     const cadastrar = () => {
-        const nome = document.getElementById('nome').value;
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
-        const confirmarSenha = document.getElementById('confirmar-senha').value;
+        // const nome = document.getElementById('nome').value;
+        // const email = document.getElementById('email').value;
+        // const senha = document.getElementById('senha').value;
+        // const confirmarSenha = document.getElementById('confirmar-senha').value;
 
-        if (nome && email && senha && confirmarSenha) {
-            if (senha === confirmarSenha) {
-                alert('Cadastro bem-sucedido!');
-            } else {
-                alert('As senhas não coincidem. Por favor, tente novamente.');
-            }
-        } else {
-            alert('Por favor, preencha todos os campos.');
-        }
+        // if (nome && email && senha && confirmarSenha) {
+        //     if (senha === confirmarSenha) {
+        //         alert('Cadastro bem-sucedido!');
+        //     } else {
+        //         alert('As senhas não coincidem. Por favor, tente novamente.');
+        //     }
+        // } else {
+        //     alert('Por favor, preencha todos os campos.');
+        // }
+
+        navigate('/')
     };
 
     return (

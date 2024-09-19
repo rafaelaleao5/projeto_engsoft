@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link} from 'react-router-dom';
-import RecuperacaoSenha from "./RecuperacaoSenha";
+
 
 /**
  * Função que retorna o JSX da página de Login
@@ -12,20 +12,25 @@ function Login() {
 
     // Função para o botão "Entrar"
     const entrar = () => {
-        const usuario = document.getElementById('usuario').value;
-        const senha = document.getElementById('senha').value;
+        // const usuario = document.getElementById('usuario').value;
+        // const senha = document.getElementById('senha').value;
 
-        if (usuario && senha) {
-            alert('Login bem-sucedido!');
-        } else {
-            alert('Por favor, insira seu nome de usuário e senha.');
-        }
+        // if (usuario && senha) {
+        //     alert('Login bem-sucedido!');
+        //     navigate('/Menu'); // Navega para a rota de cadastro
+
+        // } else {
+        //     alert('Por favor, insira seu nome de usuário e senha.');
+        // }
+
+        navigate('/Menu')
     };
 
     // Função para o botão "Cadastrar"
     const inscrever = () => {
         navigate('/cadastro'); // Navega para a rota de cadastro
     };
+
 
     return (
         <div className="container">
