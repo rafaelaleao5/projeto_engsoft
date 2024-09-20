@@ -5,11 +5,11 @@ import Cadastro from "./components/Cadastro";
 import RecuperacaoSenha from "./components/RecuperacaoSenha";
 import Menu from "./components/Menu";
 import Gastos from "./scenes/dashboard/Gastos";
-
+import { GastosProvider } from './scenes/dashboard/GastosContext';
 
 function App() {
   return (
-    
+    <GastosProvider>
     <Router>
 
       <Routes>
@@ -25,6 +25,7 @@ function App() {
 
       </Routes>
     </Router>
+    </GastosProvider>
   );
 }
 
