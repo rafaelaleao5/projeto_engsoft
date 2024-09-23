@@ -3,6 +3,7 @@ import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import GastosContext from './GastosContext'; // Importando o contexto
 
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 function Dashboard() {
@@ -33,7 +34,7 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">{totalGastos}</Typography>
+              <Typography variant="h5">R$ {totalGastos}</Typography>
               <Typography variant="subtitle1">Total de Gastos</Typography>
             </CardContent>
           </Card>
@@ -116,56 +117,7 @@ function Dashboard() {
                 spacing: 10
             }
         ]}
-        fill={[
-            {
-                match: {
-                    id: 'ruby'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'c'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'go'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'python'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'scala'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'lisp'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'elixir'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'javascript'
-                },
-                id: 'lines'
-            }
-        ]}
+        
         legends={[
             {
                 anchor: 'bottom',

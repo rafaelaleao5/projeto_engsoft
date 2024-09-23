@@ -4,10 +4,18 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const navigate = useNavigate()
+
+  const GoToHome = () => {
+    navigate("/Menu")}
+  const Exit = () => {
+      navigate("/")}
 
   // Função para alternar a visibilidade da Sidebar
   const toggleDrawer = () => {
@@ -27,7 +35,7 @@ const Sidebar = () => {
           <ListItemIcon>
             <HomeOutlinedIcon />
           </ListItemIcon>
-          <ListItemText primary="Home" />
+          <ListItemText primary="Home" onClick={GoToHome}/>
         </ListItem>
 
         <ListItem button>
@@ -49,6 +57,12 @@ const Sidebar = () => {
             <SettingsOutlinedIcon />
           </ListItemIcon>
           <ListItemText primary="Settings" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Exit" onClick={Exit} />
         </ListItem>
       </List>
     </Box>

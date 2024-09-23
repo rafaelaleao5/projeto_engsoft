@@ -6,6 +6,8 @@ import RecuperacaoSenha from "./components/RecuperacaoSenha";
 import Menu from "./components/Menu";
 import Gastos from "./scenes/dashboard/Gastos";
 import { GastosProvider } from './scenes/dashboard/GastosContext';
+import User from "./components/User";
+
 
 function App() {
   return (
@@ -19,7 +21,8 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/RecuperacaoSenha" element={<RecuperacaoSenha />} />
         <Route path="/Menu" element={<Menu />} />
-        <Route path = "Gastos" element = {<Gastos />}/>
+        <Route path = "/Gastos" element = {<Gastos />}/>
+        <Route path= "/User" element = {<User />} />
       
         
 
