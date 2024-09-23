@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { Grid, Box, Button, TextField, Typography, Paper } from '@mui/material';
 
 /**
  * Função que retorna o JSX da página de Cadastro
@@ -12,66 +12,92 @@ function Cadastro() {
 
     // Função para o botão "Cadastrar"
     const cadastrar = () => {
-        // const nome = document.getElementById('nome').value;
-        // const email = document.getElementById('email').value;
-        // const senha = document.getElementById('senha').value;
-        // const confirmarSenha = document.getElementById('confirmar-senha').value;
-
-        // if (nome && email && senha && confirmarSenha) {
-        //     if (senha === confirmarSenha) {
-        //         alert('Cadastro bem-sucedido!');
-        //     } else {
-        //         alert('As senhas não coincidem. Por favor, tente novamente.');
-        //     }
-        // } else {
-        //     alert('Por favor, preencha todos os campos.');
-        // }
-
-        navigate('/')
+        navigate('/');
     };
 
     return (
-        <div className="container">
-            {/* Seção de cadastro */}
-            <div className="secao-cadastro">
-                <h2>Cadastre-se</h2>
-                <form className="form">
-                    {/* Grupo de entrada para o nome */}
-                    <div className="grupo-input border1">
-                        <label htmlFor="nome">Nome</label>
-                        <input type="text" id="nome" placeholder="Digite seu nome" />
-                    </div>
-
-                    {/* Grupo de entrada para o email */}
-                    <div className="grupo-input border1">
-                        <label htmlFor="email">E-mail</label>
-                        <input type="email" id="email" placeholder="Digite seu e-mail" />
-                    </div>
-
-                    {/* Grupo de entrada para a senha */}
-                    <div className="grupo-input border2">
-                        <label htmlFor="senha">Senha</label>
-                        <input type="password" id="senha" placeholder="Crie uma senha" />
-                    </div>
-
-                    {/* Grupo de entrada para a confirmação de senha */}
-                    <div className="grupo-input border2">
-                        <label htmlFor="confirmar-senha">Confirmar Senha</label>
-                        <input type="password" id="confirmar-senha" placeholder="Confirme sua senha" />
-                    </div>
-
-                    {/* Botões */}
-                    <div className="btns">
-                        <button type="button" className="botao-cadastro btn" onClick={cadastrar}>Cadastrar</button>
-                    </div>
-                </form>
-            </div>
-
+        <Grid container component="main" sx={{ height: '100vh' }}>
             {/* Seção de imagem */}
-            <div className="secao-imagem">
-                <img src="LOGO_TELA_DE_LOGIN.png" alt="Imagem de Cadastro" style={{ maxWidth: "100%", height: "100vh" }} />
-            </div>
-        </div>
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={6}
+                sx={{
+                    backgroundImage: 'url(LOGO_TELA_DE_LOGIN.png)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+
+            {/* Seção de Cadastro */}
+            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography component="h1" variant="h4" gutterBottom>
+                        Cadastre-se
+                    </Typography>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="nome"
+                            label="Nome"
+                            name="nome"
+                            autoComplete="name"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="email"
+                            label="E-mail"
+                            name="email"
+                            autoComplete="email"
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            id="senha"
+                            autoComplete="new-password"
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="confirmar-senha"
+                            label="Confirmar Senha"
+                            type="password"
+                            id="confirmar-senha"
+                            autoComplete="new-password"
+                        />
+
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={cadastrar}
+                                sx={{ mr: 2 }}
+                            >
+                                Cadastrar
+                            </Button>
+                        </Box>
+                    </Box>
+                </Box>
+            </Grid>
+        </Grid>
     );
 }
 

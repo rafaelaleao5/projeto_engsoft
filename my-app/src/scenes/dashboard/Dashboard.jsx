@@ -1,13 +1,26 @@
 import React, { useContext } from 'react';
-import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
+import { Box, Grid, Card, CardContent, Typography, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@mui/material';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import GastosContext from './GastosContext'; // Importando o contexto
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
 
+// Ícones mapeados para cada tipo de transação
+const iconMap = {
+    'wallet': <AccountBalanceWalletIcon />,
+    'credit_card': <CreditCardIcon />,
+    'attach_money': <AttachMoneyIcon />,
+    'receipt': <ReceiptIcon />,
+    'transfer': <TransferWithinAStationIcon />,
+};
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 function Dashboard() {
-  const { gastos } = useContext(GastosContext); // Acessando o estado global
+  const { gastos, transacoes } = useContext(GastosContext); // Acessando o estado global
 
   // Exemplo de lógica para calcular o valor total de gastos
   const totalGastos = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
@@ -34,7 +47,7 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">R$ {totalGastos}</Typography>
+              <Typography variant="h5">R$ {totalGastos.toFixed(2)}</Typography>
               <Typography variant="subtitle1">Total de Gastos</Typography>
             </CardContent>
           </Card>
@@ -68,88 +81,53 @@ function Dashboard() {
           <PieChart width={400} height={250}>
             <Pie
               data={pieChartData}
-              margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-        startAngle={-4}
-        innerRadius={0.35}
-        cornerRadius={3}
-        activeOuterRadiusOffset={8}
-        borderWidth={1}
-        borderColor={{
-            from: 'color',
-            modifiers: [
-                [
-                    'darker',
-                    '0.8'
-                ]
-            ]
-        }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{
-            from: 'color',
-            modifiers: [
-                [
-                    'darker',
-                    2
-                ]
-            ]
-        }}
-        defs={[
-            {
-                id: 'dots',
-                type: 'patternDots',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                size: 4,
-                padding: 1,
-                stagger: true
-            },
-            {
-                id: 'lines',
-                type: 'patternLines',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                rotation: -45,
-                lineWidth: 6,
-                spacing: 10
-            }
-        ]}
-        
-        legends={[
-            {
-                anchor: 'bottom',
-                direction: 'row',
-                justify: false,
-                translateX: 0,
-                translateY: 56,
-                itemsSpacing: 0,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: '#999',
-                itemDirection: 'left-to-right',
-                itemOpacity: 1,
-                symbolSize: 18,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
-        ]}
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+              label
             >
               {pieChartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
+            <Tooltip />
           </PieChart>
         </Box>
+      </Box>
+
+      {/* Lista de Transações Dinâmicas */}
+      <Box mt={4} sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: '10px', boxShadow: 2, p: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          Transações Recentes
+        </Typography>
+        <List>
+          {transacoes.map((transaction) => (
+            <ListItem key={transaction.id}>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: transaction.valor < 0 ? '#ffcccc' : '#ccffcc' }}>
+                  {iconMap[transaction.tipo]}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <Typography variant="body1" component="span">
+                    {transaction.tipo}
+                  </Typography>
+                }
+                secondary={transaction.descricao}
+              />
+              <Typography
+                variant="body1"
+                component="span"
+                sx={{ color: transaction.valor < 0 ? 'red' : 'green', fontWeight: 'bold' }}
+              >
+                {transaction.valor > 0 ? `+ $${transaction.valor}` : `- $${Math.abs(transaction.valor)}`}
+              </Typography>
+            </ListItem>
+          ))}
+        </List>
       </Box>
     </Box>
   );
