@@ -6,18 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.personal_finance_project.PersonalFinanceProject.UserSerializer;
-import com.personal_finance_project.PersonalFinanceProject.DTO.AuthenticationDTO;
-import com.personal_finance_project.PersonalFinanceProject.DTO.LoginResponseDTO;
-import com.personal_finance_project.PersonalFinanceProject.DTO.RegisterDTO;
 import com.personal_finance_project.PersonalFinanceProject.Entities.UserEntity;
 import com.personal_finance_project.PersonalFinanceProject.Repositories.UserRepository;
+import com.personal_finance_project.PersonalFinanceProject.Serializer.UserSerializer;
 import com.personal_finance_project.PersonalFinanceProject.Services.TokenService;
 
 import jakarta.validation.Valid;
@@ -39,6 +35,7 @@ public class AuthenticationController {
 	public ResponseEntity login(@RequestBody @Valid HashMap<String, Object> userData) {
 		
 		UserEntity user = UserSerializer.userLogin(userData);
+	
 		
 		var emailPassword = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 		
@@ -46,7 +43,11 @@ public class AuthenticationController {
 		
 		var token = tokenService.generateToken(user);
 		
-		return ResponseEntity.ok(new LoginResponseDTO(token));
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		response.put("token", token);
+		
+		return ResponseEntity.ok(response);
 		
 	}
 	

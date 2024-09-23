@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.personal_finance_project.PersonalFinanceProject.Entities.UserEntity;
 import com.personal_finance_project.PersonalFinanceProject.Repositories.UserRepository;
+import com.personal_finance_project.PersonalFinanceProject.Serializer.UserSerializer;
 
 
 @RestController
@@ -25,8 +26,6 @@ public class UserRestService {
 	
 	@Autowired
 	UserRepository userRepository;
-	
-	List<User> teste = new ArrayList<User>();
 	
 	@GetMapping("/get-users")
 	public List<UserEntity> getUsers(){

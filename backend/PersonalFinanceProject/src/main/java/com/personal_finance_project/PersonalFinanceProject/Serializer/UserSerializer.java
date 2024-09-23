@@ -1,19 +1,15 @@
-package com.personal_finance_project.PersonalFinanceProject;
+package com.personal_finance_project.PersonalFinanceProject.Serializer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.personal_finance_project.PersonalFinanceProject.Entities.UserEntity;
 
 public class UserSerializer {
-	
 	public static UserEntity toUser(HashMap<String, Object> userObject){
 		
 		String name = userObject.get("name").toString();
