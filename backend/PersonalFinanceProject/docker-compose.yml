@@ -1,4 +1,17 @@
 services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      - POSTGRES_DB=personal_finance_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   app:
     build: 
       context: .
@@ -15,20 +28,6 @@ services:
       - app-network
     depends_on:
       - db
-
-  db:
-    image: postgres:latest
-    container_name: postgres_db
-    environment:
-      - POSTGRES_DB=personal_finance_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - app-network
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
 networks:
   app-network:
