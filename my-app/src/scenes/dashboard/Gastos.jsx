@@ -7,28 +7,34 @@ import GastosContext from './GastosContext';
 import Sidebar from './global/Sidebar';
 
 function Gastos() {
-  const { gastos, adicionarGasto } = useContext(GastosContext);
+  const { gastos, adicionarGasto, setGastos, tiposGasto, formasPagamento } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
   const [tipo, setTipo] = useState('');
   const [formapagamento, setFormaPagamento] = useState('');
+  const [entradaSaida, setEntradaSaida] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const valorFinal = entradaSaida === 'Saída' ? -Math.abs(parseFloat(valor)) : Math.abs(parseFloat(valor));
+
     adicionarGasto({
       id: gastos.length + 1,
       descricao,
-      valor: parseFloat(valor),
+      valor: valorFinal,
       data,
       tipo,
-      formapagamento
+      formapagamento,
+      entradaSaida,
     });
+
     setDescricao('');
     setValor('');
     setData('');
     setTipo('');
     setFormaPagamento('');
+    setEntradaSaida('');
   };
 
   return (
@@ -41,6 +47,7 @@ function Gastos() {
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
+            {/* Campos já existentes */}
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -74,6 +81,7 @@ function Gastos() {
               />
             </Grid>
 
+            {/* Campo de seleção de tipo de gasto, agora com opções personalizáveis */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Tipo de Gasto</InputLabel>
@@ -81,14 +89,16 @@ function Gastos() {
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value)}
                 >
-                  <MenuItem value="Alimentação">Alimentação</MenuItem>
-                  <MenuItem value="Transporte">Transporte</MenuItem>
-                  <MenuItem value="Pessoal">Pessoal</MenuItem>
-                  <MenuItem value="Outros">Outros</MenuItem>
+                  {tiposGasto.map((tipoGasto, index) => (
+                    <MenuItem key={index} value={tipoGasto}>
+                      {tipoGasto}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
 
+            {/* Campo de seleção de forma de pagamento, agora com opções personalizáveis */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Forma de Pagamento</InputLabel>
@@ -96,10 +106,24 @@ function Gastos() {
                   value={formapagamento}
                   onChange={(e) => setFormaPagamento(e.target.value)}
                 >
-                  <MenuItem value="VR">VR</MenuItem>
-                  <MenuItem value="Pix">Pix</MenuItem>
-                  <MenuItem value="Credito">Crédito</MenuItem>
-                  <MenuItem value="Outros">Outros</MenuItem>
+                  {formasPagamento.map((forma, index) => (
+                    <MenuItem key={index} value={forma}>
+                      {forma}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Entrada/Saída</InputLabel>
+                <Select
+                  value={entradaSaida}
+                  onChange={(e) => setEntradaSaida(e.target.value)}
+                >
+                  <MenuItem value="Entrada">Entrada</MenuItem>
+                  <MenuItem value="Saída">Saída</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -112,6 +136,7 @@ function Gastos() {
           </Grid>
         </form>
 
+        {/* Tabela de gastos */}
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
           <Table>
             <TableHead>
@@ -127,7 +152,9 @@ function Gastos() {
               {gastos.map((gasto) => (
                 <TableRow key={gasto.id}>
                   <TableCell>{gasto.descricao}</TableCell>
-                  <TableCell>{gasto.valor}</TableCell>
+                  <TableCell sx={{ color: gasto.valor < 0 ? 'red' : 'green' }}>
+                    {gasto.valor < 0 ? `- R$${Math.abs(gasto.valor)}` : `+ R$${gasto.valor}`}
+                  </TableCell>
                   <TableCell>{gasto.data}</TableCell>
                   <TableCell>{gasto.tipo}</TableCell>
                   <TableCell>{gasto.formapagamento}</TableCell>

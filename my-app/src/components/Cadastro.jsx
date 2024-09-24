@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { Grid, Box, Button, TextField, Typography, Paper } from '@mui/material';
+import Logo from '../img/LOGO.png';
 
 /**
  * Função que retorna o JSX da página de Cadastro
@@ -24,7 +25,7 @@ function Cadastro() {
                 sm={4}
                 md={6}
                 sx={{
-                    backgroundImage: 'url(LOGO_TELA_DE_LOGIN.png)',
+                    backgroundImage: `url(${Logo})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',

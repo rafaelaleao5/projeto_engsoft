@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
+import AddCardIcon from '@mui/icons-material/AddCard';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
@@ -16,6 +16,11 @@ const Sidebar = () => {
     navigate("/Menu")}
   const Exit = () => {
       navigate("/")}
+const Pagamento = () => {
+        navigate("/Pagamento")}
+const TiposGastos = () => {
+          navigate("/TipoGastos")}
+
 
   // Função para alternar a visibilidade da Sidebar
   const toggleDrawer = () => {
@@ -40,16 +45,16 @@ const Sidebar = () => {
 
         <ListItem button>
           <ListItemIcon>
-            <InfoOutlinedIcon />
+            <AddCardIcon />
           </ListItemIcon>
-          <ListItemText primary="About" />
+          <ListItemText primary="Formas de Pagamento" onClick={Pagamento} />
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
-            <ContactMailOutlinedIcon />
+            <AddShoppingCartIcon />
           </ListItemIcon>
-          <ListItemText primary="Contact" />
+          <ListItemText primary="Tipos de Gastos" onClick={TiposGastos}/>
         </ListItem>
 
         <ListItem button>

@@ -1,26 +1,12 @@
 import React, { useContext } from 'react';
-import { Box, Grid, Card, CardContent, Typography, List, ListItem, ListItemAvatar, ListItemText, Avatar } from '@mui/material';
-import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
 import GastosContext from './GastosContext'; // Importando o contexto
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
-
-// Ícones mapeados para cada tipo de transação
-const iconMap = {
-    'wallet': <AccountBalanceWalletIcon />,
-    'credit_card': <CreditCardIcon />,
-    'attach_money': <AttachMoneyIcon />,
-    'receipt': <ReceiptIcon />,
-    'transfer': <TransferWithinAStationIcon />,
-};
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+import Transaction from './Transaction';
+import LineChartComponent from './LineChart';
+import PieChartComponent from './PieChart';
 
 function Dashboard() {
-  const { gastos, transacoes } = useContext(GastosContext); // Acessando o estado global
+  const { gastos } = useContext(GastosContext); // Acessando o estado global
 
   // Exemplo de lógica para calcular o valor total de gastos
   const totalGastos = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
@@ -41,7 +27,7 @@ function Dashboard() {
   });
 
   return (
-    <Box p={2}>
+    <Box p={4}>
       {/* Resumo de Indicadores */}
       <Grid container spacing={2}>
         <Grid item xs={3}>
@@ -63,72 +49,12 @@ function Dashboard() {
       </Grid>
 
       {/* Gráficos */}
-      <Box display="flex" mt={4}>
-        {/* Gráfico de Linha */}
-        <Box flex={1} p={2} backgroundColor="#f0f4f8">
-          <Typography variant="h6">Gastos ao Longo do Tempo</Typography>
-          <LineChart width={400} height={250} data={lineChartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        </Box>
-
-        {/* Gráfico de Pizza */}
-        <Box flex={1} p={2}>
-          <Typography variant="h6">Distribuição de Gastos por Tipo</Typography>
-          <PieChart width={400} height={250}>
-            <Pie
-              data={pieChartData}
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-              label
-            >
-              {pieChartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </Box>
+      <Box display="flex" mt={4} gap={4}>
+        <LineChartComponent data={lineChartData} />
+        <PieChartComponent data={pieChartData} />
       </Box>
 
-      {/* Lista de Transações Dinâmicas */}
-      <Box mt={4} sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: '10px', boxShadow: 2, p: 2 }}>
-        <Typography variant="h6" gutterBottom>
-          Transações Recentes
-        </Typography>
-        <List>
-          {transacoes.map((transaction) => (
-            <ListItem key={transaction.id}>
-              <ListItemAvatar>
-                <Avatar sx={{ bgcolor: transaction.valor < 0 ? '#ffcccc' : '#ccffcc' }}>
-                  {iconMap[transaction.tipo]}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <Typography variant="body1" component="span">
-                    {transaction.tipo}
-                  </Typography>
-                }
-                secondary={transaction.descricao}
-              />
-              <Typography
-                variant="body1"
-                component="span"
-                sx={{ color: transaction.valor < 0 ? 'red' : 'green', fontWeight: 'bold' }}
-              >
-                {transaction.valor > 0 ? `+ $${transaction.valor}` : `- $${Math.abs(transaction.valor)}`}
-              </Typography>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      <Transaction />
     </Box>
   );
 }

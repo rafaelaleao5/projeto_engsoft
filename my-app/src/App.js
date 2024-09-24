@@ -7,7 +7,10 @@ import Menu from "./components/Menu";
 import Gastos from "./scenes/dashboard/Gastos";
 import { GastosProvider } from './scenes/dashboard/GastosContext';
 import User from "./components/User";
-
+import Transaction from "./scenes/dashboard/Transaction";
+import PieChart from "./scenes/dashboard/PieChart";
+import AdicionarFormaPagamento from "./components/AdicionarFormaPagamento";
+import AdicionarTipoGasto from "./components/AdicionarTipoGasto";
 
 function App() {
   return (
@@ -23,6 +26,10 @@ function App() {
         <Route path="/Menu" element={<Menu />} />
         <Route path = "/Gastos" element = {<Gastos />}/>
         <Route path= "/User" element = {<User />} />
+        <Route path = "/Transaction" element = {<Transaction />}/>
+        <Route path = "/PieChart" element = {<PieChart />}/>
+        <Route path = "/Pagamento" element = {<AdicionarFormaPagamento />}/>
+        <Route path = "/TipoGastos" element = {<AdicionarTipoGasto />}/>
       
         
 

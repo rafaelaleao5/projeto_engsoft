@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { Grid, Box, Button, TextField, Typography, Paper } from '@mui/material';
+import Logo from '../img/LOGO.png';
 
 /**
  * Função que retorna o JSX da página de Login
@@ -29,7 +30,7 @@ function Login() {
                 sm={4}
                 md={6}
                 sx={{
-                    backgroundImage: 'url(LOGO TELA DE LOGIN.png)',
+                    backgroundImage: `url(${Logo})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
