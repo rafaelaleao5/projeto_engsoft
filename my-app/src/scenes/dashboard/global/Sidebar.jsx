@@ -3,7 +3,9 @@ import { Box, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText } f
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import PieChartIcon from '@mui/icons-material/PieChart';
+import AddIcon from '@mui/icons-material/Add';
+import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +22,11 @@ const Pagamento = () => {
         navigate("/Pagamento")}
 const TiposGastos = () => {
           navigate("/TipoGastos")}
-
+const AddGastos = () => {
+  navigate("/Gastos")}
+const GotoPie = () => {
+    navigate("/PieChart")}
+  
 
   // Função para alternar a visibilidade da Sidebar
   const toggleDrawer = () => {
@@ -59,9 +65,21 @@ const TiposGastos = () => {
 
         <ListItem button>
           <ListItemIcon>
-            <SettingsOutlinedIcon />
+            <AddCardIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary="Adicionar Gastos" onClick={AddGastos} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <PieChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="PieChart" onClick={GotoPie} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <StackedBarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="BarChart" onClick={GotoPie} />
         </ListItem>
         <ListItem button>
           <ListItemIcon>

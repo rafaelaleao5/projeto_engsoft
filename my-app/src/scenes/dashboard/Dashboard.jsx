@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
 import GastosContext from './GastosContext'; // Importando o contexto
 import Transaction from './Transaction';
-import LineChartComponent from './LineChart';
-import PieChartComponent from './PieChart';
+import BarChart from './BarChart'; // Componente BarChart
+import PieChartComponent from './PieChart'; // Componente PieChart
 
 function Dashboard() {
   const { gastos } = useContext(GastosContext); // Acessando o estado global
@@ -11,8 +11,8 @@ function Dashboard() {
   // Exemplo de lógica para calcular o valor total de gastos
   const totalGastos = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
 
-  // Preparando dados para o gráfico de linha (gastos ao longo do tempo)
-  const lineChartData = gastos.map((gasto, index) => ({
+  // Preparando dados para o gráfico de barras (gastos ao longo do tempo)
+  const barChartData = gastos.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
     value: gasto.valor,
   }));
@@ -50,8 +50,8 @@ function Dashboard() {
 
       {/* Gráficos */}
       <Box display="flex" mt={4} gap={4}>
-        <LineChartComponent data={lineChartData} />
-        <PieChartComponent data={pieChartData} />
+        <BarChart data={barChartData} /> {/* Passando os dados corretos para o gráfico de barras */}
+        <PieChartComponent data={pieChartData} /> {/* Passando os dados corretos para o gráfico de pizza */}
       </Box>
 
       <Transaction />
