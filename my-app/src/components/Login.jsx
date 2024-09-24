@@ -1,6 +1,7 @@
 import React from "react";
-import { useNavigate, Link} from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { Grid, Box, Button, TextField, Typography, Paper } from '@mui/material';
+import Logo from '../img/LOGO.png';
 
 /**
  * Função que retorna o JSX da página de Login
@@ -12,59 +13,95 @@ function Login() {
 
     // Função para o botão "Entrar"
     const entrar = () => {
-        // const usuario = document.getElementById('usuario').value;
-        // const senha = document.getElementById('senha').value;
-
-        // if (usuario && senha) {
-        //     alert('Login bem-sucedido!');
-        //     navigate('/Menu'); // Navega para a rota de cadastro
-
-        // } else {
-        //     alert('Por favor, insira seu nome de usuário e senha.');
-        // }
-
-        navigate('/Menu')
+        navigate('/Menu');
     };
 
     // Função para o botão "Cadastrar"
     const inscrever = () => {
-        navigate('/cadastro'); // Navega para a rota de cadastro
+        navigate('/cadastro');
     };
 
-
     return (
-        <div className="container">
-            <div className="secao-login">
-                <h2>Entrar</h2>
-                <form className="form">
-                    {/* Grupo de entrada para o nome de usuário */}
-                    <div className="grupo-input border1">
-                        <label htmlFor="usuario">Usuário</label>
-                        <input type="text" id="usuario" placeholder="Digite seu nome de usuário" />
-                    </div>
-                    
-                    {/* Grupo de entrada para a senha */}
-                    <div className="grupo-input border2">
-                        <label htmlFor="senha">Senha</label>
-                        <input type="password" id="senha" placeholder="Digite sua senha" />
-                    </div>
-
-                    {/* Botões de login e cadastrar */}
-                    <div className="btns">
-                        <button type="button" className="botao-login btn" onClick={entrar}>Entrar</button>
-                        <button type="button" className="botao-inscrever btn" onClick={inscrever}>Cadastrar</button>
-                    </div>
-
-                   
-                    <Link to = "/RecuperacaoSenha">Esqueceu a senha?</Link>
-                </form>
-            </div>
-
+        <Grid container component="main" sx={{ height: '100vh' }}>
             {/* Seção de imagem */}
-            <div className="secao-imagem">
-                <img src="LOGO TELA DE LOGIN.png" alt="Imagem de Login" style={{ maxWidth: "100%", height: "100vh" }} />
-            </div>
-        </div>
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={6}
+                sx={{
+                    backgroundImage: `url(${Logo})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+
+            {/* Seção de Login */}
+            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography component="h1" variant="h4" gutterBottom>
+                        Entrar
+                    </Typography>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="usuario"
+                            label="Usuário"
+                            name="usuario"
+                            autoComplete="username"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            id="senha"
+                            autoComplete="current-password"
+                        />
+                        
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={entrar}
+                                sx={{ mr: 2 }}
+                            >
+                                Entrar
+                            </Button>
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={inscrever}
+                            >
+                                Cadastrar
+                            </Button>
+                        </Box>
+
+                        <Box sx={{ mt: 2, textAlign: 'center' }}>
+                            <Link to="/RecuperacaoSenha" style={{ textDecoration: 'none', color: '#1976d2' }}>
+                                Esqueceu a senha?
+                            </Link>
+                        </Box>
+                    </Box>
+                </Box>
+            </Grid>
+        </Grid>
     );
 }
 

@@ -19,6 +19,9 @@ const Topbar = () => {
 
   const Addgastos = () => {
     navigate("/Gastos")}
+  const GotoUser = () => {
+      navigate("/User")}
+  
 
 
   return (
@@ -40,11 +43,9 @@ const Topbar = () => {
         <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
+        
         <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <PersonOutlinedIcon />
+          <PersonOutlinedIcon onClick = {GotoUser}/>
         </IconButton>
         <IconButton  onClick={Addgastos}>
           <AddIcon/>  </IconButton>

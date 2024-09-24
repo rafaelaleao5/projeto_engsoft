@@ -1,13 +1,32 @@
 import React from "react";
 import { Box, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ContactMailOutlinedIcon from "@mui/icons-material/ContactMailOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import AddCardIcon from '@mui/icons-material/AddCard';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import AddIcon from '@mui/icons-material/Add';
+import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const navigate = useNavigate()
+
+  const GoToHome = () => {
+    navigate("/Menu")}
+  const Exit = () => {
+      navigate("/")}
+const Pagamento = () => {
+        navigate("/Pagamento")}
+const TiposGastos = () => {
+          navigate("/TipoGastos")}
+const AddGastos = () => {
+  navigate("/Gastos")}
+const GotoPie = () => {
+    navigate("/PieChart")}
+  
 
   // Função para alternar a visibilidade da Sidebar
   const toggleDrawer = () => {
@@ -27,28 +46,46 @@ const Sidebar = () => {
           <ListItemIcon>
             <HomeOutlinedIcon />
           </ListItemIcon>
-          <ListItemText primary="Home" />
+          <ListItemText primary="Home" onClick={GoToHome}/>
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
-            <InfoOutlinedIcon />
+            <AddCardIcon />
           </ListItemIcon>
-          <ListItemText primary="About" />
+          <ListItemText primary="Formas de Pagamento" onClick={Pagamento} />
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
-            <ContactMailOutlinedIcon />
+            <AddShoppingCartIcon />
           </ListItemIcon>
-          <ListItemText primary="Contact" />
+          <ListItemText primary="Tipos de Gastos" onClick={TiposGastos}/>
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
-            <SettingsOutlinedIcon />
+            <AddCardIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary="Adicionar Gastos" onClick={AddGastos} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <PieChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="PieChart" onClick={GotoPie} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <StackedBarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="BarChart" onClick={GotoPie} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Exit" onClick={Exit} />
         </ListItem>
       </List>
     </Box>
