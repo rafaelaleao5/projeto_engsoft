@@ -1,10 +1,8 @@
-package com.personal_finance_project.PersonalFinanceProject;
+package com.personal_finance_project.PersonalFinanceProject.Controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +17,10 @@ import com.personal_finance_project.PersonalFinanceProject.Entities.UserEntity;
 import com.personal_finance_project.PersonalFinanceProject.Repositories.UserRepository;
 import com.personal_finance_project.PersonalFinanceProject.Serializer.UserSerializer;
 
-
 @RestController
-@RequestMapping("/user")
-public class UserRestService {
-	
+@RequestMapping
+public class UserController {
+
 	@Autowired
 	UserRepository userRepository;
 	
@@ -52,5 +49,4 @@ public class UserRestService {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 		
 	}
-
 }
