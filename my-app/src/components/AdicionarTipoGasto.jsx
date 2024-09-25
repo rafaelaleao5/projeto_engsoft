@@ -5,12 +5,22 @@ import GastosContext from '../scenes/dashboard/GastosContext';
 function AdicionarTipoGasto() {
   const { adicionarTipoGasto, tiposGasto } = useContext(GastosContext);
   const [novoTipo, setNovoTipo] = useState('');
+  const [erro, setErro] = useState('');
 
   const handleAdicionarTipoGasto = () => {
-    if (novoTipo && !tiposGasto.includes(novoTipo)) {
-      adicionarTipoGasto(novoTipo);
+    const novoTipoUpper = novoTipo.trim().toUpperCase();
+
+    // Verifica se o tipo já existe (comparando em upper case)
+    if (tiposGasto.includes(novoTipoUpper)) {
+      setErro('Esse tipo de gasto já existe.');
+      return;
     }
-    setNovoTipo('');
+
+    if (novoTipoUpper) {
+      adicionarTipoGasto(novoTipoUpper); // Adiciona o tipo em upper case
+      setNovoTipo(''); // Limpa o campo
+      setErro(''); // Limpa mensagem de erro
+    }
   };
 
   return (
@@ -37,6 +47,8 @@ function AdicionarTipoGasto() {
             onChange={(e) => setNovoTipo(e.target.value)}
             variant="outlined"
             size="small"
+            error={!!erro}
+            helperText={erro}
           />
         </Grid>
         <Grid item xs={12} display="flex" justifyContent="center">

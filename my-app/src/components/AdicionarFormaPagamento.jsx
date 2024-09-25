@@ -6,17 +6,27 @@ import Sidebar from '../scenes/dashboard/global/Sidebar';
 function AdicionarFormaPagamento() {
   const { formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
   const [novaForma, setNovaForma] = useState('');
+  const [erro, setErro] = useState('');
 
   const handleAdicionarForma = () => {
-    if (novaForma.trim()) {
-      adicionarFormaPagamento(novaForma);
+    const novaFormaUpper = novaForma.trim().toUpperCase();
+
+    // Verifica se a forma de pagamento já existe (compara em upper case)
+    if (formasPagamento.includes(novaFormaUpper)) {
+      setErro('Essa forma de pagamento já existe.');
+      return;
+    }
+
+    if (novaFormaUpper) {
+      adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
       setNovaForma(''); // Limpar o campo após adicionar
+      setErro(''); // Limpar mensagem de erro
     }
   };
 
   return (
     <Box p={3} component={Paper} elevation={3} sx={{ maxWidth: 600, margin: 'auto', mt: 4 }}>
-      <Sidebar></Sidebar>
+      <Sidebar />
       <Typography variant="h5" gutterBottom>
         Adicionar Nova Forma de Pagamento
       </Typography>
@@ -27,6 +37,8 @@ function AdicionarFormaPagamento() {
         fullWidth
         value={novaForma}
         onChange={(e) => setNovaForma(e.target.value)}
+        error={!!erro}
+        helperText={erro}
         sx={{ mb: 2 }}
       />
 
@@ -53,7 +65,6 @@ function AdicionarFormaPagamento() {
       </List>
     </Box>
   );
-  
 }
 
 export default AdicionarFormaPagamento;

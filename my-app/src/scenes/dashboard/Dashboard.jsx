@@ -11,6 +11,15 @@ function Dashboard() {
   // Exemplo de lógica para calcular o valor total de gastos
   const totalGastos = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
 
+  // Calculando o total de entradas e saídas
+  const totalEntradas = gastos
+    .filter((gasto) => gasto.valor > 0) // Entradas são valores positivos
+    .reduce((acc, gasto) => acc + gasto.valor, 0);
+
+  const totalSaidas = gastos
+    .filter((gasto) => gasto.valor < 0) // Saídas são valores negativos
+    .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); // Usando Math.abs para somar corretamente
+
   // Preparando dados para o gráfico de barras (gastos ao longo do tempo)
   const barChartData = gastos.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
@@ -18,7 +27,7 @@ function Dashboard() {
   }));
 
   // Agrupando os dados por tipo de gasto para o gráfico de pizza
-  const tiposGastos = ['Alimentação', 'Transporte', 'Pessoal', 'Outros'];
+  const tiposGastos = ['ALIMENTAÇÃO', 'TRANSPORTE', 'PESSOAL', 'OUTROS'];
   const pieChartData = tiposGastos.map((tipo) => {
     const totalPorTipo = gastos
       .filter((gasto) => gasto.tipo === tipo)
@@ -30,19 +39,46 @@ function Dashboard() {
     <Box p={4}>
       {/* Resumo de Indicadores */}
       <Grid container spacing={2}>
+        {/* Cartão de Saldo Total */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
               <Typography variant="h5">R$ {totalGastos.toFixed(2)}</Typography>
-              <Typography variant="subtitle1">Total de Gastos</Typography>
+              <Typography variant="subtitle1">Saldo</Typography>
             </CardContent>
           </Card>
         </Grid>
+
+        {/* Cartão de Total de Transações */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
               <Typography variant="h5">{gastos.length}</Typography>
               <Typography variant="subtitle1">Total de Transações</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Cartão de Total de Entradas */}
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" sx={{ color: 'green' }}>
+                R$ {totalEntradas.toFixed(2)}
+              </Typography>
+              <Typography variant="subtitle1">Total de Entradas</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Cartão de Total de Saídas */}
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" sx={{ color: 'red' }}>
+                R$ {totalSaidas.toFixed(2)}
+              </Typography>
+              <Typography variant="subtitle1">Total de Saídas</Typography>
             </CardContent>
           </Card>
         </Grid>

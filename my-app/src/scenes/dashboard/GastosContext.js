@@ -7,8 +7,8 @@ export const GastosProvider = ({ children }) => {
   const [transacoes, setTransacoes] = useState([]);
 
   // Valores padrões para tipos de gasto e formas de pagamento
-  const [tiposGasto, setTiposGasto] = useState(['Alimentação', 'Transporte', 'Pessoal', 'Outros']);
-  const [formasPagamento, setFormasPagamento] = useState(['VR', 'Pix', 'Crédito', 'Outros']);
+  const [tiposGasto, setTiposGasto] = useState(['ALIMENTAÇÃO', 'TRANSPORTE', 'PESSOAL', 'OUTROS']);
+  const [formasPagamento, setFormasPagamento] = useState(['VR', 'PIX', 'CRÉDITO', 'OUTROS']);
 
   // Função para adicionar um novo gasto
   const adicionarGasto = (gasto) => {

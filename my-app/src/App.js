@@ -11,7 +11,6 @@ import Transaction from "./scenes/dashboard/Transaction";
 import PieChart from "./scenes/dashboard/PieChart";
 import AdicionarFormaPagamento from "./components/AdicionarFormaPagamento";
 import AdicionarTipoGasto from "./components/AdicionarTipoGasto";
-
 function App() {
   return (
     <GastosProvider>
@@ -30,6 +29,7 @@ function App() {
         <Route path = "/PieChart" element = {<PieChart />}/>
         <Route path = "/Pagamento" element = {<AdicionarFormaPagamento />}/>
         <Route path = "/TipoGastos" element = {<AdicionarTipoGasto />}/>
+        
       
         
 

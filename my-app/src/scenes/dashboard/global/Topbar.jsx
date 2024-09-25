@@ -1,28 +1,35 @@
-import { Box, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { Box, IconButton, useTheme, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../../theme";
 import InputBase from "@mui/material/InputBase";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AddIcon from '@mui/icons-material/Add';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate} from 'react-router-dom';
-
-
+import Gastos from "../../dashboard/Gastos"; // Caminho corrigido para o componente Gastos
+import { useNavigate } from 'react-router-dom';
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const Addgastos = () => {
-    navigate("/Gastos")}
+  // Estado para controlar a abertura e fechamento do modal
+  const [openGastos, setOpenGastos] = useState(false);
+
+  // Funções para abrir e fechar o modal de Gastos
+  const handleOpenGastos = () => {
+    setOpenGastos(true);
+  };
+
+  const handleCloseGastos = () => {
+    setOpenGastos(false);
+  };
+
   const GotoUser = () => {
-      navigate("/User")}
-  
-
+    navigate("/User");
+  };
 
   return (
     <Box className="topbar" display="flex" justifyContent="space-between" p={2}>
@@ -43,13 +50,24 @@ const Topbar = () => {
         <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
-        
+
         <IconButton>
-          <PersonOutlinedIcon onClick = {GotoUser}/>
+          <PersonOutlinedIcon onClick={GotoUser} />
         </IconButton>
-        <IconButton  onClick={Addgastos}>
-          <AddIcon/>  </IconButton>
+
+        {/* Ícone de adicionar gasto, que abre o modal */}
+        <IconButton onClick={handleOpenGastos}>
+          <AddIcon />
+        </IconButton>
       </Box>
+
+      {/* Modal de Gastos */}
+      <Dialog open={openGastos} onClose={handleCloseGastos} fullWidth maxWidth="md">
+        <DialogTitle>Adicionar Novo Gasto</DialogTitle>
+        <DialogContent>
+          <Gastos /> {/* Exibindo o componente Gastos no modal */}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
