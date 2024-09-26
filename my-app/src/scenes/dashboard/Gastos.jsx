@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {
   Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody,
-  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid
+  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip
 } from '@mui/material';
 import GastosContext from './GastosContext';
-import Sidebar from './global/Sidebar';
 
 function Gastos() {
-  const { gastos, adicionarGasto, setGastos, tiposGasto, formasPagamento } = useContext(GastosContext);
+  const { gastos, adicionarGasto, tiposGasto, formasPagamento } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
@@ -39,34 +38,38 @@ function Gastos() {
 
   return (
     <Box display="flex">
-      <Sidebar />
       <Box flexGrow={1} p={3}>
         <Typography variant="h4" gutterBottom>
-          Adicionar Gasto
+          Adicionar Transação
         </Typography>
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {/* Campos já existentes */}
+            {/* Campo de Descrição com Tooltip */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Descrição"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                required
-              />
+              <Tooltip title="Informe uma breve descrição do gasto, como 'Almoço' ou 'Combustível'">
+                <TextField
+                  fullWidth
+                  label="Descrição"
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
+                  required
+                />
+              </Tooltip>
             </Grid>
 
+            {/* Campo de Valor com Tooltip */}
             <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Valor"
-                type="number"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
-                required
-              />
+              <Tooltip title="Informe o valor do gasto em R$, use números inteiros ou decimais">
+                <TextField
+                  fullWidth
+                  label="Valor"
+                  type="number"
+                  value={valor}
+                  onChange={(e) => setValor(e.target.value)}
+                  required
+                />
+              </Tooltip>
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -81,7 +84,7 @@ function Gastos() {
               />
             </Grid>
 
-            {/* Campo de seleção de tipo de gasto, agora com opções personalizáveis */}
+            {/* Campo de seleção de tipo de gasto */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Tipo de Gasto</InputLabel>
@@ -98,7 +101,7 @@ function Gastos() {
               </FormControl>
             </Grid>
 
-            {/* Campo de seleção de forma de pagamento, agora com opções personalizáveis */}
+            {/* Campo de seleção de forma de pagamento */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Forma de Pagamento</InputLabel>
@@ -115,6 +118,7 @@ function Gastos() {
               </FormControl>
             </Grid>
 
+            {/* Campo de seleção de Entrada/Saída */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
                 <InputLabel>Entrada/Saída</InputLabel>
@@ -130,7 +134,7 @@ function Gastos() {
 
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary" fullWidth>
-                Adicionar Gasto
+                Adicionar Transação
               </Button>
             </Grid>
           </Grid>

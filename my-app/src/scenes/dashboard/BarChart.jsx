@@ -1,16 +1,30 @@
 import React from 'react';
-import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts'; // Renomeando o import do BarChart
+import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { Typography, Box } from '@mui/material';
 
 const SimpleBarChart = ({ data }) => {
   return (
-    <Box p={2} backgroundColor="#f0f4f8">
-      <Typography variant="h6">Gastos</Typography>
-      <RechartsBarChart width={200} height={250} data={data}> {/* Usando o nome renomeado aqui */}
-        <XAxis dataKey="name" />
-        <YAxis />
+    <Box 
+      p={2} 
+      bgcolor="#f0f4f8" 
+      borderRadius={2} 
+      boxShadow={1} 
+      maxWidth={600} 
+    >
+      <Typography variant="h6" gutterBottom>
+        Transações
+      </Typography>
+      <RechartsBarChart 
+        width={500} 
+        height={350} 
+        data={data} 
+        margin={{ top: 20, right: 10, left: 20, bottom: 5 }} 
+      >
+        <XAxis dataKey="name" stroke="#555" />
+        <YAxis stroke="#555" />
         <Tooltip />
-        <Bar dataKey="value" fill="#8884d8" />
+        <Bar dataKey="value" 
+        fill="#8884d8" />
       </RechartsBarChart>
     </Box>
   );

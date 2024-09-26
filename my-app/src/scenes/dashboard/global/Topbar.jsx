@@ -63,7 +63,7 @@ const Topbar = () => {
 
       {/* Modal de Gastos */}
       <Dialog open={openGastos} onClose={handleCloseGastos} fullWidth maxWidth="md">
-        <DialogTitle>Adicionar Novo Gasto</DialogTitle>
+        <DialogTitle>Adicionar Novo Transação</DialogTitle>
         <DialogContent>
           <Gastos /> {/* Exibindo o componente Gastos no modal */}
         </DialogContent>
