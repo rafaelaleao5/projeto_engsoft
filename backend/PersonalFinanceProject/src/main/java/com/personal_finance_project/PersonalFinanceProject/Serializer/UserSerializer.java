@@ -15,8 +15,11 @@ public class UserSerializer {
 		String name = userObject.get("name").toString();
 		String email = userObject.get("email").toString();
 		String password = new BCryptPasswordEncoder().encode(userObject.get("password").toString());
+		LocalDate birthdate = null;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate birthdate = LocalDate.parse(userObject.get("birthdate").toString(), formatter);
+		if(userObject.get("birthdate") != null) {
+			birthdate = LocalDate.parse(userObject.get("birthdate").toString(), formatter);			
+		}
 		
 		UserEntity user = new UserEntity();
 		

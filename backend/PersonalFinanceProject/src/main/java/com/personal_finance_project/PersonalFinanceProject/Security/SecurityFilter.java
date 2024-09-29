@@ -1,6 +1,7 @@
 package com.personal_finance_project.PersonalFinanceProject.Security;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.personal_finance_project.PersonalFinanceProject.Entities.UserEntity;
 import com.personal_finance_project.PersonalFinanceProject.Repositories.UserRepository;
 import com.personal_finance_project.PersonalFinanceProject.Services.TokenService;
 
@@ -51,6 +53,22 @@ public class SecurityFilter extends OncePerRequestFilter {
 		}else {
 			return authHeader.replace("Bearer ", "");
 		}
+		
+	}
+	
+	public Optional<UserEntity> getUser(HttpServletRequest request) {
+		var token = recoverToken(request);
+		Optional<UserEntity> userEntity = Optional.empty();
+		if(token != null) {
+			String email = tokenService.validateToken(token);
+			UserDetails userDetais = userRepository.findByEmail(email);
+			
+			userEntity = userRepository.findById(Long.parseLong(userDetais.getUsername()));
+			
+			return userEntity;
+		}
+		
+		return userEntity;
 		
 	}
 

@@ -87,6 +87,6 @@ public class UserEntity implements UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return null;
+		return id.toString();
 	}
 }
