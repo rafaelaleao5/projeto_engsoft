@@ -1,35 +1,61 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
 
+/* Variáveis CSS */
+:root {
+  --font-family: "Source Sans Pro", sans-serif;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --scrollbar-bg: #e0e0e0;
+  --scrollbar-thumb: #888;
+  --scrollbar-thumb-hover: #555;
+}
+
 html,
 body,
 #root,
 .app,
 .content {
-  height: 100%;
-  width: 100%;
-  font-family: "Source Sans Pro", sans-serif;
+  max-height: 100%;
+  max-width: 100%;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
 }
 
+/* Estilo para o layout da aplicação */
 .app {
   display: flex;
   position: relative;
+  flex-direction: column; /* Adicionado para um layout mais responsivo */
+  min-height: 100vh; /* Garante que a aplicação ocupe toda a altura da tela */
 }
 
+/* Scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #e0e0e0;
+  background: var(--scrollbar-bg);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--scrollbar-thumb);
+  border-radius: 5px; /* Bordas arredondadas para um visual mais suave */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column; /* Muda para coluna em telas menores */
+  }
 }
