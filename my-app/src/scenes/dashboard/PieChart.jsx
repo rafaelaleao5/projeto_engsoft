@@ -1,10 +1,39 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { Typography, Box } from '@mui/material';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+// Definir cores dinâmicas para entradas e saídas
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF6384', '#36A2EB', '#FFCE56'];
+
+const RADIAN = Math.PI / 180;
+
+// Função para exibir o rótulo com a porcentagem correspondente
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central"
+      fontSize={12}
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
 const PieChartComponent = ({ data }) => {
+  // Ajustar os dados para usar valores absolutos
+  const processedData = data.map(item => ({
+    ...item,
+    value: Math.abs(item.value), // Converte valores para positivos
+  }));
+
   return (
     <Box 
       p={2} 
@@ -15,23 +44,27 @@ const PieChartComponent = ({ data }) => {
       margin="auto"
     >
       <Typography variant="h6" gutterBottom>
-        Distribuição de Gastos por Tipo
+        Transação por Categoria
       </Typography>
-      <PieChart width={500} height={350}>
+      
+      <PieChart width={500} height={400}>
         <Pie
-          data={data}
+          data={processedData}
           cx="50%"
           cy="50%"
           outerRadius={150}
           fill="#8884d8"
           dataKey="value"
-          label
+          labelLine={false} // Desativa as linhas de rótulo
+          label={renderCustomizedLabel} // Usa o rótulo personalizado para mostrar as porcentagens
         >
-          {data.map((entry, index) => (
+          {processedData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip />
+        
+        <Tooltip formatter={(value) => `R$ ${value.toFixed(2)}`} /> {/* Formatação de valor no tooltip */}
+        <Legend layout="horizontal" verticalAlign="bottom" align="center" /> {/* Legenda para identificar cada fatia */}
       </PieChart>
     </Box>
   );

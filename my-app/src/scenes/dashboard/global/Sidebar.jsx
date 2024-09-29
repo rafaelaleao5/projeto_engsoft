@@ -1,10 +1,17 @@
 import React from "react";
-import { Box, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import PieChartIcon from '@mui/icons-material/PieChart';
-import AddIcon from '@mui/icons-material/Add';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
@@ -12,81 +19,46 @@ import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const GoToHome = () => {
-    navigate("/Menu")}
-  const Exit = () => {
-      navigate("/")}
-const Pagamento = () => {
-        navigate("/Pagamento")}
-const TiposGastos = () => {
-          navigate("/TipoGastos")}
-const AddGastos = () => {
-  navigate("/Gastos")}
-const GotoPie = () => {
-    navigate("/PieChart")}
-  
+  const menuItems = [
+    { text: "Home", icon: <HomeOutlinedIcon />, path: "/Menu" },
+    { text: "Formas de Pagamento", icon: <AddCardIcon />, path: "/Pagamento" },
+    { text: "Categoria", icon: <AddShoppingCartIcon />, path: "/TipoGastos" },
+    { text: "Adicionar Transação", icon: <AddCardIcon />, path: "/Gastos" },
+    { text: "PieChart", icon: <PieChartIcon />, path: "/PieChart" },
+    { text: "BarChart", icon: <StackedBarChartIcon />, path: "/BarChart" },
+    { text: "Exit", icon: <ExitToAppIcon />, path: "/" },
+  ];
 
   // Função para alternar a visibilidade da Sidebar
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
 
+  // Função para navegação
+  const handleNavigation = (path) => {
+    navigate(path);
+    toggleDrawer(); // Fecha o Drawer após a navegação
+  };
+
   // Itens da Sidebar
   const list = (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 250, bgcolor: 'background.paper' }}
       role="presentation"
       onClick={toggleDrawer}
       onKeyDown={toggleDrawer}
     >
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" onClick={GoToHome}/>
-        </ListItem>
-
-        <ListItem button>
-          <ListItemIcon>
-            <AddCardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Formas de Pagamento" onClick={Pagamento} />
-        </ListItem>
-
-        <ListItem button>
-          <ListItemIcon>
-            <AddShoppingCartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Tipos de Gastos" onClick={TiposGastos}/>
-        </ListItem>
-
-        <ListItem button>
-          <ListItemIcon>
-            <AddCardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Adicionar Gastos" onClick={AddGastos} />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <PieChartIcon />
-          </ListItemIcon>
-          <ListItemText primary="PieChart" onClick={GotoPie} />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <StackedBarChartIcon />
-          </ListItemIcon>
-          <ListItemText primary="BarChart" onClick={GotoPie} />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Exit" onClick={Exit} />
-        </ListItem>
+        {menuItems.map((item) => (
+          <ListItem button key={item.text} onClick={() => handleNavigation(item.path)}>
+            <ListItemIcon aria-label={item.text}>
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
       </List>
     </Box>
   );

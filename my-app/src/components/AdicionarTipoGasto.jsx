@@ -36,13 +36,13 @@ function AdicionarTipoGasto() {
       }}
     >
       <Typography variant="h6" align="center" gutterBottom>
-        Adicionar Novo Tipo de Gasto
+        Adicionar Nova Categoria
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Novo Tipo de Gasto"
+            label="Nova Categoria"
             value={novoTipo}
             onChange={(e) => setNovoTipo(e.target.value)}
             variant="outlined"
@@ -69,7 +69,7 @@ function AdicionarTipoGasto() {
 
       {/* Lista de tipos de gastos existentes */}
       <Typography variant="h6" align="center" sx={{ mt: 3 }}>
-        Tipos de Gastos Existentes
+      Categorias Existentes
       </Typography>
       <List>
         {tiposGasto.map((tipo, index) => (

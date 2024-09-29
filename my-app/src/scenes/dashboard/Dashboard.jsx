@@ -3,13 +3,16 @@ import {
   Box, Grid, Card, CardContent, Typography,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem
 } from '@mui/material';
+import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; // Ícones do Material-UI
 import GastosContext from './GastosContext'; // Importando o contexto
 import Transaction from './Transaction';
 import BarChart from './BarChart'; // Componente BarChart
 import PieChartComponent from './PieChart'; // Componente PieChart
+import StackedBarChart from './Empilhado'
+
 
 function Dashboard() {
-  const { gastos } = useContext(GastosContext); // Acessando o estado global
+  const { gastos, tiposGasto } = useContext(GastosContext); // Acessando o estado global
 
   // Estado para filtros
   const [tipoFiltro, setTipoFiltro] = useState('');
@@ -63,7 +66,10 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">R$ {totalGastos.toFixed(2)}</Typography>
+              <Box display="flex" alignItems="center">
+                <AttachMoney sx={{ fontSize: 40, marginRight: 1 }} />
+                <Typography variant="h5">R$ {totalGastos.toFixed(2)}</Typography>
+              </Box>
               <Typography variant="subtitle1">Saldo</Typography>
             </CardContent>
           </Card>
@@ -73,7 +79,10 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">{gastosFiltrados.length}</Typography>
+              <Box display="flex" alignItems="center">
+                <Assessment sx={{ fontSize: 40, marginRight: 1 }} />
+                <Typography variant="h5">{gastosFiltrados.length}</Typography>
+              </Box>
               <Typography variant="subtitle1">Total de Transações</Typography>
             </CardContent>
           </Card>
@@ -83,10 +92,13 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5" sx={{ color: 'green' }}>
-                R$ {totalEntradas.toFixed(2)}
-              </Typography>
-              <Typography variant="subtitle1">Total de Entradas</Typography>
+              <Box display="flex" alignItems="center">
+                <ArrowUpward sx={{ fontSize: 40, color: 'green', marginRight: 1 }} />
+                <Typography variant="h5" sx={{ color: 'green' }}>
+                  R$ {totalEntradas.toFixed(2)}
+                </Typography>
+              </Box>
+              <Typography variant="subtitle1">Saldo Entradas</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -95,10 +107,13 @@ function Dashboard() {
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5" sx={{ color: 'red' }}>
-                R$ {totalSaidas.toFixed(2)}
-              </Typography>
-              <Typography variant="subtitle1">Total de Saídas</Typography>
+              <Box display="flex" alignItems="center">
+                <ArrowDownward sx={{ fontSize: 40, color: 'red', marginRight: 1 }} />
+                <Typography variant="h5" sx={{ color: 'red' }}>
+                  R$ {totalSaidas.toFixed(2)}
+                </Typography>
+              </Box>
+              <Typography variant="subtitle1">Saldo Saídas</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -109,13 +124,13 @@ function Dashboard() {
         {/* Filtro por Tipo */}
         <TextField
           select
-          label="Filtrar por Tipo"
+          label="Filtrar por Categoria"
           value={tipoFiltro}
           onChange={(e) => setTipoFiltro(e.target.value)}
           sx={{ width: 200 }}
         >
           <MenuItem value="">Todos</MenuItem>
-          {tiposGastos.map((tipo) => (
+          {tiposGasto.map((tipo) => ( // Usando a lista de tipos do contexto
             <MenuItem key={tipo} value={tipo}>
               {tipo}
             </MenuItem>
@@ -156,7 +171,7 @@ function Dashboard() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Tipo</TableCell>
+                <TableCell>Categoria</TableCell>
                 <TableCell align="right">Valor</TableCell>
                 <TableCell align="right">Data</TableCell>
               </TableRow>

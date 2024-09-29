@@ -87,7 +87,7 @@ function Gastos() {
             {/* Campo de seleção de tipo de gasto */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth required>
-                <InputLabel>Tipo de Gasto</InputLabel>
+                <InputLabel>Categoria</InputLabel>
                 <Select
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value)}
@@ -148,7 +148,7 @@ function Gastos() {
                 <TableCell>Descrição</TableCell>
                 <TableCell>Valor</TableCell>
                 <TableCell>Data</TableCell>
-                <TableCell>Tipo</TableCell>
+                <TableCell>Categoria</TableCell>
                 <TableCell>Forma de Pagamento</TableCell>
               </TableRow>
             </TableHead>

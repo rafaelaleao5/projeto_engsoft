@@ -21,7 +21,7 @@ function Transactions() {
     return (
         <Box sx={{ width: '40%', bgcolor: 'background.paper', borderRadius: '10px', boxShadow: 2, p: 2 }}>
             <Typography variant="h6" gutterBottom>
-                Transactions
+                Transações
             </Typography>
             <List>
                 {gastos.map((gasto, index) => (
