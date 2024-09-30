@@ -21,8 +21,8 @@ import { useNavigate } from 'react-router-dom';
 // Estilizações
 const SidebarContainer = styled(Box)(({ theme }) => ({
   width: 250,
-  backgroundColor: '#1c044c', // Cor de fundo alterada
-  padding: theme.spacing(2),
+  height: "100%", // Defina a altura para ocupar toda a área disponível
+  backgroundColor: '#1c044c', // Cor de fundo alterada para roxo
 }));
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
@@ -56,11 +56,7 @@ const Sidebar = () => {
   };
 
   const list = (
-    <SidebarContainer
-      role="presentation"
-      onClick={toggleDrawer}
-      onKeyDown={toggleDrawer}
-    >
+    <SidebarContainer role="presentation">
       <List>
         {menuItems.map((item) => (
           <StyledListItem button key={item.text} onClick={() => handleNavigation(item.path)}>
@@ -86,7 +82,19 @@ const Sidebar = () => {
         <MenuIcon />
       </IconButton>
 
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
+      <Drawer
+        anchor="left"
+        open={isOpen}
+        onClose={toggleDrawer}
+        PaperProps={{
+          sx: {
+            backgroundColor: 'transparent', // Tornar o fundo do Drawer transparente
+          },
+        }}
+        BackdropProps={{
+          invisible: true, // Torna o backdrop invisível para evitar o fundo branco
+        }}
+      >
         {list}
       </Drawer>
     </div>
