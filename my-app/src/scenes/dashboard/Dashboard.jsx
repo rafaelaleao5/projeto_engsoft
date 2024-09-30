@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
 import {
   Box, Grid, Card, CardContent, Typography,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
 } from '@mui/material';
 import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; // Ícones do Material-UI
 import GastosContext from './GastosContext'; // Importando o contexto
 import Transaction from './Transaction';
 import BarChart from './BarChart'; // Componente BarChart
 import PieChartComponent from './PieChart'; // Componente PieChart
-import StackedBarChart from './Empilhado'
-
+import StackedBarChart from './StackedBarChart'; // Componente StackedBarChart
 
 function Dashboard() {
   const { gastos, tiposGasto } = useContext(GastosContext); // Acessando o estado global
@@ -18,6 +17,11 @@ function Dashboard() {
   const [tipoFiltro, setTipoFiltro] = useState('');
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
+
+  // Estado para controle de exibição dos gráficos
+  const [mostrarBarChart, setMostrarBarChart] = useState(true);
+  const [mostrarPieChart, setMostrarPieChart] = useState(true);
+  const [mostrarStackedBarChart, setMostrarStackedBarChart] = useState(true);
 
   // Função de filtro
   const filtrarGastos = () => {
@@ -58,11 +62,16 @@ function Dashboard() {
     return { name: tipo, value: totalPorTipo };
   });
 
-  return (
+  // Ordenando as transações por data e pegando as 5 últimas
+  const ultimasTransacoes = gastosFiltrados
+    .sort((a, b) => new Date(b.data) - new Date(a.data))
+    .slice(0, 5);
+
+  return(
     <Box p={4}>
       {/* Resumo de Indicadores */}
       <Grid container spacing={2}>
-        {/* Cartão de Saldo Total */}
+        {/* Cartões de Saldo, Entradas e Saídas */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
@@ -75,7 +84,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Cartão de Total de Transações */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
@@ -88,7 +96,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Cartão de Total de Entradas */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
@@ -103,7 +110,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Cartão de Total de Saídas */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
@@ -130,14 +136,14 @@ function Dashboard() {
           sx={{ width: 200 }}
         >
           <MenuItem value="">Todos</MenuItem>
-          {tiposGasto.map((tipo) => ( // Usando a lista de tipos do contexto
+          {tiposGasto.map((tipo) => (
             <MenuItem key={tipo} value={tipo}>
               {tipo}
             </MenuItem>
           ))}
         </TextField>
 
-        {/* Filtro por Data (Início) */}
+        {/* Filtro por Data */}
         <TextField
           label="Data Início"
           type="date"
@@ -146,8 +152,6 @@ function Dashboard() {
           InputLabelProps={{ shrink: true }}
           sx={{ width: 200 }}
         />
-
-        {/* Filtro por Data (Fim) */}
         <TextField
           label="Data Fim"
           type="date"
@@ -158,15 +162,34 @@ function Dashboard() {
         />
       </Box>
 
+      {/* Seletor de gráficos */}
+      <Box mt={4} display="flex" gap={4}>
+        <FormControlLabel
+          control={<Checkbox checked={mostrarBarChart} onChange={() => setMostrarBarChart(!mostrarBarChart)} />}
+          label="Gráfico de Barras"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={mostrarPieChart} onChange={() => setMostrarPieChart(!mostrarPieChart)} />}
+          label="Gráfico de Pizza"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={mostrarStackedBarChart} onChange={() => setMostrarStackedBarChart(!mostrarStackedBarChart)} />}
+          label="Gráfico de Barras Empilhadas"
+        />
+      </Box>
+
       {/* Gráficos */}
-      <Box display="flex" mt={4} gap={4}>
-        <BarChart data={barChartData} /> {/* Passando os dados filtrados para o gráfico de barras */}
-        <PieChartComponent data={pieChartData} /> {/* Passando os dados filtrados para o gráfico de pizza */}
+      <Box sx={{display:"flex",gap: 2, marginTop: 4}}>
+        {mostrarBarChart && <BarChart data={barChartData} />}
+        {mostrarPieChart && <PieChartComponent data={pieChartData} />}
+        {mostrarStackedBarChart && <StackedBarChart data={gastosFiltrados} />}
       </Box>
 
       {/* Tabela de Gastos */}
-      <Box mt={4}>
-        <Typography variant="h6" gutterBottom>Detalhes das Transações</Typography>
+      
+      <Box mt={4} sx={{ width: '100%', display: 'flex', gap: 6}}>
+      <Typography variant="h6" gutterBottom>Detalhes das Transações</Typography>
+
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -177,7 +200,7 @@ function Dashboard() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {gastosFiltrados.map((gasto, index) => (
+              {ultimasTransacoes.map((gasto, index) => (
                 <TableRow key={index}>
                   <TableCell>{gasto.tipo}</TableCell>
                   <TableCell align="right">{`R$ ${gasto.valor.toFixed(2)}`}</TableCell>
@@ -187,9 +210,12 @@ function Dashboard() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Transaction />
+        
       </Box>
+      
 
-      <Transaction />
+     
     </Box>
   );
 }

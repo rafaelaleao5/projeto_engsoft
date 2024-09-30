@@ -34,10 +34,10 @@ function Transactions() {
                         <ListItemText
                             primary={
                                 <Typography variant="body1" component="span">
-                                    {gasto.tipo}
+                                    {gasto.descricao}
                                 </Typography>
                             }
-                            secondary={gasto.descricao}
+                            
                         />
                         <Typography
                             variant="body1"
