@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Button, TextField, Box, Typography, List, ListItem, Paper } from '@mui/material';
 import GastosContext from '../scenes/dashboard/GastosContext';
-import Sidebar from '../scenes/dashboard/global/Sidebar';
+import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarFormaPagamento() {
   const { formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, Avatar, Grid, Button, Divider, TextField, Snackbar } from "@mui/material";
-import Sidebar from "../scenes/dashboard/global/Sidebar";
+import Sidebar from "../scenes/dashboard/global/sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
 
 function User() {
