@@ -174,7 +174,8 @@ function Dashboard() {
       </Box>
 
       {/* Seletor de gráficos */}
-      <Box mt={4} display="flex" gap={4}>
+      <Box mt={4} display="flex" gap={4}
+      >
         <FormControlLabel
           control={<Checkbox checked={mostrarBarChart} onChange={() => setMostrarBarChart(!mostrarBarChart)} />}
           label="Gráfico de Barras"

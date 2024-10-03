@@ -40,7 +40,7 @@
         bgcolor="#f0f4f8" 
         borderRadius={2} 
         boxShadow={1} 
-        maxWidth={600} 
+        width = '100%'
         margin="auto"
       >
         <Typography variant="h6" gutterBottom>

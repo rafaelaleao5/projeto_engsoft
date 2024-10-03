@@ -22,8 +22,8 @@ const StackedBarChart = () => {
       bgcolor="#f0f4f8" 
       borderRadius={2} 
       boxShadow={1} 
-      maxWidth={900} 
       margin="auto"
+      width = '100%'
     >
       <Typography variant="h6" gutterBottom>
         Gastos por Mês
