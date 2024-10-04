@@ -2,7 +2,6 @@ import { Box, IconButton, useTheme, Dialog, DialogTitle, DialogContent } from "@
 import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../../theme";
 import InputBase from "@mui/material/InputBase";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import AddIcon from '@mui/icons-material/Add';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";

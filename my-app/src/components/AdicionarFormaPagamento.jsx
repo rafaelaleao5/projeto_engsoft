@@ -1,27 +1,48 @@
 import React, { useState, useContext } from 'react';
-import { Button, TextField, Box, Typography, List, ListItem, Paper } from '@mui/material';
+import { Button, TextField, Box, Typography, List, ListItem, Paper, IconButton } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material'; // Importando ícones
 import GastosContext from '../scenes/dashboard/GastosContext';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarFormaPagamento() {
-  const { formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
+  const { formasPagamento, adicionarFormaPagamento, removerFormaPagamento } = useContext(GastosContext);
   const [novaForma, setNovaForma] = useState('');
   const [erro, setErro] = useState('');
+  const [formaEditando, setFormaEditando] = useState(null); // Estado para armazenar a forma sendo editada
 
   const handleAdicionarForma = () => {
     const novaFormaUpper = novaForma.trim().toUpperCase();
 
     // Verifica se a forma de pagamento já existe (compara em upper case)
-    if (formasPagamento.includes(novaFormaUpper)) {
+    if (formasPagamento.includes(novaFormaUpper) && formaEditando !== novaFormaUpper) {
       setErro('Essa forma de pagamento já existe.');
       return;
     }
 
     if (novaFormaUpper) {
-      adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+      if (formaEditando) {
+        // Edita a forma existente
+        const index = formasPagamento.indexOf(formaEditando);
+        if (index > -1) {
+          formasPagamento[index] = novaFormaUpper; // Atualiza a forma editada
+        }
+        setFormaEditando(null); // Limpa o estado de edição
+      } else {
+        adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+      }
+
       setNovaForma(''); // Limpar o campo após adicionar
       setErro(''); // Limpar mensagem de erro
     }
+  };
+
+  const handleEditarForma = (forma) => {
+    setNovaForma(forma); // Preenche o campo com a forma a ser editada
+    setFormaEditando(forma); // Define a forma que está sendo editada
+  };
+
+  const handleExcluirForma = (forma) => {
+    removerFormaPagamento(forma); // Chama a função de remover forma
   };
 
   return (
@@ -32,11 +53,11 @@ function AdicionarFormaPagamento() {
           width: '240px',
           position: 'fixed',
           height: '100vh',
-          backgroundColor: '#1c044c', // Fundo da sidebar de acordo com a paleta
+          backgroundColor: '#1c044c',
           color: '#fff',
         }}
       >
-        <Sidebar isOpen={true} /> {/* Forçando a Sidebar a estar sempre aberta */}
+        <Sidebar isOpen={true} />
       </Box>
 
       {/* Conteúdo principal centralizado */}
@@ -49,10 +70,10 @@ function AdicionarFormaPagamento() {
           justifyContent: 'center',
           alignItems: 'center',
           flexGrow: 1,
-          bgcolor: '#ece8ff', // Fundo no estilo da plataforma
+          bgcolor: '#ece8ff',
           borderRadius: '10px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          marginLeft: '240px', // Compensar a largura da sidebar
+          marginLeft: '240px',
         }}
       >
         <Box sx={{ width: '100%', maxWidth: 600 }}>
@@ -86,7 +107,7 @@ function AdicionarFormaPagamento() {
             fullWidth
             disabled={!novaForma.trim()} // Desativa o botão se o campo estiver vazio
           >
-            Adicionar
+            {formaEditando ? 'Editar' : 'Adicionar'} {/* Altera o texto do botão */}
           </Button>
 
           <Typography variant="h6" sx={{ mt: 4, color: '#1c044c', fontWeight: 'bold' }}>
@@ -95,8 +116,16 @@ function AdicionarFormaPagamento() {
 
           <List>
             {formasPagamento.map((forma, index) => (
-              <ListItem key={index} sx={{ padding: '8px 0', color: '#7048b7' }}>
-                {forma}
+              <ListItem key={index} sx={{ padding: '8px 0', color: '#7048b7', display: 'flex', justifyContent: 'space-between' }}>
+                <span>{forma}</span>
+                <div>
+                  <IconButton onClick={() => handleEditarForma(forma)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton onClick={() => handleExcluirForma(forma)}>
+                    <Delete />
+                  </IconButton>
+                </div>
               </ListItem>
             ))}
           </List>

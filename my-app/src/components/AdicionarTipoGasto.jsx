@@ -1,12 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider, Paper } from '@mui/material';
+import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider, Paper, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from '../scenes/dashboard/GastosContext';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarTipoGasto() {
-  const { adicionarTipoGasto, tiposGasto } = useContext(GastosContext);
+  const { adicionarTipoGasto, tiposGasto, editarTipoGasto, excluirTipoGasto } = useContext(GastosContext);
   const [novoTipo, setNovoTipo] = useState('');
   const [erro, setErro] = useState('');
+  const [tipoAtual, setTipoAtual] = useState(null); // Para rastrear o tipo que está sendo editado
 
   const handleAdicionarTipoGasto = () => {
     const novoTipoUpper = novoTipo.trim().toUpperCase();
@@ -22,6 +25,30 @@ function AdicionarTipoGasto() {
       setNovoTipo(''); // Limpa o campo
       setErro(''); // Limpa mensagem de erro
     }
+  };
+
+  const handleEditarTipoGasto = (tipo) => {
+    setTipoAtual(tipo);
+    setNovoTipo(tipo); // Define o tipo atual no campo de entrada
+  };
+
+  const handleExcluirTipoGasto = (tipo) => {
+    excluirTipoGasto(tipo);
+  };
+
+  const handleSalvarEdicao = () => {
+    const tipoUpper = novoTipo.trim().toUpperCase();
+
+    // Verifica se o tipo já existe
+    if (tiposGasto.includes(tipoUpper)) {
+      setErro('Esse tipo de gasto já existe.');
+      return;
+    }
+
+    editarTipoGasto(tipoAtual, tipoUpper); // Edita o tipo
+    setNovoTipo(''); // Limpa o campo
+    setTipoAtual(null); // Reseta o tipo atual
+    setErro(''); // Limpa mensagem de erro
   };
 
   return (
@@ -87,10 +114,10 @@ function AdicionarTipoGasto() {
               <Button
                 variant="contained"
                 sx={{ backgroundColor: '#7048b7', color: '#fff', textTransform: 'none', fontSize: '16px', px: 4 }}
-                onClick={handleAdicionarTipoGasto}
+                onClick={tipoAtual ? handleSalvarEdicao : handleAdicionarTipoGasto} // Chama a função de salvar ou adicionar
                 disabled={!novoTipo.trim()} // Desativa o botão se o campo estiver vazio
               >
-                Adicionar
+                {tipoAtual ? 'Salvar' : 'Adicionar'}
               </Button>
             </Grid>
           </Grid>
@@ -109,6 +136,12 @@ function AdicionarTipoGasto() {
               <React.Fragment key={index}>
                 <ListItem>
                   <ListItemText primary={tipo} sx={{ color: '#7048b7' }} />
+                  <IconButton onClick={() => handleEditarTipoGasto(tipo)}>
+                    <EditIcon sx={{ color: '#1c044c' }} />
+                  </IconButton>
+                  <IconButton onClick={() => handleExcluirTipoGasto(tipo)}>
+                    <DeleteIcon sx={{ color: '#ff3d00' }} />
+                  </IconButton>
                 </ListItem>
                 {index < tiposGasto.length - 1 && <Divider />} {/* Adiciona uma linha entre os itens */}
               </React.Fragment>

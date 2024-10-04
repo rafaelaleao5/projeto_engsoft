@@ -18,13 +18,16 @@ const iconMap = {
 function Transactions() {
     const { gastos } = useContext(GastosContext); // Acessa o estado global
 
+    // Seleciona as últimas 5 transações (aqui gastos é um array, certifique-se de que os mais recentes estão no final)
+    const ultimosGastos = gastos.slice(-5).reverse(); // Pega os últimos 5 e inverte para mostrar os mais recentes no topo
+
     return (
         <Box sx={{ width: '40%', bgcolor: 'background.paper', borderRadius: '10px', boxShadow: 2, p: 2 }}>
             <Typography variant="h6" gutterBottom>
                 Transações
             </Typography>
             <List>
-                {gastos.map((gasto, index) => (
+                {ultimosGastos.map((gasto, index) => (
                     <ListItem key={index}>
                         <ListItemAvatar>
                             <Avatar sx={{ bgcolor: gasto.valor < 0 ? '#ffcccc' : '#ccffcc' }}>
@@ -37,7 +40,6 @@ function Transactions() {
                                     {gasto.descricao}
                                 </Typography>
                             }
-                            
                         />
                         <Typography
                             variant="body1"

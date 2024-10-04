@@ -12,8 +12,7 @@ import {
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
+
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from 'react-router-dom';
@@ -41,8 +40,6 @@ const Sidebar = () => {
     { text: "Formas de Pagamento", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Pagamento" },
     { text: "Categoria", icon: <AddShoppingCartIcon sx={{ color: 'white' }} />, path: "/TipoGastos" },
     { text: "Adicionar Transação", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Gastos" },
-    { text: "PieChart", icon: <PieChartIcon sx={{ color: 'white' }} />, path: "/PieChart" },
-    { text: "BarChart", icon: <StackedBarChartIcon sx={{ color: 'white' }} />, path: "/BarChart" },
     { text: "Exit", icon: <ExitToAppIcon sx={{ color: 'white' }} />, path: "/" },
   ];
 

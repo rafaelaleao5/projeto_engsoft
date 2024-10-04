@@ -36,13 +36,13 @@ function Cadastro() {
             <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
                 <Box
                     sx={{
-                        my: 0, // Remover margem vertical padrão
+                        my: 0,
                         mx: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center', // Centralizar verticalmente
-                        height: '100vh', // Garantir que ocupe toda a altura
+                        justifyContent: 'center',
+                        height: '100vh',
                         '@keyframes slideIn': { from: { transform: 'translateY(-20px)', opacity: 0 }, to: { transform: 'translateY(0)', opacity: 1 } },
                         animation: 'slideIn 1s ease-in-out',
                     }}
@@ -61,12 +61,8 @@ function Cadastro() {
                             autoFocus
                             sx={{
                                 '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#ddd',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#1976d2',
-                                    },
+                                    '& fieldset': { borderColor: '#ddd' },
+                                    '&:hover fieldset': { borderColor: '#1976d2' },
                                     '&.Mui-focused fieldset': {
                                         borderColor: '#1976d2',
                                         boxShadow: '0px 4px 8px rgba(25, 118, 210, 0.3)',
@@ -83,12 +79,8 @@ function Cadastro() {
                             autoComplete="email"
                             sx={{
                                 '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#ddd',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#1976d2',
-                                    },
+                                    '& fieldset': { borderColor: '#ddd' },
+                                    '&:hover fieldset': { borderColor: '#1976d2' },
                                     '&.Mui-focused fieldset': {
                                         borderColor: '#1976d2',
                                         boxShadow: '0px 4px 8px rgba(25, 118, 210, 0.3)',
@@ -106,12 +98,8 @@ function Cadastro() {
                             autoComplete="new-password"
                             sx={{
                                 '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#ddd',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#1976d2',
-                                    },
+                                    '& fieldset': { borderColor: '#ddd' },
+                                    '&:hover fieldset': { borderColor: '#1976d2' },
                                     '&.Mui-focused fieldset': {
                                         borderColor: '#1976d2',
                                         boxShadow: '0px 4px 8px rgba(25, 118, 210, 0.3)',
@@ -129,12 +117,31 @@ function Cadastro() {
                             autoComplete="new-password"
                             sx={{
                                 '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#ddd',
-                                    },
-                                    '&:hover fieldset': {
+                                    '& fieldset': { borderColor: '#ddd' },
+                                    '&:hover fieldset': { borderColor: '#1976d2' },
+                                    '&.Mui-focused fieldset': {
                                         borderColor: '#1976d2',
+                                        boxShadow: '0px 4px 8px rgba(25, 118, 210, 0.3)',
                                     },
+                                },
+                            }}
+                        />
+
+                        {/* Campo para Data de Nascimento */}
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="data-nascimento"
+                            label="Data de Nascimento"
+                            type="date"
+                            id="data-nascimento"
+                            InputLabelProps={{
+                                shrink: true, // Para que o label não sobreponha a data
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': { borderColor: '#ddd' },
+                                    '&:hover fieldset': { borderColor: '#1976d2' },
                                     '&.Mui-focused fieldset': {
                                         borderColor: '#1976d2',
                                         boxShadow: '0px 4px 8px rgba(25, 118, 210, 0.3)',
@@ -152,10 +159,10 @@ function Cadastro() {
                                 onClick={cadastrar}
                                 sx={{
                                     mr: 2,
-                                    backgroundColor: '#19044b', // Cor do botão "Cadastrar"
+                                    backgroundColor: '#19044b',
                                     transition: 'all 0.3s ease',
                                     '&:hover': {
-                                        backgroundColor: '#130337', // Cor de hover
+                                        backgroundColor: '#130337',
                                         transform: 'scale(1.02)',
                                     },
                                 }}
