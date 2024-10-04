@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider, Paper } from '@mui/material';
 import GastosContext from '../scenes/dashboard/GastosContext';
+import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarTipoGasto() {
   const { adicionarTipoGasto, tiposGasto } = useContext(GastosContext);
@@ -24,63 +25,97 @@ function AdicionarTipoGasto() {
   };
 
   return (
-    <Box
-      sx={{
-        mt: 3,
-        p: 3,
-        boxShadow: 2,
-        backgroundColor: 'white',
-        borderRadius: 2,
-        maxWidth: 500,
-        mx: 'auto'
-      }}
-    >
-      <Typography variant="h6" align="center" gutterBottom>
-        Adicionar Nova Categoria
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Nova Categoria"
-            value={novoTipo}
-            onChange={(e) => setNovoTipo(e.target.value)}
-            variant="outlined"
-            size="small"
-            error={!!erro}
-            helperText={erro}
-          />
-        </Grid>
-        <Grid item xs={12} display="flex" justifyContent="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAdicionarTipoGasto}
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar fixa e sempre visível */}
+      <Box
+        sx={{
+          width: '240px',
+          position: 'fixed',
+          height: '100vh',
+          backgroundColor: '#1c044c', // Fundo da sidebar de acordo com a paleta
+          color: '#fff',
+        }}
+      >
+        <Sidebar isOpen={true} /> {/* Sidebar sempre aberta */}
+      </Box>
+
+      {/* Conteúdo principal centralizado */}
+      <Box
+        p={3}
+        component={Paper}
+        elevation={3}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexGrow: 1,
+          bgcolor: '#ece8ff', // Fundo da área principal no estilo da plataforma
+          borderRadius: '10px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          marginLeft: '240px', // Compensar a largura da sidebar
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: 600 }}>
+          <Typography
+            variant="h5"
+            gutterBottom
             sx={{
-              textTransform: 'none',
-              fontSize: '16px',
-              px: 4,
+              color: '#1c044c',
+              fontWeight: 'bold',
+              textAlign: 'center',
             }}
           >
-            Adicionar
-          </Button>
-        </Grid>
-      </Grid>
+            Adicionar Nova Categoria
+          </Typography>
 
-      {/* Lista de tipos de gastos existentes */}
-      <Typography variant="h6" align="center" sx={{ mt: 3 }}>
-      Categorias Existentes
-      </Typography>
-      <List>
-        {tiposGasto.map((tipo, index) => (
-          <React.Fragment key={index}>
-            <ListItem>
-              <ListItemText primary={tipo} />
-            </ListItem>
-            {index < tiposGasto.length - 1 && <Divider />} {/* Adiciona uma linha entre os itens */}
-          </React.Fragment>
-        ))}
-      </List>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Nova Categoria"
+                value={novoTipo}
+                onChange={(e) => setNovoTipo(e.target.value)}
+                variant="outlined"
+                size="small"
+                error={!!erro}
+                helperText={erro}
+                sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
+              />
+            </Grid>
+
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: '#7048b7', color: '#fff', textTransform: 'none', fontSize: '16px', px: 4 }}
+                onClick={handleAdicionarTipoGasto}
+                disabled={!novoTipo.trim()} // Desativa o botão se o campo estiver vazio
+              >
+                Adicionar
+              </Button>
+            </Grid>
+          </Grid>
+
+          {/* Lista de tipos de gastos existentes */}
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{ mt: 4, color: '#1c044c', fontWeight: 'bold' }}
+          >
+            Categorias Existentes
+          </Typography>
+          
+          <List>
+            {tiposGasto.map((tipo, index) => (
+              <React.Fragment key={index}>
+                <ListItem>
+                  <ListItemText primary={tipo} sx={{ color: '#7048b7' }} />
+                </ListItem>
+                {index < tiposGasto.length - 1 && <Divider />} {/* Adiciona uma linha entre os itens */}
+              </React.Fragment>
+            ))}
+          </List>
+        </Box>
+      </Box>
     </Box>
   );
 }

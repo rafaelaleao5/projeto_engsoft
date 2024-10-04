@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import {
-  Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody,
-  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip
-} from '@mui/material';
+  Box, Button, FormControl, InputLabel, MenuItem, Paper, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip, Select
+} from '@mui/material'; // Certifique-se de que Select está importado
 import GastosContext from './GastosContext';
 
 function Gastos() {
@@ -37,11 +37,9 @@ function Gastos() {
   };
 
   return (
-    <Box display="flex">
-      <Box flexGrow={1} p={3}>
-        <Typography variant="h4" gutterBottom>
-          Adicionar Transação
-        </Typography>
+    <Box display="flex" bgcolor="#ece8ff" p={3} borderRadius="10px" boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)">
+      <Box flexGrow={1}>
+        
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -54,6 +52,7 @@ function Gastos() {
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   required
+                  sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
                 />
               </Tooltip>
             </Grid>
@@ -68,6 +67,7 @@ function Gastos() {
                   value={valor}
                   onChange={(e) => setValor(e.target.value)}
                   required
+                  sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
                 />
               </Tooltip>
             </Grid>
@@ -81,12 +81,13 @@ function Gastos() {
                 value={data}
                 onChange={(e) => setData(e.target.value)}
                 required
+                sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
               />
             </Grid>
 
             {/* Campo de seleção de tipo de gasto */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Categoria</InputLabel>
                 <Select
                   value={tipo}
@@ -103,7 +104,7 @@ function Gastos() {
 
             {/* Campo de seleção de forma de pagamento */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Forma de Pagamento</InputLabel>
                 <Select
                   value={formapagamento}
@@ -120,7 +121,7 @@ function Gastos() {
 
             {/* Campo de seleção de Entrada/Saída */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Entrada/Saída</InputLabel>
                 <Select
                   value={entradaSaida}
@@ -133,7 +134,7 @@ function Gastos() {
             </Grid>
 
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
+              <Button type="submit" variant="contained" sx={{ backgroundColor: "#7048b7", color: "#ffffff" }} fullWidth>
                 Adicionar Transação
               </Button>
             </Grid>
@@ -141,22 +142,22 @@ function Gastos() {
         </form>
 
         {/* Tabela de gastos */}
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ marginTop: '20px', backgroundColor: "#f7f7f9" }} sx={{ borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
           <Table>
-            <TableHead>
+            <TableHead sx={{ backgroundColor: "#1c044c" }}>
               <TableRow>
-                <TableCell>Descrição</TableCell>
-                <TableCell>Valor</TableCell>
-                <TableCell>Data</TableCell>
-                <TableCell>Categoria</TableCell>
-                <TableCell>Forma de Pagamento</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Descrição</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Valor</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Data</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Categoria</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Forma de Pagamento</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {gastos.map((gasto) => (
                 <TableRow key={gasto.id}>
                   <TableCell>{gasto.descricao}</TableCell>
-                  <TableCell sx={{ color: gasto.valor < 0 ? 'red' : 'green' }}>
+                  <TableCell sx={{ color: gasto.valor < 0 ? '#e57373' : '#32c48d' }}>
                     {gasto.valor < 0 ? `- R$${Math.abs(gasto.valor)}` : `+ R$${gasto.valor}`}
                   </TableCell>
                   <TableCell>{gasto.data}</TableCell>

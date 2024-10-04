@@ -25,44 +25,83 @@ function AdicionarFormaPagamento() {
   };
 
   return (
-    <Box p={3} component={Paper} elevation={3} sx={{ maxWidth: 600, margin: 'auto', mt: 4 }}>
-      <Sidebar />
-      <Typography variant="h5" gutterBottom>
-        Adicionar Nova Forma de Pagamento
-      </Typography>
-
-      <TextField
-        label="Nova Forma de Pagamento"
-        variant="outlined"
-        fullWidth
-        value={novaForma}
-        onChange={(e) => setNovaForma(e.target.value)}
-        error={!!erro}
-        helperText={erro}
-        sx={{ mb: 2 }}
-      />
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAdicionarForma}
-        fullWidth
-        disabled={!novaForma.trim()} // Desativa o botão se o campo estiver vazio
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar fixa e sempre visível */}
+      <Box
+        sx={{
+          width: '240px',
+          position: 'fixed',
+          height: '100vh',
+          backgroundColor: '#1c044c', // Fundo da sidebar de acordo com a paleta
+          color: '#fff',
+        }}
       >
-        Adicionar
-      </Button>
+        <Sidebar isOpen={true} /> {/* Forçando a Sidebar a estar sempre aberta */}
+      </Box>
 
-      <Typography variant="h6" sx={{ mt: 4 }}>
-        Formas de Pagamento Disponíveis
-      </Typography>
+      {/* Conteúdo principal centralizado */}
+      <Box
+        p={3}
+        component={Paper}
+        elevation={3}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexGrow: 1,
+          bgcolor: '#ece8ff', // Fundo no estilo da plataforma
+          borderRadius: '10px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          marginLeft: '240px', // Compensar a largura da sidebar
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: 600 }}>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{
+              color: '#1c044c',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            Adicionar Nova Forma de Pagamento
+          </Typography>
 
-      <List>
-        {formasPagamento.map((forma, index) => (
-          <ListItem key={index} sx={{ padding: '8px 0' }}>
-            {forma}
-          </ListItem>
-        ))}
-      </List>
+          <TextField
+            label="Nova Forma de Pagamento"
+            variant="outlined"
+            fullWidth
+            value={novaForma}
+            onChange={(e) => setNovaForma(e.target.value)}
+            error={!!erro}
+            helperText={erro}
+            sx={{ mb: 2, backgroundColor: '#fff', borderRadius: '4px' }}
+          />
+
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#7048b7', color: '#fff' }}
+            onClick={handleAdicionarForma}
+            fullWidth
+            disabled={!novaForma.trim()} // Desativa o botão se o campo estiver vazio
+          >
+            Adicionar
+          </Button>
+
+          <Typography variant="h6" sx={{ mt: 4, color: '#1c044c', fontWeight: 'bold' }}>
+            Formas de Pagamento Disponíveis
+          </Typography>
+
+          <List>
+            {formasPagamento.map((forma, index) => (
+              <ListItem key={index} sx={{ padding: '8px 0', color: '#7048b7' }}>
+                {forma}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Box>
     </Box>
   );
 }

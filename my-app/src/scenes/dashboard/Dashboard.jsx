@@ -3,28 +3,25 @@ import {
   Box, Grid, Card, CardContent, Typography,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
 } from '@mui/material';
-import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; // Ícones do Material-UI
-import GastosContext from './GastosContext'; // Importando o contexto
+import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; 
+import GastosContext from './GastosContext'; 
 import Transaction from './Transaction';
-import BarChart from './BarChart'; // Componente BarChart
-import PieChartComponent from './PieChart'; // Componente PieChart
-import StackedBarChart from './StackedBarChart'; // Componente StackedBarChart
+import BarChart from './BarChart';
+import PieChartComponent from './PieChart';
+import StackedBarChart from './StackedBarChart';
 
 function Dashboard() {
-  const { gastos, tiposGasto } = useContext(GastosContext); // Acessando o estado global
+  const { gastos, tiposGasto } = useContext(GastosContext); 
 
-  // Estado para filtros
   const [tipoFiltro, setTipoFiltro] = useState('');
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
-  const [anoFiltro, setAnoFiltro] = useState(''); // Novo estado para filtro de ano
+  const [anoFiltro, setAnoFiltro] = useState(''); 
 
-  // Estado para controle de exibição dos gráficos
   const [mostrarBarChart, setMostrarBarChart] = useState(true);
   const [mostrarPieChart, setMostrarPieChart] = useState(true);
   const [mostrarStackedBarChart, setMostrarStackedBarChart] = useState(true);
 
-  // Função de filtro
   const filtrarGastos = () => {
     return gastos.filter((gasto) => {
       const tipoValido = tipoFiltro ? gasto.tipo === tipoFiltro : true;
@@ -35,27 +32,23 @@ function Dashboard() {
     });
   };
 
-  const gastosFiltrados = filtrarGastos(); // Aplicando o filtro aos dados
+  const gastosFiltrados = filtrarGastos(); 
 
-  // Recalculando o valor total de gastos com base nos filtros
   const totalGastos = gastosFiltrados.reduce((acc, gasto) => acc + gasto.valor, 0);
 
-  // Recalculando o total de entradas e saídas com base nos filtros
   const totalEntradas = gastosFiltrados
-    .filter((gasto) => gasto.valor > 0) // Entradas são valores positivos
+    .filter((gasto) => gasto.valor > 0)
     .reduce((acc, gasto) => acc + gasto.valor, 0);
 
   const totalSaidas = gastosFiltrados
-    .filter((gasto) => gasto.valor < 0) // Saídas são valores negativos
-    .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); // Usando Math.abs para somar corretamente
+    .filter((gasto) => gasto.valor < 0)
+    .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); 
 
-  // Preparando dados para o gráfico de barras (gastos ao longo do tempo)
   const barChartData = gastosFiltrados.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
     value: gasto.valor,
   }));
 
-  // Agrupando os dados por tipo de gasto para o gráfico de pizza
   const pieChartData = tiposGasto.map((tipo) => {
     const totalPorTipo = gastosFiltrados
       .filter((gasto) => gasto.tipo === tipo)
@@ -63,16 +56,13 @@ function Dashboard() {
     return { name: tipo, value: totalPorTipo };
   });
 
-  // Ordenando as transações por data e pegando as 5 últimas
   const ultimasTransacoes = gastosFiltrados
     .sort((a, b) => new Date(b.data) - new Date(a.data))
     .slice(0, 5);
 
-  return(
+  return (
     <Box p={4}>
-      {/* Resumo de Indicadores */}
       <Grid container spacing={2}>
-        {/* Cartões de Saldo, Entradas e Saídas */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
@@ -126,9 +116,7 @@ function Dashboard() {
         </Grid>
       </Grid>
 
-      {/* Filtros */}
       <Box mt={4} display="flex" gap={2} alignItems="center">
-        {/* Filtro por Tipo */}
         <TextField
           select
           label="Filtrar por Categoria"
@@ -144,7 +132,6 @@ function Dashboard() {
           ))}
         </TextField>
 
-        {/* Filtro por Data */}
         <TextField
           label="Data Início"
           type="date"
@@ -162,7 +149,6 @@ function Dashboard() {
           sx={{ width: 200 }}
         />
 
-        {/* Filtro por Ano */}
         <TextField
           label="Filtrar por Ano"
           type="number"
@@ -173,9 +159,7 @@ function Dashboard() {
         />
       </Box>
 
-      {/* Seletor de gráficos */}
-      <Box mt={4} display="flex" gap={4}
-      >
+      <Box mt={4} display="flex" gap={4}>
         <FormControlLabel
           control={<Checkbox checked={mostrarBarChart} onChange={() => setMostrarBarChart(!mostrarBarChart)} />}
           label="Gráfico de Barras"
@@ -190,42 +174,50 @@ function Dashboard() {
         />
       </Box>
 
-      {/* Gráficos */}
-      <Box sx={{display:"flex",gap: 2, marginTop: 4}}>
+      <Box sx={{ display: "flex", gap: 2, marginTop: 4 }}>
         {mostrarBarChart && <BarChart data={barChartData} />}
         {mostrarPieChart && <PieChartComponent data={pieChartData} />}
         {mostrarStackedBarChart && <StackedBarChart data={gastosFiltrados} />}
       </Box>
 
-      {/* Tabela de Gastos */}
-      <Box mt={4} sx={{ width: '100%', display: 'flex', gap: 6}}>
-        <Typography variant="h6" gutterBottom>Detalhes das Transações</Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Data</TableCell>
-                <TableCell>Tipo</TableCell>
-                <TableCell>Valor</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {gastosFiltrados.map((gasto, index) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{new Date(gasto.data).toLocaleDateString()}</TableCell>
-                  <TableCell>{gasto.tipo}</TableCell>
-                  <TableCell>{gasto.valor}</TableCell>
+      <Box mt={4} sx={{ display: 'flex', gap: 4, width: '100%' }}> 
+        <Box sx={{ width: '50%' }}> 
+          <Typography variant="h6" gutterBottom>Detalhes das Transações</Typography>
+          <TableContainer component={Paper} sx={{ borderRadius: "8px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", backgroundColor: '#f9f9f9' }}>
+            <Table>
+              <TableHead sx={{ backgroundColor: "#1c044c" }}>
+                <TableRow>
+                  <TableCell sx={{ color: "#fff" }}>ID</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Data</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Tipo</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Valor</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+              </TableHead>
+              <TableBody>
+                {gastosFiltrados.map((gasto, index) => (
+                  <TableRow key={gasto.id || index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{new Date(gasto.data).toLocaleDateString()}</TableCell>
+                    <TableCell>{gasto.tipo}</TableCell>
+                    <TableCell>{gasto.valor}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
 
-      {/* Últimas transações */}
-      <Transaction transactions={ultimasTransacoes} />
+        <Box sx={{ width: '50%' }}> 
+          <Typography variant="h6" gutterBottom>Últimas Transações</Typography>
+          <TableContainer component={Paper} sx={{ borderRadius: "8px", backgroundColor: '#f9f9f9', boxShadow: 'none' }}>
+            {ultimasTransacoes.length > 0 ? (
+              <Transaction transactions={ultimasTransacoes} />
+            ) : (
+              <Typography variant="body2">Nenhuma transação disponível</Typography>
+            )}
+          </TableContainer>
+        </Box>
+      </Box>
     </Box>
   );
 }
