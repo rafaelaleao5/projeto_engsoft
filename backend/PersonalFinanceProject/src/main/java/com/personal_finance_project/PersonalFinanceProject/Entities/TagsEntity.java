@@ -13,7 +13,6 @@ public class TagsEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String tagName;
-	private String type;
 	private Long userId;
 	
 	
@@ -23,7 +22,6 @@ public class TagsEntity {
 	
 	public TagsEntity(String tagName, String type, Long userId) {
 		this.tagName = tagName;
-		this.type = type;
 		this.userId = userId;
 	}
 
@@ -46,16 +44,6 @@ public class TagsEntity {
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
 
 }
 

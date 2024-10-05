@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,42 +26,100 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("tags")
 public class TagsController {
-	
+
 	@Autowired
 	TagsRepository tagsRepository;
-	
+
 	@Autowired
 	SecurityFilter security;
-	
+
 	@PostMapping("/save-tag")
-	public ResponseEntity saveTag(@RequestBody HashMap<String, Object> tagObject) throws Exception{
-		
+	public ResponseEntity saveTag(HttpServletRequest request, @RequestBody HashMap<String, Object> tagObject) throws Exception {
+
 		try {
-			TagsEntity tag = TagsSerializer.toTag(tagObject);
-			
-			tagsRepository.save(tag);	
-		}catch(Exception e){
-			throw new Exception(e);
-		}
-		
-		return ResponseEntity.ok().build();
-		
-	}
-	@GetMapping("/get-user-tags/{userId}")
-	public ResponseEntity getUserTags(HttpServletRequest request, @PathVariable Long userId) throws Exception {
-		
-		try {
+
 			Optional<UserEntity> optionalUser = security.getUser(request);
-			
+
 			UserEntity user = optionalUser.get();
 			
+			tagObject.put("userId", user.getId());
+			
+			TagsEntity tag = TagsSerializer.toTag(tagObject);
+
+			tagsRepository.save(tag);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+
+		return ResponseEntity.ok().build();
+
+	}
+
+	@GetMapping("/get-user-tags")
+	public ResponseEntity getUserTags(HttpServletRequest request) throws Exception {
+
+		try {
+			Optional<UserEntity> optionalUser = security.getUser(request);
+
+			UserEntity user = optionalUser.get();
+
 			List<TagsEntity> tags = tagsRepository.findByUserId(user.getId());
-			
-			HashMap<String, List<TagsEntity>> tagsList= TagsSerializer.toObject(tags);
-			
+
+			HashMap<String, List<TagsEntity>> tagsList = TagsSerializer.toObject(tags);
+
 			return ResponseEntity.ok(tagsList);
+
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
+	@PutMapping("/update-user-tags/{tagId}")
+	public ResponseEntity updateUserTags(@RequestBody HashMap<String, Object> tagJSON, @PathVariable Long tagId) throws Exception {
+
+		try {
 			
-		}catch(Exception e) {
+			boolean existsTag = tagsRepository.existsById(tagId);
+			
+			if(existsTag) {
+				
+				Optional<TagsEntity> optionalTag = tagsRepository.findById(tagId);
+				
+				TagsEntity tagObject = optionalTag.get();
+				
+				tagObject = TagsSerializer.updateObject(tagJSON, tagObject);
+				
+				return ResponseEntity.ok().build();
+				
+			}else {
+				return ResponseEntity.notFound().build();
+			}
+			
+
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
+	@DeleteMapping("/delete-user-tags/{tagId}")
+	public ResponseEntity deleteTag(@PathVariable Long tagId) throws Exception {
+
+		try {
+			
+			boolean existsTag = tagsRepository.existsById(tagId);
+			
+			if(existsTag) {
+				
+				tagsRepository.deleteById(tagId);
+				
+				return ResponseEntity.ok().build();
+				
+			}else {
+				return ResponseEntity.notFound().build();
+			}
+			
+
+		} catch (Exception e) {
 			throw new Exception(e);
 		}
 	}
