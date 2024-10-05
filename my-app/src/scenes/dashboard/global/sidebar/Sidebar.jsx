@@ -12,7 +12,6 @@ import {
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +26,7 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   color: 'white', // Cor do texto alterada para branco
   '&:hover': {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: '#fbc02d', // Cor de fundo ao passar o mouse
   },
 }));
 
@@ -36,11 +35,11 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { text: "Home", icon: <HomeOutlinedIcon sx={{ color: 'white' }} />, path: "/Menu" },
-    { text: "Formas de Pagamento", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Pagamento" },
-    { text: "Categoria", icon: <AddShoppingCartIcon sx={{ color: 'white' }} />, path: "/TipoGastos" },
-    { text: "Adicionar Transação", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Gastos" },
-    { text: "Exit", icon: <ExitToAppIcon sx={{ color: 'white' }} />, path: "/" },
+    { text: "Home", icon: <HomeOutlinedIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Menu" }, // Aumenta o tamanho do ícone
+    { text: "Formas de Pagamento", icon: <AddCardIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Pagamento" },
+    { text: "Categoria", icon: <AddShoppingCartIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/TipoGastos" },
+    { text: "Adicionar Transação", icon: <AddCardIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Gastos" },
+    { text: "Exit", icon: <ExitToAppIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/" },
   ];
 
   const toggleDrawer = () => {
