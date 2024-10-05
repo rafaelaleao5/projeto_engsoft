@@ -1,204 +1,221 @@
-import React, { useContext } from 'react';
-import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
-import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import React, { useContext, useState } from 'react';
+import {
+  Box, Grid, Card, CardContent, Typography,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
+} from '@mui/material';
+import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; // Ícones do Material-UI
 import GastosContext from './GastosContext'; // Importando o contexto
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+import Transaction from './Transaction';
+import BarChart from './BarChart'; // Componente BarChart
+import PieChartComponent from './PieChart'; // Componente PieChart
+import StackedBarChart from './StackedBarChart'; // Componente StackedBarChart
 
 function Dashboard() {
-  const { gastos } = useContext(GastosContext); // Acessando o estado global
+  const { gastos, tiposGasto } = useContext(GastosContext); // Acessando o estado global
 
-  // Exemplo de lógica para calcular o valor total de gastos
-  const totalGastos = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
+  // Estado para filtros
+  const [tipoFiltro, setTipoFiltro] = useState('');
+  const [dataInicio, setDataInicio] = useState('');
+  const [dataFim, setDataFim] = useState('');
 
-  // Preparando dados para o gráfico de linha (gastos ao longo do tempo)
-  const lineChartData = gastos.map((gasto, index) => ({
+  // Estado para controle de exibição dos gráficos
+  const [mostrarBarChart, setMostrarBarChart] = useState(true);
+  const [mostrarPieChart, setMostrarPieChart] = useState(true);
+  const [mostrarStackedBarChart, setMostrarStackedBarChart] = useState(true);
+
+  // Função de filtro
+  const filtrarGastos = () => {
+    return gastos.filter((gasto) => {
+      const tipoValido = tipoFiltro ? gasto.tipo === tipoFiltro : true;
+      const dataValida = (!dataInicio || new Date(gasto.data) >= new Date(dataInicio)) &&
+                         (!dataFim || new Date(gasto.data) <= new Date(dataFim));
+      return tipoValido && dataValida;
+    });
+  };
+
+  const gastosFiltrados = filtrarGastos(); // Aplicando o filtro aos dados
+
+  // Recalculando o valor total de gastos com base nos filtros
+  const totalGastos = gastosFiltrados.reduce((acc, gasto) => acc + gasto.valor, 0);
+
+  // Recalculando o total de entradas e saídas com base nos filtros
+  const totalEntradas = gastosFiltrados
+    .filter((gasto) => gasto.valor > 0) // Entradas são valores positivos
+    .reduce((acc, gasto) => acc + gasto.valor, 0);
+
+  const totalSaidas = gastosFiltrados
+    .filter((gasto) => gasto.valor < 0) // Saídas são valores negativos
+    .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); // Usando Math.abs para somar corretamente
+
+  // Preparando dados para o gráfico de barras (gastos ao longo do tempo)
+  const barChartData = gastosFiltrados.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
     value: gasto.valor,
   }));
 
   // Agrupando os dados por tipo de gasto para o gráfico de pizza
-  const tiposGastos = ['Alimentação', 'Transporte', 'Pessoal', 'Outros'];
+  const tiposGastos = ['ALIMENTAÇÃO', 'TRANSPORTE', 'PESSOAL', 'OUTROS'];
   const pieChartData = tiposGastos.map((tipo) => {
-    const totalPorTipo = gastos
+    const totalPorTipo = gastosFiltrados
       .filter((gasto) => gasto.tipo === tipo)
       .reduce((acc, gasto) => acc + gasto.valor, 0);
     return { name: tipo, value: totalPorTipo };
   });
 
-  return (
-    <Box p={2}>
+  // Ordenando as transações por data e pegando as 5 últimas
+  const ultimasTransacoes = gastosFiltrados
+    .sort((a, b) => new Date(b.data) - new Date(a.data))
+    .slice(0, 5);
+
+  return(
+    <Box p={4}>
       {/* Resumo de Indicadores */}
       <Grid container spacing={2}>
+        {/* Cartões de Saldo, Entradas e Saídas */}
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">{totalGastos}</Typography>
-              <Typography variant="subtitle1">Total de Gastos</Typography>
+              <Box display="flex" alignItems="center">
+                <AttachMoney sx={{ fontSize: 40, marginRight: 1 }} />
+                <Typography variant="h5">R$ {totalGastos.toFixed(2)}</Typography>
+              </Box>
+              <Typography variant="subtitle1">Saldo</Typography>
             </CardContent>
           </Card>
         </Grid>
+
         <Grid item xs={3}>
           <Card>
             <CardContent>
-              <Typography variant="h5">{gastos.length}</Typography>
+              <Box display="flex" alignItems="center">
+                <Assessment sx={{ fontSize: 40, marginRight: 1 }} />
+                <Typography variant="h5">{gastosFiltrados.length}</Typography>
+              </Box>
               <Typography variant="subtitle1">Total de Transações</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center">
+                <ArrowUpward sx={{ fontSize: 40, color: 'green', marginRight: 1 }} />
+                <Typography variant="h5" sx={{ color: 'green' }}>
+                  R$ {totalEntradas.toFixed(2)}
+                </Typography>
+              </Box>
+              <Typography variant="subtitle1">Saldo Entradas</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center">
+                <ArrowDownward sx={{ fontSize: 40, color: 'red', marginRight: 1 }} />
+                <Typography variant="h5" sx={{ color: 'red' }}>
+                  R$ {totalSaidas.toFixed(2)}
+                </Typography>
+              </Box>
+              <Typography variant="subtitle1">Saldo Saídas</Typography>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* Gráficos */}
-      <Box display="flex" mt={4}>
-        {/* Gráfico de Linha */}
-        <Box flex={1} p={2} backgroundColor="#f0f4f8">
-          <Typography variant="h6">Gastos ao Longo do Tempo</Typography>
-          <LineChart width={400} height={250} data={lineChartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        </Box>
+      {/* Filtros */}
+      <Box mt={4} display="flex" gap={2} alignItems="center">
+        {/* Filtro por Tipo */}
+        <TextField
+          select
+          label="Filtrar por Categoria"
+          value={tipoFiltro}
+          onChange={(e) => setTipoFiltro(e.target.value)}
+          sx={{ width: 200 }}
+        >
+          <MenuItem value="">Todos</MenuItem>
+          {tiposGasto.map((tipo) => (
+            <MenuItem key={tipo} value={tipo}>
+              {tipo}
+            </MenuItem>
+          ))}
+        </TextField>
 
-        {/* Gráfico de Pizza */}
-        <Box flex={1} p={2}>
-          <Typography variant="h6">Distribuição de Gastos por Tipo</Typography>
-          <PieChart width={400} height={250}>
-            <Pie
-              data={pieChartData}
-              margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-        startAngle={-4}
-        innerRadius={0.35}
-        cornerRadius={3}
-        activeOuterRadiusOffset={8}
-        borderWidth={1}
-        borderColor={{
-            from: 'color',
-            modifiers: [
-                [
-                    'darker',
-                    '0.8'
-                ]
-            ]
-        }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{
-            from: 'color',
-            modifiers: [
-                [
-                    'darker',
-                    2
-                ]
-            ]
-        }}
-        defs={[
-            {
-                id: 'dots',
-                type: 'patternDots',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                size: 4,
-                padding: 1,
-                stagger: true
-            },
-            {
-                id: 'lines',
-                type: 'patternLines',
-                background: 'inherit',
-                color: 'rgba(255, 255, 255, 0.3)',
-                rotation: -45,
-                lineWidth: 6,
-                spacing: 10
-            }
-        ]}
-        fill={[
-            {
-                match: {
-                    id: 'ruby'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'c'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'go'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'python'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'scala'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'lisp'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'elixir'
-                },
-                id: 'lines'
-            },
-            {
-                match: {
-                    id: 'javascript'
-                },
-                id: 'lines'
-            }
-        ]}
-        legends={[
-            {
-                anchor: 'bottom',
-                direction: 'row',
-                justify: false,
-                translateX: 0,
-                translateY: 56,
-                itemsSpacing: 0,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: '#999',
-                itemDirection: 'left-to-right',
-                itemOpacity: 1,
-                symbolSize: 18,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
-        ]}
-            >
-              {pieChartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-          </PieChart>
-        </Box>
+        {/* Filtro por Data */}
+        <TextField
+          label="Data Início"
+          type="date"
+          value={dataInicio}
+          onChange={(e) => setDataInicio(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          sx={{ width: 200 }}
+        />
+        <TextField
+          label="Data Fim"
+          type="date"
+          value={dataFim}
+          onChange={(e) => setDataFim(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          sx={{ width: 200 }}
+        />
       </Box>
+
+      {/* Seletor de gráficos */}
+      <Box mt={4} display="flex" gap={4}>
+        <FormControlLabel
+          control={<Checkbox checked={mostrarBarChart} onChange={() => setMostrarBarChart(!mostrarBarChart)} />}
+          label="Gráfico de Barras"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={mostrarPieChart} onChange={() => setMostrarPieChart(!mostrarPieChart)} />}
+          label="Gráfico de Pizza"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={mostrarStackedBarChart} onChange={() => setMostrarStackedBarChart(!mostrarStackedBarChart)} />}
+          label="Gráfico de Barras Empilhadas"
+        />
+      </Box>
+
+      {/* Gráficos */}
+      <Box sx={{display:"flex",gap: 2, marginTop: 4}}>
+        {mostrarBarChart && <BarChart data={barChartData} />}
+        {mostrarPieChart && <PieChartComponent data={pieChartData} />}
+        {mostrarStackedBarChart && <StackedBarChart data={gastosFiltrados} />}
+      </Box>
+
+      {/* Tabela de Gastos */}
+      
+      <Box mt={4} sx={{ width: '100%', display: 'flex', gap: 6}}>
+      <Typography variant="h6" gutterBottom>Detalhes das Transações</Typography>
+
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Categoria</TableCell>
+                <TableCell align="right">Valor</TableCell>
+                <TableCell align="right">Data</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {ultimasTransacoes.map((gasto, index) => (
+                <TableRow key={index}>
+                  <TableCell>{gasto.tipo}</TableCell>
+                  <TableCell align="right">{`R$ ${gasto.valor.toFixed(2)}`}</TableCell>
+                  <TableCell align="right">{gasto.data}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Transaction />
+        
+      </Box>
+      
+
+     
     </Box>
   );
 }
