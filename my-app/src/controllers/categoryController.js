@@ -23,7 +23,7 @@ export const saveCategory = async (name, type) => {
 
 export const getCategoryByUserId = async () => {
     try{
-    debugger
+    
     const response = await api.get('http://localhost:8080/tags/get-user-tags/' + '5')
 
         return response.data.tags;

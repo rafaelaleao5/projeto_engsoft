@@ -25,7 +25,6 @@ function Login() {
         // Chama a função login e envia os dados
         const token = await login(email, password);
         const tags = await getCategoryByUserId()
-        debugger
         tags.forEach(tag => {
             
             adicionarTipoGasto(tag.tagName)
