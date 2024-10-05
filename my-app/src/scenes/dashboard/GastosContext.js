@@ -7,7 +7,7 @@ const GastosContext = createContext();
 export const GastosProvider = ({ children }) => {
   const [gastos, setGastos] = useState([]);
   const [transacoes, setTransacoes] = useState([]);
-
+  
   // Valores padrões para tipos de gasto e formas de pagamento
   const [tiposGasto, setTiposGasto] = useState(['ALIMENTAÇÃO', 'TRANSPORTE', 'PESSOAL', 'OUTROS']);
   const [formasPagamento, setFormasPagamento] = useState(['VR', 'PIX', 'CRÉDITO', 'OUTROS']);
@@ -64,7 +64,7 @@ const agruparGastosPorMes = () => {
         tiposGasto, 
         formasPagamento, 
         adicionarGasto, 
-        addTransacao, 
+        addTransacao,
         limparGastos,
         adicionarTipoGasto,
         adicionarFormaPagamento,

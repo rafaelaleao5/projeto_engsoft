@@ -13,7 +13,6 @@ export const login = async (email, password) => {
 
     // Recebe o token JWT
     const token = response.data.token;
-    debugger
     
     // Armazena o token no localStorage
     localStorage.setItem('token', token);

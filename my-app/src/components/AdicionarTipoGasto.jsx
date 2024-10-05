@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
 import GastosContext from '../scenes/dashboard/GastosContext';
+import { saveCategory } from '../controllers/categoryController';
 
 function AdicionarTipoGasto() {
   const { adicionarTipoGasto, tiposGasto } = useContext(GastosContext);
   const [novoTipo, setNovoTipo] = useState('');
   const [erro, setErro] = useState('');
 
-  const handleAdicionarTipoGasto = () => {
+  const handleAdicionarTipoGasto = async () => {
     const novoTipoUpper = novoTipo.trim().toUpperCase();
 
     // Verifica se o tipo já existe (comparando em upper case)
@@ -17,9 +18,17 @@ function AdicionarTipoGasto() {
     }
 
     if (novoTipoUpper) {
-      adicionarTipoGasto(novoTipoUpper); // Adiciona o tipo em upper case
-      setNovoTipo(''); // Limpa o campo
-      setErro(''); // Limpa mensagem de erro
+
+      try{
+          await saveCategory(novoTipo, "CATEGORY").then((response) => {
+          adicionarTipoGasto(novoTipoUpper); // Adiciona o tipo em upper case
+          setNovoTipo(''); // Limpa o campo
+          setErro(''); // Limpa mensagem de erro
+        })
+      }catch(err){
+        console.log(err)
+      }
+
     }
   };
 
