@@ -21,6 +21,7 @@ function Dashboard() {
   const [mostrarBarChart, setMostrarBarChart] = useState(true);
   const [mostrarPieChart, setMostrarPieChart] = useState(true);
   const [mostrarStackedBarChart, setMostrarStackedBarChart] = useState(true);
+  
 
   const filtrarGastos = () => {
     return gastos.filter((gasto) => {
@@ -32,7 +33,8 @@ function Dashboard() {
     });
   };
 
-  const gastosFiltrados = filtrarGastos(); 
+  const gastosFiltrados = filtrarGastos();
+   
 
   const totalGastos = gastosFiltrados.reduce((acc, gasto) => acc + gasto.valor, 0);
 
@@ -47,6 +49,7 @@ function Dashboard() {
   const barChartData = gastosFiltrados.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
     value: gasto.valor,
+    
   }));
 
   const pieChartData = tiposGasto.map((tipo) => {
@@ -59,6 +62,19 @@ function Dashboard() {
   const ultimasTransacoes = gastosFiltrados
     .sort((a, b) => new Date(b.data) - new Date(a.data))
     .slice(0, 5);
+
+  if (gastosFiltrados.length === 0) { // talvez mudar lógica e props c nome do user
+    return (
+      <Box p={4} textAlign="center">
+        <Typography variant="h5"> 
+          Bem-vindo, Marcos! 
+        </Typography>
+        <Typography variant="body1" mt={2}>
+          Vamos adicionar sua primeira transação. Clique no símbolo de <strong>+</strong> no canto superior direito e comece a organizar sua vida financeira.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box p={4}>
