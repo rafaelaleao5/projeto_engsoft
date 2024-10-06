@@ -1,6 +1,6 @@
 import React from 'react'
 import Topbar from '../scenes/dashboard/global/Topbar'
-import Sidebar from '../scenes/dashboard/global/Sidebar'
+import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar'
 import Dashboard from '../scenes/dashboard/Dashboard'
 function Menu () {
     return (
