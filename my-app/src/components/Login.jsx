@@ -3,8 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Grid, Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Logo from '../img/LOGO.png';
 import { login } from "../controllers/loginController";
-import { getCategoryByUserId } from "../controllers/categoryController";
-import GastosContext from '../scenes/dashboard/GastosContext';
+
 
 /**
  * Função que retorna o JSX da página de Login
@@ -15,7 +14,6 @@ function Login() {
     const navigate = useNavigate(); // Hook para navegação
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { adicionarTipoGasto} = useContext(GastosContext);
   
     // Função que será chamada ao submeter o formulário
     const handleSubmit = async (event) => {
@@ -24,13 +22,8 @@ function Login() {
       try {
         // Chama a função login e envia os dados
         const token = await login(email, password);
-        const tags = await getCategoryByUserId()
-        tags.forEach(tag => {
-            
-            adicionarTipoGasto(tag.tagName)
-        });
+
         navigate('/Menu');
-        
         // Lógica adicional após o login bem-sucedido
         console.log('Login bem-sucedido, token:', token);
       } catch (error) {

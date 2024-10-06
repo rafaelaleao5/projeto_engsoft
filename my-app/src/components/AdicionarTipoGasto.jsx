@@ -1,12 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
 import GastosContext from '../scenes/dashboard/GastosContext';
+import { getCategoryByUserId } from "../controllers/categoryController";
 import { saveCategory } from '../controllers/categoryController';
 
 function AdicionarTipoGasto() {
   const { adicionarTipoGasto, tiposGasto } = useContext(GastosContext);
   const [novoTipo, setNovoTipo] = useState('');
   const [erro, setErro] = useState('');
+  let hasCategoryInfo = false;
 
   const handleAdicionarTipoGasto = async () => {
     const novoTipoUpper = novoTipo.trim().toUpperCase();
@@ -30,7 +32,27 @@ function AdicionarTipoGasto() {
       }
 
     }
-  };
+};
+
+
+useEffect(() => {
+  getCategories()
+
+}, []);
+
+  const getCategories = async () => {
+    if(!hasCategoryInfo){
+      hasCategoryInfo = true;
+      const tags = await getCategoryByUserId()
+      tags.forEach(tag => {
+        if (tiposGasto.includes(tag.tagName)) {
+          return;
+        }
+        
+        adicionarTipoGasto(tag.tagName)
+      });
+    }
+  }
 
   return (
     <Box
