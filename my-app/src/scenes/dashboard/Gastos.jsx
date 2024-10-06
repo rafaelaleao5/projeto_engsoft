@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Box, Button, FormControl, InputLabel, MenuItem, Paper, Table, TableBody,
   TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip, Select, IconButton
@@ -6,9 +6,11 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
+import { getCategoryByUserId } from '../../controllers/categoryController';
+import { getPaymentMethodByUserId } from '../../controllers/paymentMethodController';
 
 function Gastos() {
-  const { gastos, adicionarGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento } = useContext(GastosContext);
+  const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
@@ -17,6 +19,9 @@ function Gastos() {
   const [entradaSaida, setEntradaSaida] = useState('');
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
+
+  let hasCategoryInfo = false;
+  let hasPaymentMethodInfo = false;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,6 +71,41 @@ function Gastos() {
   const handleExcluir = (id) => {
     excluirGasto(id);
   };
+
+  useEffect(() => {
+    getCategories()
+    getPaymentMethods()
+  
+  }, []);
+
+  const getCategories = async () => {
+    if(!hasCategoryInfo){
+      hasCategoryInfo = true;
+      const tags = await getCategoryByUserId()
+      tags.forEach(tag => {
+        if (tiposGasto.includes(tag.tagName)) {
+          return;
+        }
+        
+        adicionarTipoGasto(tag.tagName)
+      });
+    }
+  }
+
+  const getPaymentMethods = async () => {
+    if(!hasPaymentMethodInfo){
+      hasPaymentMethodInfo = true;
+      const paymentMethods = await getPaymentMethodByUserId()
+      paymentMethods.forEach(paymentMethod => {
+        debugger
+        if (formasPagamento.includes(paymentMethod.methodName)) {
+          return;
+        }
+        
+        adicionarFormaPagamento(paymentMethod.methodName)
+      });
+    }
+  }
 
   return (
     <Box display="flex" bgcolor="#ece8ff" p={3} borderRadius="10px" boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)">

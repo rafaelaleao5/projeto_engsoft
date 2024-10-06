@@ -1,16 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button, TextField, Box, Typography, List, ListItem, Paper, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material'; // Importando ícones
 import GastosContext from '../scenes/dashboard/GastosContext';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
+import { savePaymentMethod, getPaymentMethodByUserId } from '../controllers/paymentMethodController';
 
 function AdicionarFormaPagamento() {
   const { formasPagamento, adicionarFormaPagamento, removerFormaPagamento } = useContext(GastosContext);
   const [novaForma, setNovaForma] = useState('');
   const [erro, setErro] = useState('');
   const [formaEditando, setFormaEditando] = useState(null); // Estado para armazenar a forma sendo editada
+  let hasPaymentMethodInfo = false;
 
-  const handleAdicionarForma = () => {
+  const handleAdicionarForma = async () => {
     const novaFormaUpper = novaForma.trim().toUpperCase();
 
     // Verifica se a forma de pagamento já existe (compara em upper case)
@@ -28,7 +30,15 @@ function AdicionarFormaPagamento() {
         }
         setFormaEditando(null); // Limpa o estado de edição
       } else {
-        adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+
+        try{
+          await savePaymentMethod(novaFormaUpper).then( () => {
+            adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+          })
+  
+        }catch(err){
+          throw new err;
+        }
       }
 
       setNovaForma(''); // Limpar o campo após adicionar
@@ -44,6 +54,26 @@ function AdicionarFormaPagamento() {
   const handleExcluirForma = (forma) => {
     removerFormaPagamento(forma); // Chama a função de remover forma
   };
+
+  useEffect(() => {
+    getPaymentMethods()
+  
+  }, []);
+
+  const getPaymentMethods = async () => {
+    if(!hasPaymentMethodInfo){
+      hasPaymentMethodInfo = true;
+      const paymentMethods = await getPaymentMethodByUserId()
+      paymentMethods.forEach(paymentMethod => {
+        debugger
+        if (formasPagamento.includes(paymentMethod.methodName)) {
+          return;
+        }
+        
+        adicionarFormaPagamento(paymentMethod.methodName)
+      });
+    }
+  }
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
