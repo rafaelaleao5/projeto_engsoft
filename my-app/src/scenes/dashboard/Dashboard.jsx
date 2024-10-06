@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+
+import React, { useContext, useState} from 'react';
 import {
   Box, Grid, Card, CardContent, Typography,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
@@ -17,6 +18,9 @@ function Dashboard() {
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
   const [anoFiltro, setAnoFiltro] = useState(''); 
+  const [filtroTipoTransacao, setFiltroTipoTransacao] = useState('todos'); // 'todos', 'entrada', 'saida'
+  
+
 
   const [mostrarBarChart, setMostrarBarChart] = useState(true);
   const [mostrarPieChart, setMostrarPieChart] = useState(true);
@@ -29,9 +33,16 @@ function Dashboard() {
       const dataValida = (!dataInicio || new Date(gasto.data) >= new Date(dataInicio)) &&
                          (!dataFim || new Date(gasto.data) <= new Date(dataFim));
       const anoValido = anoFiltro ? new Date(gasto.data).getFullYear() === parseInt(anoFiltro) : true;
-      return tipoValido && dataValida && anoValido;
+  
+      // Filtrar por entrada ou saída
+      const tipoTransacaoValida = filtroTipoTransacao === 'todos' ||
+        (filtroTipoTransacao === 'entrada' && gasto.valor > 0) ||
+        (filtroTipoTransacao === 'saida' && gasto.valor < 0);
+  
+      return tipoValido && dataValida && anoValido && tipoTransacaoValida;
     });
   };
+  
 
   const gastosFiltrados = filtrarGastos();
    
@@ -46,11 +57,13 @@ function Dashboard() {
     .filter((gasto) => gasto.valor < 0)
     .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); 
 
-  const barChartData = gastosFiltrados.map((gasto, index) => ({
-    name: `Gasto ${index + 1}`,
-    value: gasto.valor,
+    const barChartData = gastosFiltrados.map((gasto, index) => ({
+      name: `Gasto ${index + 1}`,
+      value: gasto.valor,
+    }));
     
-  }));
+  console.log(barChartData);
+
 
   const pieChartData = tiposGasto.map((tipo) => {
     const totalPorTipo = gastosFiltrados
@@ -164,6 +177,17 @@ function Dashboard() {
           InputLabelProps={{ shrink: true }}
           sx={{ width: 200 }}
         />
+        <TextField
+          select
+          label="Tipo de Transação"
+          value={filtroTipoTransacao}
+          onChange={(e) => setFiltroTipoTransacao(e.target.value)}
+          sx={{ width: 200 }}
+        >
+          <MenuItem value="todos">Todos</MenuItem>
+          <MenuItem value="entrada">Entrada</MenuItem>
+          <MenuItem value="saida">Saída</MenuItem>
+          </TextField>
 
         <TextField
           label="Filtrar por Ano"
