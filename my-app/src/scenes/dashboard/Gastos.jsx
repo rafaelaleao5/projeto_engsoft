@@ -97,7 +97,6 @@ function Gastos() {
       hasPaymentMethodInfo = true;
       const paymentMethods = await getPaymentMethodByUserId()
       paymentMethods.forEach(paymentMethod => {
-        debugger
         if (formasPagamento.includes(paymentMethod.methodName)) {
           return;
         }
