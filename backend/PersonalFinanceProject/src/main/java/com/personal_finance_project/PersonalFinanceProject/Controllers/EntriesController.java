@@ -51,7 +51,7 @@ public class EntriesController {
 		
 		UserEntity user = optionalUser.get();
 		
-		List<EntriesEntity> entriesList = entriesRepository.findByUserId(user.getId());
+		List<EntriesEntity> entriesList = entriesRepository.findByUserId(user);
 		
 		return new ResponseEntity<>(entriesList, HttpStatus.OK);
 		

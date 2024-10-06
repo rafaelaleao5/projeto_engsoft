@@ -91,6 +91,8 @@ public class PaymentMethodController {
 
 				PaymentMethodEntity paymentMethod = PaymentMethodSerializer.updateObject(paymentMethodJSON, oldPaymentMethod);
 				
+				paymentMethodRepository.save(paymentMethod);
+				
 				return ResponseEntity.ok().build();
 			}else {
 				return ResponseEntity.notFound().build();

@@ -12,8 +12,6 @@ import {
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from 'react-router-dom';
@@ -21,14 +19,14 @@ import { useNavigate } from 'react-router-dom';
 // Estilizações
 const SidebarContainer = styled(Box)(({ theme }) => ({
   width: 250,
-  backgroundColor: '#1c044c', // Cor de fundo alterada
-  padding: theme.spacing(2),
+  height: "100%", // Defina a altura para ocupar toda a área disponível
+  backgroundColor: '#1c044c', // Cor de fundo alterada para roxo
 }));
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   color: 'white', // Cor do texto alterada para branco
   '&:hover': {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: '#fbc02d', // Cor de fundo ao passar o mouse
   },
 }));
 
@@ -37,13 +35,11 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { text: "Home", icon: <HomeOutlinedIcon sx={{ color: 'white' }} />, path: "/Menu" },
-    { text: "Formas de Pagamento", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Pagamento" },
-    { text: "Categoria", icon: <AddShoppingCartIcon sx={{ color: 'white' }} />, path: "/TipoGastos" },
-    { text: "Adicionar Transação", icon: <AddCardIcon sx={{ color: 'white' }} />, path: "/Gastos" },
-    { text: "PieChart", icon: <PieChartIcon sx={{ color: 'white' }} />, path: "/PieChart" },
-    { text: "BarChart", icon: <StackedBarChartIcon sx={{ color: 'white' }} />, path: "/BarChart" },
-    { text: "Exit", icon: <ExitToAppIcon sx={{ color: 'white' }} />, path: "/" },
+    { text: "Home", icon: <HomeOutlinedIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Menu" }, // Aumenta o tamanho do ícone
+    { text: "Formas de Pagamento", icon: <AddCardIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Pagamento" },
+    { text: "Categoria", icon: <AddShoppingCartIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/TipoGastos" },
+    { text: "Adicionar Transação", icon: <AddCardIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/Gastos" },
+    { text: "Exit", icon: <ExitToAppIcon sx={{ color: 'white', fontSize: 28 }} />, path: "/" },
   ];
 
   const toggleDrawer = () => {
@@ -56,11 +52,7 @@ const Sidebar = () => {
   };
 
   const list = (
-    <SidebarContainer
-      role="presentation"
-      onClick={toggleDrawer}
-      onKeyDown={toggleDrawer}
-    >
+    <SidebarContainer role="presentation">
       <List>
         {menuItems.map((item) => (
           <StyledListItem button key={item.text} onClick={() => handleNavigation(item.path)}>
@@ -86,7 +78,19 @@ const Sidebar = () => {
         <MenuIcon />
       </IconButton>
 
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
+      <Drawer
+        anchor="left"
+        open={isOpen}
+        onClose={toggleDrawer}
+        PaperProps={{
+          sx: {
+            backgroundColor: 'transparent', // Tornar o fundo do Drawer transparente
+          },
+        }}
+        BackdropProps={{
+          invisible: true, // Torna o backdrop invisível para evitar o fundo branco
+        }}
+      >
         {list}
       </Drawer>
     </div>
