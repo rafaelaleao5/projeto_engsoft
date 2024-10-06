@@ -40,8 +40,23 @@ const SimpleBarChart = () => {
   const data = agruparEntradasSaidasPorMes(gastos);
 
   return (
-    <Box p={2} bgcolor="#f0f4f8" borderRadius={2} boxShadow={1} maxWidth={800}>
-      <Typography variant="h6" gutterBottom>
+    <Box 
+      p={3} 
+      bgcolor="#ece8ff" 
+      borderRadius="10px"
+      boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)" 
+      width = '100%'
+      mx="auto" // Centralizar horizontalmente
+    >
+      <Typography 
+        variant="h6" 
+        gutterBottom 
+        sx={{ 
+          color: "#1c044c", 
+          fontWeight: "bold", 
+          textAlign: "center" 
+        }}
+      >
         Histórico de Transações
       </Typography>
 
@@ -50,20 +65,22 @@ const SimpleBarChart = () => {
           data={data} 
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         >
-          <XAxis dataKey="name" stroke="#555" />
-          <YAxis stroke="#555" />
-          <Tooltip />
-          <Legend />
+          <XAxis dataKey="name" stroke="#7048b7" /> 
+          <YAxis stroke="#7048b7" /> 
+          <Tooltip 
+            contentStyle={{ backgroundColor: "#f7f7f9", borderRadius: "8px", border: "1px solid #d4c8e7" }} 
+            itemStyle={{ color: "#1c044c" }}
+          />
+          <Legend wrapperStyle={{ color: "#1c044c" }} />
 
-          {/* Barra para entradas com borda */}
-          <Bar dataKey="entradas" fill="green" name="Entradas" stroke="#333" strokeWidth={2} radius={[10, 10, 0, 0]}>
+          <Bar dataKey="entradas" fill="#32c48d" name="Entradas" stroke="#1c044c" strokeWidth={1} radius={[10, 10, 0, 0]}>
             {data.map((entry, index) => (
               <Cell key={`cell-entrada-${index}`} />
             ))}
           </Bar>
 
-          {/* Barra para saídas com borda */}
-          <Bar dataKey="saidas" fill="red" name="Saídas" stroke="#333" strokeWidth={2} radius={[10, 10, 0, 0]}>
+          {/* Barra para saídas estilizadas */}
+          <Bar dataKey="saidas" fill="#e57373" name="Saídas" stroke="#1c044c" strokeWidth={1} radius={[10, 10, 0, 0]}>
             {data.map((entry, index) => (
               <Cell key={`cell-saida-${index}`} />
             ))}

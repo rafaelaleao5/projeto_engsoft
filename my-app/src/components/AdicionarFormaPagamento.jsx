@@ -1,68 +1,136 @@
 import React, { useState, useContext } from 'react';
-import { Button, TextField, Box, Typography, List, ListItem, Paper } from '@mui/material';
+import { Button, TextField, Box, Typography, List, ListItem, Paper, IconButton } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material'; // Importando ícones
 import GastosContext from '../scenes/dashboard/GastosContext';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarFormaPagamento() {
-  const { formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
+  const { formasPagamento, adicionarFormaPagamento, removerFormaPagamento } = useContext(GastosContext);
   const [novaForma, setNovaForma] = useState('');
   const [erro, setErro] = useState('');
+  const [formaEditando, setFormaEditando] = useState(null); // Estado para armazenar a forma sendo editada
 
   const handleAdicionarForma = () => {
     const novaFormaUpper = novaForma.trim().toUpperCase();
 
     // Verifica se a forma de pagamento já existe (compara em upper case)
-    if (formasPagamento.includes(novaFormaUpper)) {
+    if (formasPagamento.includes(novaFormaUpper) && formaEditando !== novaFormaUpper) {
       setErro('Essa forma de pagamento já existe.');
       return;
     }
 
     if (novaFormaUpper) {
-      adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+      if (formaEditando) {
+        // Edita a forma existente
+        const index = formasPagamento.indexOf(formaEditando);
+        if (index > -1) {
+          formasPagamento[index] = novaFormaUpper; // Atualiza a forma editada
+        }
+        setFormaEditando(null); // Limpa o estado de edição
+      } else {
+        adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+      }
+
       setNovaForma(''); // Limpar o campo após adicionar
       setErro(''); // Limpar mensagem de erro
     }
   };
 
+  const handleEditarForma = (forma) => {
+    setNovaForma(forma); // Preenche o campo com a forma a ser editada
+    setFormaEditando(forma); // Define a forma que está sendo editada
+  };
+
+  const handleExcluirForma = (forma) => {
+    removerFormaPagamento(forma); // Chama a função de remover forma
+  };
+
   return (
-    <Box p={3} component={Paper} elevation={3} sx={{ maxWidth: 600, margin: 'auto', mt: 4 }}>
-      <Sidebar />
-      <Typography variant="h5" gutterBottom>
-        Adicionar Nova Forma de Pagamento
-      </Typography>
-
-      <TextField
-        label="Nova Forma de Pagamento"
-        variant="outlined"
-        fullWidth
-        value={novaForma}
-        onChange={(e) => setNovaForma(e.target.value)}
-        error={!!erro}
-        helperText={erro}
-        sx={{ mb: 2 }}
-      />
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAdicionarForma}
-        fullWidth
-        disabled={!novaForma.trim()} // Desativa o botão se o campo estiver vazio
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar fixa e sempre visível */}
+      <Box
+        sx={{
+          width: '240px',
+          position: 'fixed',
+          height: '100vh',
+          backgroundColor: '#1c044c',
+          color: '#fff',
+        }}
       >
-        Adicionar
-      </Button>
+        <Sidebar isOpen={true} />
+      </Box>
 
-      <Typography variant="h6" sx={{ mt: 4 }}>
-        Formas de Pagamento Disponíveis
-      </Typography>
+      {/* Conteúdo principal centralizado */}
+      <Box
+        p={3}
+        component={Paper}
+        elevation={3}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexGrow: 1,
+          bgcolor: '#ece8ff',
+          borderRadius: '10px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          marginLeft: '240px',
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: 600 }}>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{
+              color: '#1c044c',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            Adicionar Nova Forma de Pagamento
+          </Typography>
 
-      <List>
-        {formasPagamento.map((forma, index) => (
-          <ListItem key={index} sx={{ padding: '8px 0' }}>
-            {forma}
-          </ListItem>
-        ))}
-      </List>
+          <TextField
+            label="Nova Forma de Pagamento"
+            variant="outlined"
+            fullWidth
+            value={novaForma}
+            onChange={(e) => setNovaForma(e.target.value)}
+            error={!!erro}
+            helperText={erro}
+            sx={{ mb: 2, backgroundColor: '#fff', borderRadius: '4px' }}
+          />
+
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#7048b7', color: '#fff' }}
+            onClick={handleAdicionarForma}
+            fullWidth
+            disabled={!novaForma.trim()} // Desativa o botão se o campo estiver vazio
+          >
+            {formaEditando ? 'Editar' : 'Adicionar'} {/* Altera o texto do botão */}
+          </Button>
+
+          <Typography variant="h6" sx={{ mt: 4, color: '#1c044c', fontWeight: 'bold' }}>
+            Formas de Pagamento Disponíveis
+          </Typography>
+
+          <List>
+            {formasPagamento.map((forma, index) => (
+              <ListItem key={index} sx={{ padding: '8px 0', color: '#7048b7', display: 'flex', justifyContent: 'space-between' }}>
+                <span>{forma}</span>
+                <div>
+                  <IconButton onClick={() => handleEditarForma(forma)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton onClick={() => handleExcluirForma(forma)}>
+                    <Delete />
+                  </IconButton>
+                </div>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Box>
     </Box>
   );
 }

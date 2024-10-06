@@ -1,33 +1,49 @@
 import React, { useContext, useState } from 'react';
 import {
-  Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody,
-  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip
+  Box, Button, FormControl, InputLabel, MenuItem, Paper, Table, TableBody,
+  TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Grid, Tooltip, Select, IconButton
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
 
 function Gastos() {
-  const { gastos, adicionarGasto, tiposGasto, formasPagamento } = useContext(GastosContext);
+  const { gastos, adicionarGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
   const [tipo, setTipo] = useState('');
   const [formapagamento, setFormaPagamento] = useState('');
   const [entradaSaida, setEntradaSaida] = useState('');
+  const [editando, setEditando] = useState(false);
+  const [idEditando, setIdEditando] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const valorFinal = entradaSaida === 'Saída' ? -Math.abs(parseFloat(valor)) : Math.abs(parseFloat(valor));
 
-    adicionarGasto({
-      id: gastos.length + 1,
+    const novoGasto = {
+      id: editando ? idEditando : gastos.length + 1,
       descricao,
       valor: valorFinal,
       data,
       tipo,
       formapagamento,
       entradaSaida,
-    });
+    };
 
+    if (editando) {
+      atualizarGasto(novoGasto);
+      setEditando(false);
+      setIdEditando(null);
+    } else {
+      adicionarGasto(novoGasto);
+    }
+
+    limparCampos();
+  };
+
+  const limparCampos = () => {
     setDescricao('');
     setValor('');
     setData('');
@@ -36,16 +52,26 @@ function Gastos() {
     setEntradaSaida('');
   };
 
-  return (
-    <Box display="flex">
-      <Box flexGrow={1} p={3}>
-        <Typography variant="h4" gutterBottom>
-          Adicionar Transação
-        </Typography>
+  const handleEditar = (gasto) => {
+    setDescricao(gasto.descricao);
+    setValor(Math.abs(gasto.valor));
+    setData(gasto.data);
+    setTipo(gasto.tipo);
+    setFormaPagamento(gasto.formapagamento);
+    setEntradaSaida(gasto.entradaSaida);
+    setEditando(true);
+    setIdEditando(gasto.id);
+  };
 
+  const handleExcluir = (id) => {
+    excluirGasto(id);
+  };
+
+  return (
+    <Box display="flex" bgcolor="#ece8ff" p={3} borderRadius="10px" boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)">
+      <Box flexGrow={1}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {/* Campo de Descrição com Tooltip */}
             <Grid item xs={12} md={6}>
               <Tooltip title="Informe uma breve descrição do gasto, como 'Almoço' ou 'Combustível'">
                 <TextField
@@ -54,11 +80,11 @@ function Gastos() {
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   required
+                  sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
                 />
               </Tooltip>
             </Grid>
 
-            {/* Campo de Valor com Tooltip */}
             <Grid item xs={12} md={6}>
               <Tooltip title="Informe o valor do gasto em R$, use números inteiros ou decimais">
                 <TextField
@@ -68,6 +94,7 @@ function Gastos() {
                   value={valor}
                   onChange={(e) => setValor(e.target.value)}
                   required
+                  sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
                 />
               </Tooltip>
             </Grid>
@@ -81,12 +108,12 @@ function Gastos() {
                 value={data}
                 onChange={(e) => setData(e.target.value)}
                 required
+                sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}
               />
             </Grid>
 
-            {/* Campo de seleção de tipo de gasto */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Categoria</InputLabel>
                 <Select
                   value={tipo}
@@ -101,9 +128,8 @@ function Gastos() {
               </FormControl>
             </Grid>
 
-            {/* Campo de seleção de forma de pagamento */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Forma de Pagamento</InputLabel>
                 <Select
                   value={formapagamento}
@@ -118,9 +144,8 @@ function Gastos() {
               </FormControl>
             </Grid>
 
-            {/* Campo de seleção de Entrada/Saída */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth required sx={{ backgroundColor: "#ffffff", borderRadius: "4px" }}>
                 <InputLabel>Entrada/Saída</InputLabel>
                 <Select
                   value={entradaSaida}
@@ -133,35 +158,43 @@ function Gastos() {
             </Grid>
 
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
-                Adicionar Transação
+              <Button type="submit" variant="contained" sx={{ backgroundColor: "#7048b7", color: "#ffffff" }} fullWidth>
+                {editando ? 'Atualizar Transação' : 'Adicionar Transação'}
               </Button>
             </Grid>
           </Grid>
         </form>
 
-        {/* Tabela de gastos */}
-        <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+        <TableContainer component={Paper} style={{ marginTop: '20px', backgroundColor: "#f7f7f9" }} sx={{ borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
           <Table>
-            <TableHead>
+            <TableHead sx={{ backgroundColor: "#1c044c" }}>
               <TableRow>
-                <TableCell>Descrição</TableCell>
-                <TableCell>Valor</TableCell>
-                <TableCell>Data</TableCell>
-                <TableCell>Categoria</TableCell>
-                <TableCell>Forma de Pagamento</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Descrição</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Valor</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Data</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Categoria</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Forma de Pagamento</TableCell>
+                <TableCell sx={{ color: "#ffffff" }}>Ações</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {gastos.map((gasto) => (
                 <TableRow key={gasto.id}>
                   <TableCell>{gasto.descricao}</TableCell>
-                  <TableCell sx={{ color: gasto.valor < 0 ? 'red' : 'green' }}>
+                  <TableCell sx={{ color: gasto.valor < 0 ? '#e57373' : '#32c48d' }}>
                     {gasto.valor < 0 ? `- R$${Math.abs(gasto.valor)}` : `+ R$${gasto.valor}`}
                   </TableCell>
                   <TableCell>{gasto.data}</TableCell>
                   <TableCell>{gasto.tipo}</TableCell>
                   <TableCell>{gasto.formapagamento}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleEditar(gasto)} aria-label="edit">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleExcluir(gasto.id)} aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
