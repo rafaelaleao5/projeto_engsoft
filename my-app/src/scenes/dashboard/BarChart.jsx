@@ -3,13 +3,15 @@ import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, Respo
 import { Typography, Box } from '@mui/material';
 import GastosContext from './GastosContext';
 import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 
 // Função para agrupar entradas e saídas por mês
 const agruparEntradasSaidasPorMes = (gastos) => {
   const meses = {};
 
   gastos.forEach((gasto) => {
-    const mes = format(parseISO(gasto.data), 'MMMM'); // Nome do mês
+    const mes = format(parseISO(gasto.data), 'MMMM', { locale: ptBR });
     const mesNumero = format(parseISO(gasto.data), 'M'); // Número do mês
 
     if (!meses[mesNumero]) {
@@ -19,7 +21,8 @@ const agruparEntradasSaidasPorMes = (gastos) => {
     if (gasto.valor >= 0) {
       meses[mesNumero].entradas += gasto.valor;
     } else {
-      meses[mesNumero].saidas += Math.abs(gasto.valor); // Abs para mostrar saídas como positivo no gráfico
+      meses[mesNumero].saidas += Math.abs(gasto.valor);
+      // Abs para mostrar saídas como positivo no gráfico
     }
   });
 
