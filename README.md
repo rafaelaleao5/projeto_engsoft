@@ -83,10 +83,6 @@ Este projeto está em fase de desenvolvimento contínuo. Alterações e atualiza
 
 ## Screenshots
 
-<div align="center">
-<img src="https://github.com/user-attachments/assets/f4953bd8-0137-4269-94c7-157e348b5015" width="700px" />
-</div>
-
 ### Tela de início
 
 <div align="center">
