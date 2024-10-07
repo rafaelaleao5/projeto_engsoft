@@ -1,4 +1,4 @@
-# Projeto de Engenharia de Software - Finanças
+# Projeto de Engenharia de Software - Budget Buddy
 
 Este projeto tem como objetivo o desenvolvimento de um software de finanças pessoais que ajude os usuários a gerenciar suas finanças de maneira eficiente e intuitiva. O software permite que os usuários registrem transações, criem orçamentos personalizados, acompanhem despesas e receitas, além de gerar relatórios financeiros detalhados. Ele é voltado para qualquer pessoa que deseja melhorar a gestão de suas finanças, oferecendo uma ferramenta acessível e fácil de usar para organizar melhor as finanças pessoais e alcançar maior estabilidade financeira.
 
