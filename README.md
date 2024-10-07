@@ -20,8 +20,18 @@ Clone o repositório:
 
 ```bash
 git clone https://github.com/rafaelaleao5/projeto_engsoft.git
-```
 
+FRONTEND:
+
+baixe o npm ou yarn
+acesse a pasta my-app pelo terminal
+execute o comando npm install ou yarn install
+
+BACKEND:
+
+baixe o docker
+
+```
 Instale as dependências necessárias:
 (dependencias)
 (configs do banco)
@@ -29,6 +39,17 @@ Instale as dependências necessárias:
 ## Uso
 
 Aqui está um exemplo de como utilizar o código:
+
+FRONTEND:
+
+Acesse a pasta my-app pelo terminal
+Execute o comando npm start ou yarn start
+
+BACKEND:
+
+Baixe o docker
+Execute o comando cd projeto_engsoft/backend/PersonalFinanceProject
+Execute o comando docker-compose up --build
 
 ## Funcionalidades
 
