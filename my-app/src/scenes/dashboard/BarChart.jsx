@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Box, Typography } from '@mui/material';
+import GastosContext from './GastosContext';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 
 // Função para agrupar entradas e saídas por mês
