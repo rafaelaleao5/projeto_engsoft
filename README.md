@@ -61,4 +61,9 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo https://github
 - Rafaela Leão
 - Tiago Chacon
 - Vinícius Nobre
+  
+**Status do Projeto**  
+Este projeto está em fase de desenvolvimento contínuo. Alterações e atualizações serão realizadas regularmente.
+
+**Screenshots**
 
