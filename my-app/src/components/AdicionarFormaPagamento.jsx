@@ -3,14 +3,13 @@ import { Button, TextField, Box, Typography, List, ListItem, Paper, IconButton }
 import { Edit, Delete } from '@mui/icons-material'; // Importando ícones
 import GastosContext from '../scenes/dashboard/GastosContext';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
-import { savePaymentMethod, getPaymentMethodByUserId } from '../controllers/paymentMethodController';
+import { savePaymentMethod, getPaymentMethodByUserId, getDefaultPaymentMethod } from '../controllers/paymentMethodController';
 
 function AdicionarFormaPagamento() {
-  const { formasPagamento, adicionarFormaPagamento, removerFormaPagamento } = useContext(GastosContext);
+  const { formasPagamento, adicionarFormaPagamento, removerFormaPagamento, hasPaymentMethodInfo, setPaymentMethodInfo, hasDefaultPaymentMethodInfo, setDefaultPaymentMethodInfo} = useContext(GastosContext);
   const [novaForma, setNovaForma] = useState('');
   const [erro, setErro] = useState('');
   const [formaEditando, setFormaEditando] = useState(null); // Estado para armazenar a forma sendo editada
-  let hasPaymentMethodInfo = false;
 
   const handleAdicionarForma = async () => {
     const novaFormaUpper = novaForma.trim().toUpperCase();
@@ -32,8 +31,9 @@ function AdicionarFormaPagamento() {
       } else {
 
         try{
-          await savePaymentMethod(novaFormaUpper).then( () => {
-            adicionarFormaPagamento(novaFormaUpper); // Adiciona em upper case
+          await savePaymentMethod(novaFormaUpper).then((newMethod) => {
+            
+            adicionarFormaPagamento(newMethod.data); // Adiciona em upper case
           })
   
         }catch(err){
@@ -57,19 +57,36 @@ function AdicionarFormaPagamento() {
 
   useEffect(() => {
     getPaymentMethods()
+    getPaymentMethodsDefault()
   
   }, []);
 
   const getPaymentMethods = async () => {
     if(!hasPaymentMethodInfo){
-      hasPaymentMethodInfo = true;
+      setPaymentMethodInfo(true);
       const paymentMethods = await getPaymentMethodByUserId()
       paymentMethods.forEach(paymentMethod => {
         if (formasPagamento.includes(paymentMethod.methodName)) {
           return;
         }
         
-        adicionarFormaPagamento(paymentMethod.methodName)
+        adicionarFormaPagamento(paymentMethod)
+        debugger
+      });
+    }
+  }
+
+  const getPaymentMethodsDefault = async () => {
+    if(!hasDefaultPaymentMethodInfo){
+      setDefaultPaymentMethodInfo(true);
+      const paymentMethods = await getDefaultPaymentMethod()
+      paymentMethods.forEach(paymentMethod => {
+        if (formasPagamento.includes(paymentMethod.methodName)) {
+          return;
+        }
+        
+        adicionarFormaPagamento(paymentMethod)
+        debugger
       });
     }
   }
@@ -146,7 +163,7 @@ function AdicionarFormaPagamento() {
           <List>
             {formasPagamento.map((forma, index) => (
               <ListItem key={index} sx={{ padding: '8px 0', color: '#7048b7', display: 'flex', justifyContent: 'space-between' }}>
-                <span>{forma}</span>
+                <span>{forma.methodName}</span>
                 <div>
                   <IconButton onClick={() => handleEditarForma(forma)}>
                     <Edit />

@@ -7,10 +7,15 @@ const GastosContext = createContext();
 export const GastosProvider = ({ children }) => {
   const [gastos, setGastos] = useState([]);
   const [transacoes, setTransacoes] = useState([]);
+  const [hasCategoryInfo, setCategoryInfo] = useState(false);
+  const [hasDefaultCategoryInfo, setDefaultCategoryInfo] = useState(false);
+  const [hasPaymentMethodInfo, setPaymentMethodInfo] = useState(false);
+  const [hasDefaultPaymentMethodInfo, setDefaultPaymentMethodInfo] = useState(false);
+
   
   // Valores padrões para tipos de gasto e formas de pagamento
-  const [tiposGasto, setTiposGasto] = useState(['ALIMENTAÇÃO', 'TRANSPORTE', 'PESSOAL', 'OUTROS']);
-  const [formasPagamento, setFormasPagamento] = useState(['VR', 'PIX', 'CRÉDITO', 'OUTROS']);
+  const [tiposGasto, setTiposGasto] = useState([]);
+  const [formasPagamento, setFormasPagamento] = useState([]);
 
   // Função para adicionar um novo gasto
   const adicionarGasto = (gasto) => {
@@ -19,8 +24,17 @@ export const GastosProvider = ({ children }) => {
 
   // Função para adicionar um novo tipo de gasto
   const adicionarTipoGasto = (novoTipo) => {
+    debugger
     setTiposGasto((prevTiposGasto) => [...prevTiposGasto, novoTipo]);
   };
+
+  const addCategoryInfo = (hasCategory) => {
+    setCategoryInfo(hasCategory);
+  }
+
+  const addDefaultCategoryInfo = (hasDefaultCategory) => {
+    setDefaultCategoryInfo(hasDefaultCategory)
+  }
 
   // Função para excluir um tipo de gasto
   const excluirTipoGasto = (tipo) => {
@@ -105,6 +119,16 @@ export const GastosProvider = ({ children }) => {
         addTransacao,
         limparGastos,
         adicionarTipoGasto,
+        hasCategoryInfo,
+        addCategoryInfo,
+        hasDefaultCategoryInfo,
+        setCategoryInfo,
+        setDefaultCategoryInfo,
+        addDefaultCategoryInfo,
+        hasPaymentMethodInfo, 
+        setPaymentMethodInfo,
+        hasDefaultPaymentMethodInfo, 
+        setDefaultPaymentMethodInfo,
         excluirTipoGasto,  // Adicionando função para excluir tipo de gasto
         atualizarTipoGasto, // Adicionando função para atualizar tipo de gasto
         adicionarFormaPagamento,

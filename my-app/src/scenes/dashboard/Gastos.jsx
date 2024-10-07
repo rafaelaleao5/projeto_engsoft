@@ -6,8 +6,8 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
-import { getCategoryByUserId } from '../../controllers/categoryController';
-import { getPaymentMethodByUserId } from '../../controllers/paymentMethodController';
+import { getCategoryByUserId, getDefaultCategories } from '../../controllers/categoryController';
+import { getPaymentMethodByUserId, getDefaultPaymentMethod } from '../../controllers/paymentMethodController';
 
 function Gastos() {
   const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
@@ -22,6 +22,8 @@ function Gastos() {
 
   let hasCategoryInfo = false;
   let hasPaymentMethodInfo = false;
+  let hasDefaultCategoryInfo = false;
+  let hasDefaultPaymentMethodInfo = false;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -74,7 +76,9 @@ function Gastos() {
 
   useEffect(() => {
     getCategories()
+    getCategoriesDefault()
     getPaymentMethods()
+    getPaymentMethodsDefault()
   
   }, []);
 
@@ -92,6 +96,22 @@ function Gastos() {
     }
   }
 
+  const getCategoriesDefault = async () => {
+    if(!hasDefaultCategoryInfo){
+      hasDefaultCategoryInfo = true;
+      const tags = await getDefaultCategories();
+      tags.forEach(tag => {
+        debugger
+        if (tiposGasto.includes(tag.tagName)) {
+          return;
+        }
+        
+        adicionarTipoGasto(tag)
+        debugger
+      });
+    }
+  }
+
   const getPaymentMethods = async () => {
     if(!hasPaymentMethodInfo){
       hasPaymentMethodInfo = true;
@@ -102,6 +122,21 @@ function Gastos() {
         }
         
         adicionarFormaPagamento(paymentMethod.methodName)
+      });
+    }
+  }
+
+  const getPaymentMethodsDefault = async () => {
+    if(!hasDefaultPaymentMethodInfo){
+      hasDefaultPaymentMethodInfo = true;
+      const paymentMethods = await getDefaultPaymentMethod()
+      paymentMethods.forEach(paymentMethod => {
+        if (formasPagamento.includes(paymentMethod.methodName)) {
+          return;
+        }
+        
+        adicionarFormaPagamento(paymentMethod)
+        debugger
       });
     }
   }
@@ -159,8 +194,8 @@ function Gastos() {
                   onChange={(e) => setTipo(e.target.value)}
                 >
                   {tiposGasto.map((tipoGasto, index) => (
-                    <MenuItem key={index} value={tipoGasto}>
-                      {tipoGasto}
+                    <MenuItem key={index} value={tipoGasto.tagName}>
+                      {tipoGasto.tagName}
                     </MenuItem>
                   ))}
                 </Select>
