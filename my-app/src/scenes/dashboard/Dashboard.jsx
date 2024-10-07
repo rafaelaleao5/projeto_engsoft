@@ -1,17 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Box, Grid, Card, CardContent, Typography,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
 } from '@mui/material';
 import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; 
 import GastosContext from './GastosContext'; 
+import { getEntryByUserId } from '../../controllers/entriesController';
 import Transaction from './Transaction';
 import BarChart from './BarChart';
 import PieChartComponent from './PieChart';
 import StackedBarChart from './StackedBarChart';
 
+
 function Dashboard() {
-  const { gastos, tiposGasto } = useContext(GastosContext); 
+  const { gastos, tiposGasto, adicionarGasto, hasEntries, setHasEntries } = useContext(GastosContext); 
 
   const [tipoFiltro, setTipoFiltro] = useState('');
   const [dataInicio, setDataInicio] = useState('');
@@ -25,43 +27,57 @@ function Dashboard() {
 
   const filtrarGastos = () => {
     return gastos.filter((gasto) => {
-      const tipoValido = tipoFiltro ? gasto.tipo === tipoFiltro : true;
-      const dataValida = (!dataInicio || new Date(gasto.data) >= new Date(dataInicio)) &&
-                         (!dataFim || new Date(gasto.data) <= new Date(dataFim));
-      const anoValido = anoFiltro ? new Date(gasto.data).getFullYear() === parseInt(anoFiltro) : true;
+      const tipoValido = tipoFiltro ? gasto.tagId.tagName === tipoFiltro : true;
+      const dataValida = (!dataInicio || new Date(gasto.purchaseDate) >= new Date(dataInicio)) &&
+                         (!dataFim || new Date(gasto.purchaseDate) <= new Date(dataFim));
+      const anoValido = anoFiltro ? new Date(gasto.purchaseDate).getFullYear() === parseInt(anoFiltro) : true;
       return tipoValido && dataValida && anoValido;
     });
   };
 
   const gastosFiltrados = filtrarGastos();
-   
 
-  const totalGastos = gastosFiltrados.reduce((acc, gasto) => acc + gasto.valor, 0);
+  const getEntries = async () => {
+    if(!hasEntries){
+      setHasEntries(true);
+      const entries = await getEntryByUserId()
+      entries.forEach(entry => {
+        adicionarGasto(entry);
+      });
+    }
+  }
+  
+  const totalGastos = gastosFiltrados.reduce((acc, gasto) => acc + gasto.entryValue, 0);
 
   const totalEntradas = gastosFiltrados
-    .filter((gasto) => gasto.valor > 0)
-    .reduce((acc, gasto) => acc + gasto.valor, 0);
+    .filter((gasto) => gasto.entryValue > 0)
+    .reduce((acc, gasto) => acc + gasto.entryValue, 0);
 
   const totalSaidas = gastosFiltrados
-    .filter((gasto) => gasto.valor < 0)
-    .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); 
+    .filter((gasto) => gasto.entryValue < 0)
+    .reduce((acc, gasto) => acc + Math.abs(gasto.entryValue), 0); 
 
   const barChartData = gastosFiltrados.map((gasto, index) => ({
     name: `Gasto ${index + 1}`,
-    value: gasto.valor,
+    value: gasto.entryValue,
     
   }));
 
   const pieChartData = tiposGasto.map((tipo) => {
     const totalPorTipo = gastosFiltrados
-      .filter((gasto) => gasto.tipo === tipo)
-      .reduce((acc, gasto) => acc + gasto.valor, 0);
-    return { name: tipo, value: totalPorTipo };
+      .filter((gasto) => gasto.tagId.tagName === tipo.tagName)
+      .reduce((acc, gasto) => acc + gasto.entryValue, 0);
+    return { name: tipo.tagName, value: totalPorTipo };
   });
 
   const ultimasTransacoes = gastosFiltrados
-    .sort((a, b) => new Date(b.data) - new Date(a.data))
+    .sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate))
     .slice(0, 5);
+
+    useEffect(() => {
+      getEntries()
+    
+    }, []);
 
   if (gastosFiltrados.length === 0) { // talvez mudar lógica e props c nome do user
     return (
@@ -142,8 +158,8 @@ function Dashboard() {
         >
           <MenuItem value="">Todos</MenuItem>
           {tiposGasto.map((tipo) => (
-            <MenuItem key={tipo} value={tipo}>
-              {tipo}
+            <MenuItem key={tipo.tagId} value={tipo.tagName}>
+              {tipo.tagName}
             </MenuItem>
           ))}
         </TextField>
@@ -213,9 +229,9 @@ function Dashboard() {
                 {gastosFiltrados.map((gasto, index) => (
                   <TableRow key={gasto.id || index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{new Date(gasto.data).toLocaleDateString()}</TableCell>
-                    <TableCell>{gasto.tipo}</TableCell>
-                    <TableCell>{gasto.valor}</TableCell>
+                    <TableCell>{new Date(gasto.purchaseDate).toLocaleDateString()}</TableCell>
+                    <TableCell>{gasto.tagId.tagName}</TableCell>
+                    <TableCell>{gasto.entryValue}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -227,7 +243,7 @@ function Dashboard() {
           <Typography variant="h6" gutterBottom>Últimas Transações</Typography>
           <TableContainer component={Paper} sx={{ borderRadius: "8px", backgroundColor: '#f9f9f9', boxShadow: 'none' }}>
             {ultimasTransacoes.length > 0 ? (
-              <Transaction transactions={ultimasTransacoes} />
+              <Transaction transactions={ultimasTransacoes.value} />
             ) : (
               <Typography variant="body2">Nenhuma transação disponível</Typography>
             )}

@@ -20,7 +20,9 @@ public class EntriesEntity {
 	
 	private String entryName;
 	private LocalDate purchaseDate;
-	
+	private Float entryValue;
+	private String entryType;
+
 	@ManyToOne
 	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private UserEntity userId;
@@ -85,9 +87,20 @@ public class EntriesEntity {
 		this.paymentMethodId = paymentMethodId;
 	}
 
+	public Float getEntryValue() {
+		return entryValue;
+	}
 
-	
-	
-	
+	public void setEntryValue(Float entryValue) {
+		this.entryValue = entryValue;
+	}
+
+	public String getEntryType() {
+		return entryType;
+	}
+
+	public void setEntryType(String entryType) {
+		this.entryType = entryType;
+	}
 	
 }

@@ -30,23 +30,23 @@ function Transactions() {
                 {ultimosGastos.map((gasto, index) => (
                     <ListItem key={index}>
                         <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: gasto.valor < 0 ? '#ffcccc' : '#ccffcc' }}>
-                                {iconMap[gasto.tipo] || <AccountBalanceWalletIcon />} {/* Ícone baseado no tipo */}
+                            <Avatar sx={{ bgcolor: gasto.entryValue < 0 ? '#ffcccc' : '#ccffcc' }}>
+                                {iconMap[gasto.entryType] || <AccountBalanceWalletIcon />} {/* Ícone baseado no tipo */}
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText
                             primary={
                                 <Typography variant="body1" component="span">
-                                    {gasto.descricao}
+                                    {gasto.entryName}
                                 </Typography>
                             }
                         />
                         <Typography
                             variant="body1"
                             component="span"
-                            sx={{ color: gasto.valor < 0 ? 'red' : 'green', fontWeight: 'bold' }}
+                            sx={{ color: gasto.entryValue < 0 ? 'red' : 'green', fontWeight: 'bold' }}
                         >
-                            {gasto.valor > 0 ? `+ $${gasto.valor}` : `- $${Math.abs(gasto.valor)}`}
+                            {gasto.entryValue > 0 ? `+ $${gasto.entryValue}` : `- $${Math.abs(gasto.entryValue)}`}
                         </Typography>
                     </ListItem>
                 ))}

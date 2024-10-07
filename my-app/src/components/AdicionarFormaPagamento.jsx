@@ -71,7 +71,6 @@ function AdicionarFormaPagamento() {
         }
         
         adicionarFormaPagamento(paymentMethod)
-        debugger
       });
     }
   }
@@ -86,7 +85,6 @@ function AdicionarFormaPagamento() {
         }
         
         adicionarFormaPagamento(paymentMethod)
-        debugger
       });
     }
   }

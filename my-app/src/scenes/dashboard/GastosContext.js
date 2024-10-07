@@ -11,6 +11,7 @@ export const GastosProvider = ({ children }) => {
   const [hasDefaultCategoryInfo, setDefaultCategoryInfo] = useState(false);
   const [hasPaymentMethodInfo, setPaymentMethodInfo] = useState(false);
   const [hasDefaultPaymentMethodInfo, setDefaultPaymentMethodInfo] = useState(false);
+  const [hasEntries, setHasEntries] = useState(false);
 
   
   // Valores padrões para tipos de gasto e formas de pagamento
@@ -24,7 +25,6 @@ export const GastosProvider = ({ children }) => {
 
   // Função para adicionar um novo tipo de gasto
   const adicionarTipoGasto = (novoTipo) => {
-    debugger
     setTiposGasto((prevTiposGasto) => [...prevTiposGasto, novoTipo]);
   };
 
@@ -93,7 +93,7 @@ export const GastosProvider = ({ children }) => {
   // Função para agrupar gastos por mês e categoria
   const agruparGastosPorMes = () => {
     // Agrupando gastos por mês
-    const gastosPorMes = groupBy(gastos, (gasto) => new Date(gasto.data).getMonth());
+    const gastosPorMes = groupBy(gastos, (gasto) => new Date(gasto.purchaseDate).getMonth());
 
     // Criando o array de resultado por mês e categorias
     return Object.keys(gastosPorMes).map((mes) => {
@@ -101,7 +101,7 @@ export const GastosProvider = ({ children }) => {
       
       // Para cada tipo de gasto, somar os valores e adicionar ao objeto
       tiposGasto.forEach((tipo) => {
-        grouped[tipo] = sumBy(gastosPorMes[mes].filter(g => g.tipo === tipo), 'valor');
+        grouped[tipo.tagName] = sumBy(gastosPorMes[mes].filter(g => g.tagId.tagName === tipo.tagName), 'entryValue');
       });
       
       return grouped;
@@ -129,6 +129,8 @@ export const GastosProvider = ({ children }) => {
         setPaymentMethodInfo,
         hasDefaultPaymentMethodInfo, 
         setDefaultPaymentMethodInfo,
+        hasEntries, 
+        setHasEntries,
         excluirTipoGasto,  // Adicionando função para excluir tipo de gasto
         atualizarTipoGasto, // Adicionando função para atualizar tipo de gasto
         adicionarFormaPagamento,

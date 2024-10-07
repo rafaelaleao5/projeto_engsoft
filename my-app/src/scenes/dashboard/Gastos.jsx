@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
 import { getCategoryByUserId, getDefaultCategories } from '../../controllers/categoryController';
 import { getPaymentMethodByUserId, getDefaultPaymentMethod } from '../../controllers/paymentMethodController';
+import { saveEntry } from '../../controllers/entriesController';
 
 function Gastos() {
   const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, 
@@ -23,18 +24,18 @@ function Gastos() {
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const valorFinal = entradaSaida === 'Saída' ? -Math.abs(parseFloat(valor)) : Math.abs(parseFloat(valor));
 
     const novoGasto = {
       id: editando ? idEditando : gastos.length + 1,
-      descricao,
+      descricao: descricao,
       valor: valorFinal,
-      data,
-      tipo,
-      formapagamento,
-      entradaSaida,
+      data: data,
+      tipo: tipo,
+      formapagamento: formapagamento,
+      entradaSaida: entradaSaida
     };
 
     if (editando) {
@@ -42,7 +43,10 @@ function Gastos() {
       setEditando(false);
       setIdEditando(null);
     } else {
-      adicionarGasto(novoGasto);
+
+      await saveEntry(novoGasto).then((entry) => {
+        adicionarGasto(entry);
+      })
     }
 
     limparCampos();
@@ -99,13 +103,11 @@ function Gastos() {
       setDefaultCategoryInfo(true);
       const tags = await getDefaultCategories();
       tags.forEach(tag => {
-        debugger
         if (tiposGasto.includes(tag.tagName)) {
           return;
         }
         
         adicionarTipoGasto(tag)
-        debugger
       });
     }
   }
@@ -134,7 +136,6 @@ function Gastos() {
         }
         
         adicionarFormaPagamento(paymentMethod)
-        debugger
       });
     }
   }
@@ -192,7 +193,7 @@ function Gastos() {
                   onChange={(e) => setTipo(e.target.value)}
                 >
                   {tiposGasto.map((tipoGasto, index) => (
-                    <MenuItem key={index} value={tipoGasto.tagName}>
+                    <MenuItem key={index} value={tipoGasto.id}>
                       {tipoGasto.tagName}
                     </MenuItem>
                   ))}
@@ -208,7 +209,7 @@ function Gastos() {
                   onChange={(e) => setFormaPagamento(e.target.value)}
                 >
                   {formasPagamento.map((forma, index) => (
-                    <MenuItem key={index} value={forma.methodName}>
+                    <MenuItem key={index} value={forma.id}>
                       {forma.methodName}
                     </MenuItem>
                   ))}
@@ -251,14 +252,14 @@ function Gastos() {
             </TableHead>
             <TableBody>
               {gastos.map((gasto) => (
-                <TableRow key={gasto.id}>
-                  <TableCell>{gasto.descricao}</TableCell>
-                  <TableCell sx={{ color: gasto.valor < 0 ? '#e57373' : '#32c48d' }}>
-                    {gasto.valor < 0 ? `- R$${Math.abs(gasto.valor)}` : `+ R$${gasto.valor}`}
+                <TableRow key={gasto.entryId}>
+                  <TableCell>{gasto.entryName}</TableCell>
+                  <TableCell sx={{ color: gasto.entryValue < 0 ? '#e57373' : '#32c48d' }}>
+                    {gasto.entryValue < 0 ? `- R$${Math.abs(gasto.entryValue)}` : `+ R$${gasto.entryValue}`}
                   </TableCell>
-                  <TableCell>{gasto.data}</TableCell>
-                  <TableCell>{gasto.tipo}</TableCell>
-                  <TableCell>{gasto.formapagamento}</TableCell>
+                  <TableCell>{gasto.purchaseDate}</TableCell>
+                  <TableCell>{gasto.tagId.tagName}</TableCell>
+                  <TableCell>{gasto.paymentMethodId.methodName}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditar(gasto)} aria-label="edit">
                       <EditIcon />

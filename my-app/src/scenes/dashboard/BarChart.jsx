@@ -11,17 +11,17 @@ const agruparEntradasSaidasPorMes = (gastos) => {
   const meses = {};
 
   gastos.forEach((gasto) => {
-    const mes = format(parseISO(gasto.data), 'MMMM', { locale: ptBR });
-    const mesNumero = format(parseISO(gasto.data), 'M'); // Número do mês
+    const mes = format(parseISO(gasto.purchaseDate), 'MMMM', { locale: ptBR });
+    const mesNumero = format(parseISO(gasto.purchaseDate), 'M'); // Número do mês
 
     if (!meses[mesNumero]) {
       meses[mesNumero] = { mes, entradas: 0, saidas: 0 };
     }
 
     if (gasto.valor >= 0) {
-      meses[mesNumero].entradas += gasto.valor;
+      meses[mesNumero].entradas += gasto.entryValue;
     } else {
-      meses[mesNumero].saidas += Math.abs(gasto.valor);
+      meses[mesNumero].saidas += Math.abs(gasto.entryValue);
       // Abs para mostrar saídas como positivo no gráfico
     }
   });

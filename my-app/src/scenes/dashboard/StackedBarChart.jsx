@@ -58,8 +58,8 @@ const StackedBarChart = () => {
           
           {tiposGasto.map((tipo, index) => (
             <Bar
-              key={tipo}
-              dataKey={tipo}
+              key={tipo.tagId}
+              dataKey={tipo.tagName}
               stackId="a"
               fill={COLORS[index % COLORS.length]}
               radius={[4, 4, 0, 0]}

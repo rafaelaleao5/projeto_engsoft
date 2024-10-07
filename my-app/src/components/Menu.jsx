@@ -42,7 +42,6 @@ function Menu () {
               return;
             }
             adicionarTipoGasto(tag)    
-          debugger
         });
       }
     }
@@ -71,7 +70,6 @@ function Menu () {
           }
           
           adicionarFormaPagamento(paymentMethod)
-          debugger
         });
       }
     }

@@ -47,7 +47,6 @@ useEffect(() => {
 }, []);
 
   const getCategories = async () => {
-    debugger
     if(!hasCategoryInfo){
       setCategoryInfo(true);
       const tags = await getCategoryByUserId()
@@ -57,7 +56,6 @@ useEffect(() => {
           }
           
           adicionarTipoGasto(tag)
-          debugger
         }); 
     }
   }
@@ -71,7 +69,6 @@ useEffect(() => {
             return;
           }
           adicionarTipoGasto(tag)    
-        debugger
       });
     }
   }

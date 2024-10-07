@@ -20,12 +20,14 @@ public class EntriesSerializer {
 	public static EntriesEntity toObject(HashMap<String, Object> entryJSON, UserEntity user, PaymentMethodEntity paymentMethod, 
 			TagsEntity tag, EntriesEntity entryObject) {
 		
-		String entryName = entryJSON.get("entryName").toString();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String entryName = entryJSON.get("descricao").toString();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate purchaseDate = null;
+		Float entryValue = Float.valueOf(entryJSON.get("valor").toString());
+		String entryType = entryJSON.get("entradaSaida").toString();
 		
-		if(entryJSON.get("purchaseDate") != null) {
-			purchaseDate = LocalDate.parse(entryJSON.get("purchaseDate").toString(), formatter);			
+		if(entryJSON.get("data") != null) {
+			purchaseDate = LocalDate.parse(entryJSON.get("data").toString(), formatter);			
 		}
 		
 		entryObject.setEntryName(entryName);
@@ -33,6 +35,9 @@ public class EntriesSerializer {
 		entryObject.setPaymentMethodId(paymentMethod);
 		entryObject.setTagId(tag);
 		entryObject.setUserId(user);
+		entryObject.setEntryValue(entryValue);
+		entryObject.setEntryType(entryType);
+		
 		
 		return entryObject;
 		
