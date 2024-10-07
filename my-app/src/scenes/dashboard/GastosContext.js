@@ -50,10 +50,6 @@ export const GastosProvider = ({ children }) => {
 
 
 
-
-
-
-
   // Função para limpar todos os gastos
   const limparGastos = () => {
     setGastos([]); // Reseta a lista de gastos para um array vazio
@@ -90,7 +86,9 @@ export const GastosProvider = ({ children }) => {
         grouped[tipo] = sumBy(gastosPorMes[mes].filter(g => g.tipo === tipo), 'valor');
       });
       
+      
       return grouped;
+      
     });
   };
 
