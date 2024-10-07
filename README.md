@@ -84,19 +84,32 @@ Este projeto está em fase de desenvolvimento contínuo. Alterações e atualiza
 ## Screenshots
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/f4953bd8-0137-4269-94c7-157e348b5015" width="200px" />
+<img src="https://github.com/user-attachments/assets/f4953bd8-0137-4269-94c7-157e348b5015" width="700px" />
 </div>
+
 ### Tela de início
-![TelaInicio](https://github.com/user-attachments/assets/f4953bd8-0137-4269-94c7-157e348b5015)
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/f4953bd8-0137-4269-94c7-157e348b5015" width="700px" />
+</div>
 
 ### Adicionando novas categorias
-![telaAdicionarNovaCategoria](https://github.com/user-attachments/assets/fa5bc798-d20f-4073-bad3-5c8ca75e5e61)
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/fa5bc798-d20f-4073-bad3-5c8ca75e5e61" width="700px" />
+</div>
 
 ### Adicionando forma de pagamento
-![adcNovaFormaPag](https://github.com/user-attachments/assets/b074d8c7-0150-4471-a6c9-bee03f4108fe)
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/b074d8c7-0150-4471-a6c9-bee03f4108fe" width="700px" />
+</div>
 
 ### Gráficos das finanças
-![TelaGraficos](https://github.com/user-attachments/assets/310b2e9c-b5d5-4cf2-ae90-531a4b164819)
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/310b2e9c-b5d5-4cf2-ae90-531a4b164819" width="700px" />
+</div>
 
 
 
