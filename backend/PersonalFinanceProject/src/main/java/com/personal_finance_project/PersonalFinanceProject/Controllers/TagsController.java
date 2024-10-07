@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,12 +47,15 @@ public class TagsController {
 			
 			TagsEntity tag = TagsSerializer.toTag(tagObject);
 
-			tagsRepository.save(tag);
+			tag = tagsRepository.save(tag);
+			
+			return new ResponseEntity<>(tag, HttpStatus.OK);
+			
 		} catch (Exception e) {
+			
 			throw new Exception(e);
 		}
 
-		return ResponseEntity.ok().build();
 
 	}
 
@@ -63,11 +67,27 @@ public class TagsController {
 
 			UserEntity user = optionalUser.get();
 
-			List<TagsEntity> tags = tagsRepository.findByUserId(user.getId());
+			List<TagsEntity> tags = tagsRepository.findByUserIdAndIsDefault(user.getId(), false);
 
 			HashMap<String, List<TagsEntity>> tagsList = TagsSerializer.toObject(tags);
 
 			return ResponseEntity.ok(tagsList);
+
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
+	@GetMapping("/get-default-tags")
+	public ResponseEntity getDefaultTags(HttpServletRequest request) throws Exception {
+
+		try {
+
+			List<TagsEntity> tags = tagsRepository.findByIsDefault(true);
+
+			HashMap<String, List<TagsEntity>> defaultTagsList = TagsSerializer.toObject(tags);
+
+			return ResponseEntity.ok(defaultTagsList);
 
 		} catch (Exception e) {
 			throw new Exception(e);

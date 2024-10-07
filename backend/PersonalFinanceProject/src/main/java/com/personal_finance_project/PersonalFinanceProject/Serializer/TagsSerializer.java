@@ -3,7 +3,6 @@ package com.personal_finance_project.PersonalFinanceProject.Serializer;
 import java.util.HashMap;
 import java.util.List;
 
-import com.personal_finance_project.PersonalFinanceProject.Entities.PaymentMethodEntity;
 import com.personal_finance_project.PersonalFinanceProject.Entities.TagsEntity;
 
 public class TagsSerializer {
@@ -17,6 +16,7 @@ public class TagsSerializer {
 		
 		tag.setTagName(name);
 		tag.setUserId(userId);
+		tag.setIsDefault(false);
 		
 		return tag;
 		

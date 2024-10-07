@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class PaymentMethodController {
 	SecurityFilter security;
 
 	@PostMapping("save-payment-method")
-	public ResponseEntity savePaymentMethod(HttpServletRequest request,
+	public ResponseEntity<Object> savePaymentMethod(HttpServletRequest request,
 			@RequestBody HashMap<String, Object> paymentMethodJSON) throws Exception {
 
 		try {
@@ -43,9 +44,9 @@ public class PaymentMethodController {
 
 			PaymentMethodEntity paymentMethod = PaymentMethodSerializer.toObject(paymentMethodJSON, user);
 
-			paymentMethodRepository.save(paymentMethod);
+			PaymentMethodEntity paymentMethodObject = paymentMethodRepository.save(paymentMethod);
 
-			return ResponseEntity.ok().build();
+			return new ResponseEntity<>(paymentMethodObject, HttpStatus.OK);
 
 		} catch (Exception e) {
 			throw new Exception(e);
@@ -60,7 +61,24 @@ public class PaymentMethodController {
 
 			UserEntity user = optionalUser.get();
 
-			List<PaymentMethodEntity> paymentMethods = paymentMethodRepository.findByUserId(user.getId());
+			List<PaymentMethodEntity> paymentMethods = paymentMethodRepository.findByUserIdAndIsDefault(user.getId(), false);
+
+			HashMap<String, List<PaymentMethodEntity>> paymentMethodList = PaymentMethodSerializer
+					.toJSONList(paymentMethods);
+
+			return ResponseEntity.ok(paymentMethodList);
+
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
+	@GetMapping("/get-default-payment-method")
+	public ResponseEntity getDefaultPaymentMethods(HttpServletRequest request) throws Exception {
+
+		try {
+			
+			List<PaymentMethodEntity> paymentMethods = paymentMethodRepository.findByIsDefault(true);
 
 			HashMap<String, List<PaymentMethodEntity>> paymentMethodList = PaymentMethodSerializer
 					.toJSONList(paymentMethods);

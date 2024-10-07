@@ -8,5 +8,6 @@ import com.personal_finance_project.PersonalFinanceProject.Entities.TagsEntity;
 
 public interface TagsRepository extends JpaRepository<TagsEntity, Long> {
 
-	List<TagsEntity> findByUserId(Long userId);
+	List<TagsEntity> findByUserIdAndIsDefault(Long userId, Boolean isDefault);
+	List<TagsEntity> findByIsDefault(Boolean isDefault);
 }

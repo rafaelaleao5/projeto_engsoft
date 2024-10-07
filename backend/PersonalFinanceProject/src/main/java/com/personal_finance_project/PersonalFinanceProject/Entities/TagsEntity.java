@@ -14,6 +14,7 @@ public class TagsEntity {
 	private Long id;
 	private String tagName;
 	private Long userId;
+	private Boolean isDefault;
 	
 	
 	public TagsEntity() {
@@ -43,6 +44,14 @@ public class TagsEntity {
 
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
+	}
+	
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+	
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 
 }
