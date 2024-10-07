@@ -125,19 +125,7 @@
     
     }, []);
 
-  if (gastosFiltrados.length === 0) { // talvez mudar lógica e props c nome do user
-    return (
-      <Box p={4} textAlign="center">
-        <Typography variant="h5"> 
-          Bem-vindo, Marcos! 
-        </Typography>
-        <Typography variant="body1" mt={2}>
-          Vamos adicionar sua primeira transação. Clique no símbolo de <strong>+</strong> no canto superior direito e comece a organizar sua vida financeira.
-        </Typography>
-      </Box>
-    );
-  }
-
+ 
   return (
     <Box p={4}>
       <Grid container spacing={2}>
