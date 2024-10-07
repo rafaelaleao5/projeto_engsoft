@@ -64,10 +64,6 @@ export const GastosProvider = ({ children }) => {
 
 
 
-
-
-
-
   // Função para limpar todos os gastos
   const limparGastos = () => {
     setGastos([]); // Reseta a lista de gastos para um array vazio
@@ -90,21 +86,23 @@ export const GastosProvider = ({ children }) => {
     );
   };
 
-  // Função para agrupar gastos por mês e categoria
+  //Função para agrupar gastos por mês e categoria
   const agruparGastosPorMes = () => {
     // Agrupando gastos por mês
     const gastosPorMes = groupBy(gastos, (gasto) => new Date(gasto.purchaseDate).getMonth());
 
     // Criando o array de resultado por mês e categorias
     return Object.keys(gastosPorMes).map((mes) => {
-      const grouped = { month: new Date(2023, mes, 1).toLocaleString('default', { month: 'short' }) };
+      const grouped = { month: new Date(2023, mes, 1).toLocaleString('default', { month: 'long' }) };
       
       // Para cada tipo de gasto, somar os valores e adicionar ao objeto
       tiposGasto.forEach((tipo) => {
         grouped[tipo.tagName] = sumBy(gastosPorMes[mes].filter(g => g.tagId.tagName === tipo.tagName), 'entryValue');
       });
       
+      
       return grouped;
+      
     });
   };
 
