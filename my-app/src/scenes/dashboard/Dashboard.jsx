@@ -1,16 +1,16 @@
 
-  import React, { useContext, useState} from 'react';
+  import React, { useContext, useState, useEffect} from 'react';
   import {
     Box, Grid, Card, CardContent, Typography,
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel,  Button, Tooltip
   } from '@mui/material';
-  import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; 
+  import { AttachMoney, Assessment, ArrowUpward, ArrowDownward, Add } from '@mui/icons-material'; 
   import GastosContext from './GastosContext'; 
   import Transaction from './Transaction';
   import BarChart from './BarChart';
   import PieChartComponent from './PieChart';
   import StackedBarChart from './StackedBarChart';
-
+  import WelcomeModal from './WelcomeModal'
   function Dashboard() {
     const { gastos, tiposGasto } = useContext(GastosContext); 
 
@@ -19,7 +19,8 @@
     const [dataFim, setDataFim] = useState('');
     const [anoFiltro, setAnoFiltro] = useState(''); 
     const [filtroTipoTransacao, setFiltroTipoTransacao] = useState('todos'); // 'todos', 'entrada', 'saida'
-    
+    const [openWelcomeModal, setOpenWelcomeModal] = useState(false); // Estado para controle do modal
+
 
 
     const [mostrarBarChart, setMostrarBarChart] = useState(true);
@@ -56,6 +57,18 @@
     const totalSaidas = gastosFiltrados
       .filter((gasto) => gasto.valor < 0)
       .reduce((acc, gasto) => acc + Math.abs(gasto.valor), 0); 
+    
+    // Exibir o modal quando não houver gastos
+    useEffect(() => {
+      if (gastos.length === 0) {
+        setOpenWelcomeModal(true);
+      }
+    }, [gastos]);
+
+    // Função para fechar o modal
+    const handleCloseWelcomeModal = () => {
+      setOpenWelcomeModal(false);
+  };
       
       
       const barChartDataMonth = gastosFiltrados.reduce((acc, gasto) => {
@@ -82,12 +95,8 @@
         entradas: barChartDataMonth[month].entradas,
         saidas: barChartDataMonth[month].saidas,
     }));
-    
-    console.log(barChartDataMonthFull);
-    
-      
 
-
+  
     const pieChartData = tiposGasto.map((tipo) => {
       const totalPorTipo = gastosFiltrados
         .filter((gasto) => gasto.tipo === tipo)
@@ -99,19 +108,6 @@
     const ultimasTransacoes = gastosFiltrados
       .sort((a, b) => new Date(b.data) - new Date(a.data))
       .slice(0, 5);
-
-    if (gastosFiltrados.length === 0) { // talvez mudar lógica e props c nome do user
-      return (
-        <Box p={4} textAlign="center">
-          <Typography variant="h5"> 
-            Bem-vindo, Marcos! 
-          </Typography>
-          <Typography variant="body1" mt={2}>
-            Vamos adicionar sua primeira transação. Clique no símbolo de <strong>+</strong> no canto superior direito e comece a organizar sua vida financeira.
-          </Typography>
-        </Box>
-      );
-    }
 
     return (
       <Box p={4}>
@@ -127,6 +123,12 @@
               </CardContent>
             </Card>
           </Grid>
+
+
+        
+
+        {/* Modal de Boas-vindas */}
+        <WelcomeModal open={openWelcomeModal} onClose={handleCloseWelcomeModal} />
 
           <Grid item xs={3}>
             <Card>
@@ -280,6 +282,8 @@
                 <Typography variant="body2">Nenhuma transação disponível</Typography>
               )}
             </TableContainer>
+            <WelcomeModal open={openWelcomeModal} onClose={handleCloseWelcomeModal} />
+
           </Box>
         </Box>
       </Box>

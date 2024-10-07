@@ -6,6 +6,8 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
+import Sidebar from './global/sidebar/Sidebar'
+
 
 function Gastos() {
   const { gastos, adicionarGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento } = useContext(GastosContext);
@@ -69,6 +71,7 @@ function Gastos() {
 
   return (
     <Box display="flex" bgcolor="#ece8ff" p={3} borderRadius="10px" boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)">
+      <Sidebar></Sidebar>
       <Box flexGrow={1}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
