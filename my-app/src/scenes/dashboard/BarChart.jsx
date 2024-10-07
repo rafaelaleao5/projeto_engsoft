@@ -1,23 +1,14 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Box, Typography } from '@mui/material';
 
-// Função para transformar os dados no formato esperado pelo BarChart
-const formatData = (gastosPorMes) => {
-  return Object.entries(gastosPorMes).map(([month, value]) => ({
-    name: month,
-    entradas: value.entradas,
-    saidas: value.saidas,
-  }));
-};
 
 const SimpleBarChart = ({ data }) => {
-  // Formata os dados para o gráfico
-  const formattedData = formatData(data);
-
+  console.log("dados que estão vindo do dashboard ",data);
+ 
   return (
     <Box
-      p={3}
+      p={1}
       bgcolor="#ece8ff"
       borderRadius="10px"
       boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
@@ -37,16 +28,27 @@ const SimpleBarChart = ({ data }) => {
         Histórico de Transações
       </Typography>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={formattedData}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+      <ResponsiveContainer width="100%" height={400}>
+        <BarChart data={data} margin={{ top: 20, right: 30, left: 20}}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+          <XAxis dataKey="name" label={{ value: 'Mês', position: 'insideBottom', offset: -10, fill: '#7048b7' }} />
+          <YAxis label={{ value: 'Valor (R$)', angle: -90, position: 'insideLeft', fill: '#7048b7' }} />
+          <Tooltip
+            formatter={(value) => `R$ ${value.toFixed(2)}`}
+            contentStyle={{ backgroundColor: '#f7f7f9', borderRadius: '8px', border: '1px solid #d4c8e7' }}
+            itemStyle={{ color: "#1c044c" }}
+          />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{ paddingTop: 20, color: "#1c044c" }}
+          />
+
           {/* Barra para Entradas */}
-          <Bar dataKey="entradas" fill="#32c48d" name="Entradas" />
+          <Bar dataKey="entradas" fill="#32c48d" name="Entradas" radius={[4, 4, 0, 0]} barSize={40} />
           {/* Barra para Saídas */}
-          <Bar dataKey="saidas" fill="#e57373" name="Saídas" />
+          <Bar dataKey="saidas" fill="#941d1d" name="Saídas" radius={[4, 4, 0, 0]} barSize={40} />
+
         </BarChart>
       </ResponsiveContainer>
     </Box>

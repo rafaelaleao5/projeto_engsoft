@@ -2,9 +2,9 @@
   import React, { useContext, useState, useEffect} from 'react';
   import {
     Box, Grid, Card, CardContent, Typography,
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel,  Button, Tooltip
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, MenuItem, Checkbox, FormControlLabel
   } from '@mui/material';
-  import { AttachMoney, Assessment, ArrowUpward, ArrowDownward, Add } from '@mui/icons-material'; 
+  import { AttachMoney, Assessment, ArrowUpward, ArrowDownward } from '@mui/icons-material'; 
   import GastosContext from './GastosContext'; 
   import Transaction from './Transaction';
   import BarChart from './BarChart';
@@ -95,7 +95,6 @@
         entradas: barChartDataMonth[month].entradas,
         saidas: barChartDataMonth[month].saidas,
     }));
-
   
     const pieChartData = tiposGasto.map((tipo) => {
       const totalPorTipo = gastosFiltrados
@@ -103,6 +102,7 @@
         .reduce((acc, gasto) => acc + gasto.valor, 0);
       return { name: tipo, value: totalPorTipo };
     });
+    console.log(pieChartData)
 
 
     const ultimasTransacoes = gastosFiltrados
