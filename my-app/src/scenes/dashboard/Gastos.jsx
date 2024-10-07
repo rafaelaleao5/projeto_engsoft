@@ -10,7 +10,10 @@ import { getCategoryByUserId, getDefaultCategories } from '../../controllers/cat
 import { getPaymentMethodByUserId, getDefaultPaymentMethod } from '../../controllers/paymentMethodController';
 
 function Gastos() {
-  const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
+  const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, 
+    adicionarFormaPagamento, hasCategoryInfo, setCategoryInfo, hasDefaultCategoryInfo, 
+    setDefaultCategoryInfo, hasPaymentMethodInfo, setPaymentMethodInfo, 
+    hasDefaultPaymentMethodInfo, setDefaultPaymentMethodInfo } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
@@ -19,11 +22,6 @@ function Gastos() {
   const [entradaSaida, setEntradaSaida] = useState('');
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
-
-  let hasCategoryInfo = false;
-  let hasPaymentMethodInfo = false;
-  let hasDefaultCategoryInfo = false;
-  let hasDefaultPaymentMethodInfo = false;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -84,21 +82,21 @@ function Gastos() {
 
   const getCategories = async () => {
     if(!hasCategoryInfo){
-      hasCategoryInfo = true;
+      setCategoryInfo(true);
       const tags = await getCategoryByUserId()
       tags.forEach(tag => {
         if (tiposGasto.includes(tag.tagName)) {
           return;
         }
         
-        adicionarTipoGasto(tag.tagName)
+        adicionarTipoGasto(tag)
       });
     }
   }
 
   const getCategoriesDefault = async () => {
     if(!hasDefaultCategoryInfo){
-      hasDefaultCategoryInfo = true;
+      setDefaultCategoryInfo(true);
       const tags = await getDefaultCategories();
       tags.forEach(tag => {
         debugger
@@ -114,21 +112,21 @@ function Gastos() {
 
   const getPaymentMethods = async () => {
     if(!hasPaymentMethodInfo){
-      hasPaymentMethodInfo = true;
+      setPaymentMethodInfo(true);
       const paymentMethods = await getPaymentMethodByUserId()
       paymentMethods.forEach(paymentMethod => {
         if (formasPagamento.includes(paymentMethod.methodName)) {
           return;
         }
         
-        adicionarFormaPagamento(paymentMethod.methodName)
+        adicionarFormaPagamento(paymentMethod)
       });
     }
   }
 
   const getPaymentMethodsDefault = async () => {
     if(!hasDefaultPaymentMethodInfo){
-      hasDefaultPaymentMethodInfo = true;
+      setDefaultPaymentMethodInfo(true);
       const paymentMethods = await getDefaultPaymentMethod()
       paymentMethods.forEach(paymentMethod => {
         if (formasPagamento.includes(paymentMethod.methodName)) {
@@ -210,8 +208,8 @@ function Gastos() {
                   onChange={(e) => setFormaPagamento(e.target.value)}
                 >
                   {formasPagamento.map((forma, index) => (
-                    <MenuItem key={index} value={forma}>
-                      {forma}
+                    <MenuItem key={index} value={forma.methodName}>
+                      {forma.methodName}
                     </MenuItem>
                   ))}
                 </Select>
