@@ -26,13 +26,39 @@ git clone https://github.com/rafaelaleao5/projeto_engsoft.git
 
 # Funcionalidades
 
-- Registro de transações (receitas e despesas);
-- Criação e gerenciamento de categorias de despesas;
-- Planejamento e monitoramento de orçamentos;
-- Personalização de categorias e orçamentos;
-- Segurança e privacidade dos dados financeiros;
-- Visão analítica e estatística das finanças;
+- Controle de movimentações financeiras (entradas e saídas);
+- Definição e administração de grupos de gastos;
+- Elaboração e acompanhamento de planejamentos financeiros;
+- Customização de grupos e limites de gastos;
+- Proteção e confidencialidade das informações financeiras;
+- Análise e estatísticas das finanças;
 
 # Documentação
 
 https://github.com/rafaelaleao5/projeto_engsoft/blob/main/artefatos/API_documentation.md
+
+# Como contribuir com o projeto
+
+Toda contribuição é bem-vinda, veja como você poderá ajudar a seguir:
+
+1. Faça a cópia do repositório e crie uma nova branch a partir da `main`.
+2. `git checkout -b minha-nova-funcionalidade`
+3. Realize as modificações necessárias e faça o commit.
+4. Envie as alterações para a branch.
+5. Submeta um Pull Request.
+
+# Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo https://github.com/rafaelaleao5/projeto_engsoft/blob/main/LICENSE.md para detalhes
+
+# Créditos
+
+- Danilo Lapa
+- João Oliveira
+- Marcos Christopher
+- Marcos Vinicius
+- Mateus Nepomuceno
+- Rafaela Leão
+- Tiago Chacon
+- Vinícius Nobre
+
