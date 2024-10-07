@@ -46,20 +46,21 @@ A documentação completa da API está disponível em [Documentação da API](ht
 ## Como Contribuir
 
 Toda contribuição é bem-vinda! Veja como você pode colaborar:
+1. Crie um fork do repositório
 
-1. Faça a cópia do repositório e crie uma nova branch a partir da `main`:
+2. Faça a cópia do repositório e crie uma nova branch a partir da `main`:
    ```bash
    git checkout -b minha-nova-funcionalidade
    ```
-2. Realize as modificações necessárias e faça o commit:
+3. Realize as modificações necessárias e faça o commit:
    ```bash
    git commit -m "Descrição das mudanças"
    ```
-3. Envie as alterações para a branch:
+4. Envie as alterações para a branch:
    ```bash
    git push origin minha-nova-funcionalidade
    ```
-4. Submeta um Pull Request.
+5. Submeta um Pull Request.
 
 ## Licença
 
