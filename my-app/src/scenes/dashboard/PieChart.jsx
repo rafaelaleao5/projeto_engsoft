@@ -28,10 +28,13 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const PieChartComponent = ({ data }) => {
+  // Filtra os dados para incluir apenas as saídas (valores negativos)
+  const dataSaidas = data.filter(item => item.value < 0);
+
   // Ajustar os dados para usar valores absolutos
-  const processedData = data.map(item => ({
+  const processedData = dataSaidas.map(item => ({
     ...item,
-    value: Math.abs(item.value), // Converte valores para positivos
+    value: Math.abs(item.value), // Converte valores negativos para positivos
   }));
 
   return (
@@ -52,7 +55,7 @@ const PieChartComponent = ({ data }) => {
           textAlign: "center" 
         }}
       >
-        Transação por Categoria
+        Despesas por Categoria
       </Typography>
       
       <ResponsiveContainer width="100%" height={400}>

@@ -29,3 +29,15 @@ export const getPaymentMethodByUserId = async () => {
 
     throw error; 
 }}
+
+export const getDefaultPaymentMethod = async () => {
+  try{
+  const response = await api.get('http://localhost:8080/payment-methods/get-default-payment-method')
+      return response.data.paymentMethods;
+
+  }catch(error) {
+
+  console.error('Erro ao trazer category:', error);
+
+  throw error; 
+}}

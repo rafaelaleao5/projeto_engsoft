@@ -6,11 +6,17 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GastosContext from './GastosContext';
-import { getCategoryByUserId } from '../../controllers/categoryController';
-import { getPaymentMethodByUserId } from '../../controllers/paymentMethodController';
+import { getCategoryByUserId, getDefaultCategories } from '../../controllers/categoryController';
+import { getPaymentMethodByUserId, getDefaultPaymentMethod } from '../../controllers/paymentMethodController';
+import { saveEntry } from '../../controllers/entriesController';
+import Sidebar from './global/sidebar/Sidebar'
+
 
 function Gastos() {
-  const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, adicionarFormaPagamento } = useContext(GastosContext);
+  const { gastos, adicionarGasto, adicionarTipoGasto, atualizarGasto, excluirGasto, tiposGasto, formasPagamento, 
+    adicionarFormaPagamento, hasCategoryInfo, setCategoryInfo, hasDefaultCategoryInfo, 
+    setDefaultCategoryInfo, hasPaymentMethodInfo, setPaymentMethodInfo, 
+    hasDefaultPaymentMethodInfo, setDefaultPaymentMethodInfo } = useContext(GastosContext);
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [data, setData] = useState('');
@@ -20,21 +26,18 @@ function Gastos() {
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
 
-  let hasCategoryInfo = false;
-  let hasPaymentMethodInfo = false;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const valorFinal = entradaSaida === 'Saída' ? -Math.abs(parseFloat(valor)) : Math.abs(parseFloat(valor));
 
     const novoGasto = {
       id: editando ? idEditando : gastos.length + 1,
-      descricao,
+      descricao: descricao,
       valor: valorFinal,
-      data,
-      tipo,
-      formapagamento,
-      entradaSaida,
+      data: data,
+      tipo: tipo,
+      formapagamento: formapagamento,
+      entradaSaida: entradaSaida
     };
 
     if (editando) {
@@ -42,7 +45,10 @@ function Gastos() {
       setEditando(false);
       setIdEditando(null);
     } else {
-      adicionarGasto(novoGasto);
+
+      await saveEntry(novoGasto).then((entry) => {
+        adicionarGasto(entry);
+      })
     }
 
     limparCampos();
@@ -74,40 +80,71 @@ function Gastos() {
 
   useEffect(() => {
     getCategories()
+    getCategoriesDefault()
     getPaymentMethods()
+    getPaymentMethodsDefault()
   
   }, []);
 
   const getCategories = async () => {
     if(!hasCategoryInfo){
-      hasCategoryInfo = true;
+      setCategoryInfo(true);
       const tags = await getCategoryByUserId()
       tags.forEach(tag => {
         if (tiposGasto.includes(tag.tagName)) {
           return;
         }
         
-        adicionarTipoGasto(tag.tagName)
+        adicionarTipoGasto(tag)
+      });
+    }
+  }
+
+  const getCategoriesDefault = async () => {
+    if(!hasDefaultCategoryInfo){
+      setDefaultCategoryInfo(true);
+      const tags = await getDefaultCategories();
+      tags.forEach(tag => {
+        if (tiposGasto.includes(tag.tagName)) {
+          return;
+        }
+        
+        adicionarTipoGasto(tag)
       });
     }
   }
 
   const getPaymentMethods = async () => {
     if(!hasPaymentMethodInfo){
-      hasPaymentMethodInfo = true;
+      setPaymentMethodInfo(true);
       const paymentMethods = await getPaymentMethodByUserId()
       paymentMethods.forEach(paymentMethod => {
         if (formasPagamento.includes(paymentMethod.methodName)) {
           return;
         }
         
-        adicionarFormaPagamento(paymentMethod.methodName)
+        adicionarFormaPagamento(paymentMethod)
+      });
+    }
+  }
+
+  const getPaymentMethodsDefault = async () => {
+    if(!hasDefaultPaymentMethodInfo){
+      setDefaultPaymentMethodInfo(true);
+      const paymentMethods = await getDefaultPaymentMethod()
+      paymentMethods.forEach(paymentMethod => {
+        if (formasPagamento.includes(paymentMethod.methodName)) {
+          return;
+        }
+        
+        adicionarFormaPagamento(paymentMethod)
       });
     }
   }
 
   return (
     <Box display="flex" bgcolor="#ece8ff" p={3} borderRadius="10px" boxShadow="0 4px 8px rgba(0, 0, 0, 0.1)">
+      <Sidebar></Sidebar>
       <Box flexGrow={1}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -159,8 +196,8 @@ function Gastos() {
                   onChange={(e) => setTipo(e.target.value)}
                 >
                   {tiposGasto.map((tipoGasto, index) => (
-                    <MenuItem key={index} value={tipoGasto}>
-                      {tipoGasto}
+                    <MenuItem key={index} value={tipoGasto.id}>
+                      {tipoGasto.tagName}
                     </MenuItem>
                   ))}
                 </Select>
@@ -175,8 +212,8 @@ function Gastos() {
                   onChange={(e) => setFormaPagamento(e.target.value)}
                 >
                   {formasPagamento.map((forma, index) => (
-                    <MenuItem key={index} value={forma}>
-                      {forma}
+                    <MenuItem key={index} value={forma.id}>
+                      {forma.methodName}
                     </MenuItem>
                   ))}
                 </Select>
@@ -218,14 +255,14 @@ function Gastos() {
             </TableHead>
             <TableBody>
               {gastos.map((gasto) => (
-                <TableRow key={gasto.id}>
-                  <TableCell>{gasto.descricao}</TableCell>
-                  <TableCell sx={{ color: gasto.valor < 0 ? '#e57373' : '#32c48d' }}>
-                    {gasto.valor < 0 ? `- R$${Math.abs(gasto.valor)}` : `+ R$${gasto.valor}`}
+                <TableRow key={gasto.entryId}>
+                  <TableCell>{gasto.entryName}</TableCell>
+                  <TableCell sx={{ color: gasto.entryValue < 0 ? '#e57373' : '#32c48d' }}>
+                    {gasto.entryValue < 0 ? `- R$${Math.abs(gasto.entryValue)}` : `+ R$${gasto.entryValue}`}
                   </TableCell>
-                  <TableCell>{gasto.data}</TableCell>
-                  <TableCell>{gasto.tipo}</TableCell>
-                  <TableCell>{gasto.formapagamento}</TableCell>
+                  <TableCell>{gasto.purchaseDate}</TableCell>
+                  <TableCell>{gasto.tagId.tagName}</TableCell>
+                  <TableCell>{gasto.paymentMethodId.methodName}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditar(gasto)} aria-label="edit">
                       <EditIcon />

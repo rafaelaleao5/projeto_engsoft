@@ -32,3 +32,16 @@ export const getCategoryByUserId = async () => {
 
     throw error; 
 }}
+
+export const getDefaultCategories = async () => {
+
+  try{
+    const response = await api.get('http://localhost:8080/tags/get-default-tags')
+        return response.data.tags;
+
+    }catch(error) {
+
+    console.error('Erro ao trazer category:', error);
+
+    throw error; 
+}}

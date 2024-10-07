@@ -64,9 +64,9 @@ public class EntriesController {
 		
 		UserEntity user = optionalUser.get();
 		
-		Long paymentMethodId = Long.parseLong(entryJSON.get("paymentMethodId").toString());
+		Long paymentMethodId = Long.parseLong(entryJSON.get("formapagamento").toString());
 		
-		Long tagId = Long.parseLong(entryJSON.get("tagId").toString());
+		Long tagId = Long.parseLong(entryJSON.get("tipo").toString());
 		
 		Optional<PaymentMethodEntity> paymentMethod = paymentMethodRepository.findById(paymentMethodId);
 		
@@ -76,9 +76,9 @@ public class EntriesController {
 		
 		EntriesEntity entry = EntriesSerializer.toObject(entryJSON, user, paymentMethod.get(), tag.get(), entryObject);
 		
-		entriesRepository.save(entry);
+		entry = entriesRepository.save(entry);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(entry, HttpStatus.OK);
 		
 	}
 	

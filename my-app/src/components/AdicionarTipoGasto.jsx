@@ -2,17 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Button, TextField, Box, Grid, Typography, List, ListItem, ListItemText, Divider, Paper, IconButton } from '@mui/material';
 import GastosContext from '../scenes/dashboard/GastosContext';
 import { getCategoryByUserId } from "../controllers/categoryController";
+import { getDefaultCategories } from '../controllers/categoryController';
 import { saveCategory } from '../controllers/categoryController';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Sidebar from '../scenes/dashboard/global/sidebar/Sidebar';
 
 function AdicionarTipoGasto() {
-  const { adicionarTipoGasto, tiposGasto, editarTipoGasto, excluirTipoGasto } = useContext(GastosContext);
+  const { adicionarTipoGasto, tiposGasto, editarTipoGasto, excluirTipoGasto, setCategoryInfo, hasCategoryInfo, setDefaultCategoryInfo, hasDefaultCategoryInfo} = useContext(GastosContext);
   const [novoTipo, setNovoTipo] = useState('');
   const [erro, setErro] = useState('');
   const [tipoAtual, setTipoAtual] = useState(null); // Para rastrear o tipo que está sendo editado
-  let hasCategoryInfo = false;
 
   const handleAdicionarTipoGasto = async () => {
     const novoTipoUpper = novoTipo.trim().toUpperCase();
@@ -26,8 +26,9 @@ function AdicionarTipoGasto() {
     if (novoTipoUpper) {
 
       try{
-          await saveCategory(novoTipo, "CATEGORY").then((response) => {
-          adicionarTipoGasto(novoTipoUpper); // Adiciona o tipo em upper case
+          await saveCategory(novoTipo, "CATEGORY").then((newCategory) => {
+
+          adicionarTipoGasto(newCategory.data); // Adiciona o tipo em upper case
           setNovoTipo(''); // Limpa o campo
           setErro(''); // Limpa mensagem de erro
         })
@@ -41,19 +42,33 @@ function AdicionarTipoGasto() {
 
 useEffect(() => {
   getCategories()
+  getCategoriesDefault()
 
 }, []);
 
   const getCategories = async () => {
     if(!hasCategoryInfo){
-      hasCategoryInfo = true;
+      setCategoryInfo(true);
       const tags = await getCategoryByUserId()
+        tags.forEach(tag => {
+          if (tiposGasto.includes(tag.tagName)) {
+            return;
+          }
+          
+          adicionarTipoGasto(tag)
+        }); 
+    }
+  }
+
+  const getCategoriesDefault = async () => {
+    if(!hasDefaultCategoryInfo){
+      setDefaultCategoryInfo(true);
+      const tags = await getDefaultCategories();
       tags.forEach(tag => {
-        if (tiposGasto.includes(tag.tagName)) {
-          return;
-        }
-        
-        adicionarTipoGasto(tag.tagName)
+          if (tiposGasto.includes(tag.tagName)) {
+            return;
+          }
+          adicionarTipoGasto(tag)    
       });
     }
   }
@@ -166,7 +181,7 @@ useEffect(() => {
             {tiposGasto.map((tipo, index) => (
               <React.Fragment key={index}>
                 <ListItem>
-                  <ListItemText primary={tipo} sx={{ color: '#7048b7' }} />
+                  <ListItemText primary={tipo.tagName} sx={{ color: '#7048b7' }} />
                   <IconButton onClick={() => handleEditarTipoGasto(tipo)}>
                     <EditIcon sx={{ color: '#1c044c' }} />
                   </IconButton>

@@ -38,7 +38,7 @@ const StackedBarChart = () => {
       </Typography>
 
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}> {/* Aumentei a margem inferior */}
+        <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}> {/* Aumentei a margem inferior */}
           <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
           <XAxis 
             dataKey="month" 
@@ -54,12 +54,12 @@ const StackedBarChart = () => {
             formatter={(value) => `R$ ${value.toFixed(2)}`} 
             itemStyle={{ color: "#1c044c" }}
           />
-          <Legend verticalAlign="bottom" align="center" wrapperStyle={{ color: "#1c044c", paddingBottom: 10 }} /> {/* Legenda ajustada */}
+          <Legend verticalAlign="bottom" align="center" wrapperStyle={{ color: "#1c044c", paddingBottom: 0, paddingTop: 30 }} /> {/* Legenda ajustada */}
           
           {tiposGasto.map((tipo, index) => (
             <Bar
-              key={tipo}
-              dataKey={tipo}
+              key={tipo.tagId}
+              dataKey={tipo.tagName}
               stackId="a"
               fill={COLORS[index % COLORS.length]}
               radius={[4, 4, 0, 0]}

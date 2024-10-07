@@ -17,6 +17,7 @@ public class PaymentMethodSerializer {
 		
 		paymentMethod.setMethodName(paymentMethodName);
 		paymentMethod.setUserId(userId);
+		paymentMethod.setIsDefault(false);
 		
 		return paymentMethod;
 	}

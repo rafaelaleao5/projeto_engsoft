@@ -15,8 +15,9 @@ public class PaymentMethodEntity {
 	private Long id;
 	private String methodName;
 	private Long userId;
+	private Boolean isDefault;
 	
-	
+
 	public PaymentMethodEntity() {
 		
 	}
@@ -54,6 +55,15 @@ public class PaymentMethodEntity {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 	
 }

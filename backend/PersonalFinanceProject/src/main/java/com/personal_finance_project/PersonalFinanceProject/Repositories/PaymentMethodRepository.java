@@ -8,5 +8,6 @@ import com.personal_finance_project.PersonalFinanceProject.Entities.PaymentMetho
 
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethodEntity, Long> {
 
-	List<PaymentMethodEntity> findByUserId(Long userId);
+	List<PaymentMethodEntity> findByUserIdAndIsDefault(Long userId, Boolean isDefault);
+	List<PaymentMethodEntity> findByIsDefault(Boolean isDefault);
 }
